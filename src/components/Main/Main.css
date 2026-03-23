@@ -1,9 +1,46 @@
-@font-face {
-  font-family: "roboto-regular";
-  src: url("../assets/roboto-regular.woff")format("woff");
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cards-gap-xlarge);
 }
-.container {
-   display: flex;
-   justify-content: space-around;
-   font-family: roboto-regular, sans-serif;
- }
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cards-gap-large);
+}
+
+.cards__text {
+  align-self: flex-start;
+  margin: var(--margin-none);
+}
+.cards__list {
+  display: grid;
+
+  /* 1. We use 'min' to prevent breaking small screens (320px)
+     2. We use the variable for the max so they don't stretch and create gaps */
+  grid-template-columns: repeat(auto-fill, min(var(--image-width), 100%));
+  gap: var(--gap-medium);
+  width: 100%;
+  list-style: none;
+  padding: var(--padding-none);
+  margin: var(--margin-none);
+  justify-content: flex-start;
+}
+
+.cards__list-item {
+  position: relative;
+}
+.cards__img-name {
+  position: absolute;
+  top: var(--position-top);
+  left: var(--position-left);
+  background-color: white;
+  padding: var(--padding-tag);
+
+  border-radius: var(--radius-small);
+}
+.cards__img {
+  width: var(--image-width);
+  height: var(--image-height);
+}

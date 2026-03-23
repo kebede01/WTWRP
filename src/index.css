@@ -1,29 +1,43 @@
  @import url("./vendor/normalize.css");
- :root{
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #F3F3F3;
- --text-primary: #000000;
-  --text-accent: red;
-   --font-main: 'Cabinet Grotesk', sans-serif;
-  --font-weight-bold: 700;
-  --font-size-header: 20px;
-  --line-height-header: 24px;
-  /* Spacing & Dimensions */
-  --page-width: 1440px;
-  --content-width: 1360px;
-  --header-padding: 32px 0 28px;
-  --logo-width: 89px;
-  --logo-margin: 24px;
+:root {
   --avatar-size: 56px;
-  --user-margin: 0 12px 0 20px;
-
-/* Breakpoints (for use in media queries) */
+  --bg: #F3F3F3;
+  --border-color: 1px solid #0000004d;
+  --card-position-left: 16px;
+  --card-position-top: 20px;
+  --cards-gap-large: 34px;
+  --cards-gap-xlarge: 40px;
+  --content-width: 1360px;
+  --font-main: 'Cabinet Grotesk', sans-serif;
+  --font-size-medium: 20px;
+  --font-size-small: 16px;
+  --font-weight-bold: 700;
+  --gap-medium: 20px;
+  --header-padding: 32px 0 28px;
+  --image-height: 328px;
+  --image-width: 325px; /* Updated to your latest 325px value */
+  --line-height-medium: 24px;
+  --line-height-small: 20px;
+  --logo-margin: 24px;
+  --logo-width: 89px;
+  --margin-none: 0px;
   --mobile-breakpoint: 769px;
-  
- /* Colors (Add yours here) */
+  --page-width: 1440px;
+  --padding-none: 0px;
+  --padding-tag: 2px 12px;
+  --position-left: 125px;
+  --position-top: 15px;
+  --radius-big: 20px;
+  --radius-medium: 12px;
+  --radius-small: 4px;
+  --text: #6b6375;
+  --text-accent: red;
+  --text-h: #08060d;
   --text-main: #000000;
- }
+  --text-primary: #000000;
+  --user-margin: 0 12px 0 20px;
+  --weather-card-height: 80px;
+}
  #root{
  /* Functional rendering rules go here */
  width: 1440px;
