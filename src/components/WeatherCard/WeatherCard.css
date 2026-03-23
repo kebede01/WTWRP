@@ -1,0 +1,18 @@
+.weather-card {
+  display: flex;
+  position: relative;
+  height: var(--weather-card-height);
+  border-radius: var(--radius-medium);
+}
+
+.weather-card__text {
+  position: absolute;
+  top: var(--card-position-top);
+  left: var(--card-position-left);
+  margin: var(--margin-none);
+}
+.weather-card__img {
+  width: 100%;
+  object-fit: cover;
+  object-position: top right;
+}

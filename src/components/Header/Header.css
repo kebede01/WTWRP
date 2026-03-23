@@ -27,16 +27,16 @@
 /* Element: Date and Location text */
 .header__info {
 margin: 0;
-  line-height: var(--line-height-header);
+  line-height: var(--line-height-medium);
 }
 
 .header__button {
   cursor: pointer;
-  line-height: var(--line-height-header);
+  line-height: var(--line-height-medium);
   border: none;
   font-family: var(--font-main);
   font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-header);
+  font-size: var(--font-size-medium);
   letter-spacing: 0%;
  
 }

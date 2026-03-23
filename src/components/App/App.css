@@ -11,8 +11,7 @@
   width: var(--content-width);
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 20px;
-  box-sizing: border-box;
+box-sizing: border-box;
 }
 
 /* p{

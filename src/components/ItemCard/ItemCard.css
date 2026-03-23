@@ -1,0 +1,26 @@
+.cards__list-item {
+  position: relative;
+  width: var(--image-width);
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: right;
+  border: var(--border-color);
+  border-radius: var(--radius-big);
+}
+.cards__img-name {
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  padding: var(--padding-tag);
+  background: #ffffff;
+  border-radius: var(--radius-small);
+  color: #00000099;
+}
+.cards__img {
+  width: 100%;
+}
