@@ -2,7 +2,7 @@
 :root {
   --avatar-size: 56px;
   --bg: #F3F3F3;
-  --border-color: 1px solid #0000004d;
+  --card-border: 1px solid #0000004d;
   --card-position-left: 16px;
   --card-position-top: 20px;
   --cards-gap-large: 34px;

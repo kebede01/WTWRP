@@ -1,19 +1,19 @@
 
-.page{
-  text-align: center;
-  width: var(--page-width);
-  max-width: 100%;
-  margin: 0 auto;
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+   width: 100%; 
+  min-height: 100vh;
   background-color: var(--bg);
- }
-
-.page__content{
-  width: var(--content-width);
-  max-width: 100%;
-  margin: 0 auto;
-box-sizing: border-box;
+  text-align: center;
 }
 
+.page__content {
+  width: var(--content-width);
+  max-width: 100%;
+ box-sizing: border-box;
+}
 /* p{
   color: red;
    @media (max-width: 1024px) {
