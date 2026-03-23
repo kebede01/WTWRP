@@ -44,3 +44,9 @@
   width: var(--image-width);
   height: var(--image-height);
 }
+
+@media (max-width: 1024px){
+  .cards__list{
+    justify-content: center;
+  }
+}
