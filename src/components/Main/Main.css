@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "roboto-regular";
+  src: url("../assets/roboto-regular.woff")format("woff");
+}
+.container {
+   display: flex;
+   justify-content: space-around;
+   font-family: roboto-regular, sans-serif;
+ }
