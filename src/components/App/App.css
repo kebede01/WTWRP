@@ -1,5 +1,7 @@
 
-
+.page{
+  text-align: center;
+}
 /* p{
   color: red;
    @media (max-width: 1024px) {
