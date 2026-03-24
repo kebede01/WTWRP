@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import PreviewItemModal from "../PreviewItemModal/PreviewItemModal";
+import RegisterModal from "../RegisterModal/RegisterModal"; 
 import { useState } from "react";
 import { defaultClothingItems } from "../../utils/clothingItems";
 
@@ -23,6 +24,10 @@ function App() {
     setSelectedCard(data);
   };
 
+ const handleAddRegistration = () => {
+    setActiveModal("register");
+  };
+
   const handleCloseModal = () => {
     setActiveModal("");
   };
@@ -36,10 +41,10 @@ function App() {
     console.log("Form submitted, but page refresh prevented!");
   };
   
-  // const handleSubmitRegister = (e) => {
-  //   e.preventDefault();
-  //   console.log("Form submitted, but page refresh prevented!");
-  // };
+  const handleSubmitRegister = (e) => {
+    e.preventDefault();
+    console.log("Form submitted, but page refresh prevented!");
+  };
   //  const handleLogIn = (e) => {
   //   e.preventDefault();
   //   console.log("Form submitted, but page refresh prevented!");
@@ -51,7 +56,9 @@ function App() {
   return (
     <div className="page">
       <div className="page__content">
-        <Header handleActiveModal={handleActiveModal} />
+        <Header handleActiveModal={handleActiveModal}
+         handleAddRegistration={ handleAddRegistration}
+        />
         <Main
           clothingItems={clothingItems}
           weatherData={weatherData}
@@ -73,6 +80,17 @@ function App() {
           activeModal={activeModal}
           handleSubmitPreviewItem={handleSubmitPreviewItem}
         />
+        <RegisterModal
+           handleCloseModal={handleCloseModal}
+          title="Register"
+          buttonText="Register"
+           isOpen={activeModal === "register"}
+          activeModal={activeModal}
+          handleAddRegistration={handleAddRegistration}
+          handleSubmitRegister={handleSubmitRegister }
+        />
+ 
+      
       </div>
     </div>
   );

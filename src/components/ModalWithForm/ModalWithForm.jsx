@@ -1,5 +1,7 @@
 import "./ModalWithForm.css";
-export default function ModalWithForm({ children, title, buttonText, isOpen, activeModal, handleCloseModal, handleSubmitAddItem, handleSubmitPreviewItem }) {
+export default function ModalWithForm({ children, title, buttonText, isOpen, activeModal, handleCloseModal, handleSubmitAddItem, handleSubmitPreviewItem,
+  handleSubmitRegister,    
+}) {
   
  const handleSubmit = (e) => {
   e.preventDefault(); 
@@ -10,6 +12,9 @@ export default function ModalWithForm({ children, title, buttonText, isOpen, act
       break;
     case "preview":
       handleSubmitPreviewItem(e);
+      break;
+    case "register":
+      handleSubmitRegister(e);
       break;
     default:
       console.warn("No handler for modal:", activeModal);
