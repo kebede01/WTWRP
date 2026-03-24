@@ -4,6 +4,8 @@ import Main from "../Main/Main";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import PreviewItemModal from "../PreviewItemModal/PreviewItemModal";
 import RegisterModal from "../RegisterModal/RegisterModal"; 
+import LoginModal from "../LoginModal/LoginModal";
+import ProfileEditModal from "../ProfileEditModal/ProfileEditModal"
 import { useState } from "react";
 import { defaultClothingItems } from "../../utils/clothingItems";
 
@@ -26,8 +28,15 @@ function App() {
 
  const handleAddRegistration = () => {
     setActiveModal("register");
+ };
+  
+ const handleLogIn = () => {
+    setActiveModal("login");
   };
 
+   const handleProfileOpen = () => {
+    setActiveModal("profile");
+  };
   const handleCloseModal = () => {
     setActiveModal("");
   };
@@ -45,19 +54,23 @@ function App() {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
   };
-  //  const handleLogIn = (e) => {
-  //   e.preventDefault();
-  //   console.log("Form submitted, but page refresh prevented!");
-  // };
-  //   const handleProfileUpdate = (e) => {
-  //   e.preventDefault();
-  //   console.log("Form submitted, but page refresh prevented!");
-  // };
+ 
+   const handleSubmitLogIn = (e) => {
+    e.preventDefault();
+    console.log("Form submitted, but page refresh prevented!");
+   };
+  
+    const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    console.log("Form submitted, but page refresh prevented!");
+  };
   return (
     <div className="page">
       <div className="page__content">
         <Header handleActiveModal={handleActiveModal}
-         handleAddRegistration={ handleAddRegistration}
+          handleAddRegistration={handleAddRegistration}
+          handleLogIn={handleLogIn}
+          handleProfileOpen={handleProfileOpen}
         />
         <Main
           clothingItems={clothingItems}
@@ -86,11 +99,26 @@ function App() {
           buttonText="Register"
            isOpen={activeModal === "register"}
           activeModal={activeModal}
-          handleAddRegistration={handleAddRegistration}
-          handleSubmitRegister={handleSubmitRegister }
+         handleSubmitRegister={handleSubmitRegister }
         />
  
-      
+        <LoginModal
+          handleCloseModal={handleCloseModal}
+            title="Log In"
+          buttonText="Log In"
+           isOpen={activeModal === "login"}
+          activeModal={activeModal}
+      handleSubmitLogIn={handleSubmitLogIn }
+        />
+
+        < ProfileEditModal
+             handleCloseModal={handleCloseModal}
+            title="Edit Profile"
+          buttonText="Edit profile"
+           isOpen={activeModal === "profile"}
+          activeModal={activeModal}
+      handleProfileUpdate ={handleProfileUpdate }
+        />
       </div>
     </div>
   );
