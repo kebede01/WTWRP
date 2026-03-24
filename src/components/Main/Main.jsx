@@ -1,7 +1,7 @@
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard.jsx";
 import ItemCard from "../ItemCard/ItemCard.jsx";
-export default function Main({ clothingItems, weatherData }) {
+export default function Main({ clothingItems, weatherData, handlePreviewModal }) {
   return (
     <main className="main">
       <WeatherCard />
@@ -11,7 +11,7 @@ export default function Main({ clothingItems, weatherData }) {
           {clothingItems
             .filter((item) => { return item.weather === weatherData.weather })
             .map((item) => {
-            return <ItemCard key={item._id} item={item} />;
+              return <ItemCard key={item._id} item={item} handlePreviewModal={handlePreviewModal} />;
           })}
         </ul>
       </section>
