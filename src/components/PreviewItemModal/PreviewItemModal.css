@@ -1,0 +1,17 @@
+.modal__caption{
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: flex-start;
+gap: 12px;
+/* margin: 10px 0 0; */
+}
+.modal__caption-name{
+ text-align: left;
+ margin: 0;
+ padding: 0;
+}
+.modal__caption-weather{
+ padding: 0;
+ margin: 0;
+}
