@@ -65,7 +65,13 @@
   --text-btn: #ffffff;
   --text-main: #000000;
   --text-primary: #000000;
-  --transition:1s;
+  /* --transition:1s; */
+  --transition-speed: 0.3s;
+  --transition-easing: ease;
+  --modal-transition: opacity var(--transition-speed) var(--transition-easing), 
+                      visibility var(--transition-speed) var(--transition-easing);
+  --interaction-hidden: none;
+  --interaction-visible: auto;
   --user-margin: 0 12px 0 20px;
   --weather-card-height: 80px;
  

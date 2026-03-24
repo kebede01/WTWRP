@@ -1,9 +1,9 @@
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-export default function AddItemModal() {
+export default function AddItemModal({activeModal, handleCloseModal}) {
   return (
-    <ModalWithForm title="New garment" buttonText="Add garment">
+    <ModalWithForm title="New garment" buttonText="Add garment" activeModal={activeModal} handleCloseModal={handleCloseModal}>
  
       <label htmlFor="name" className="modal__label">Name
         <input

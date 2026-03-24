@@ -7,13 +7,22 @@ import { defaultClothingItems } from "../../utils/clothingItems";
 
 function App() {
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-  const [weatherData, setWeatherData] = useState({weather: "hot"})
+  const [weatherData, setWeatherData] = useState({ weather: "hot" })
+  const [activeModal, setActiveModal] = useState("");
+  
+  const handleActiveModal = () => {
+    setActiveModal("add garment");
+  }
+  
+  const handleCloseModal = () => {
+     setActiveModal("");
+  }
   return (
     <div className="page">
       <div className="page__content">
-        <Header />
+        <Header handleActiveModal={handleActiveModal} />
         <Main clothingItems={clothingItems} weatherData={weatherData} />
-        <AddItemModal/>
+        <AddItemModal activeModal={activeModal} handleCloseModal={handleCloseModal } />
       </div>
     </div>
   );
