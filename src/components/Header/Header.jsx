@@ -2,7 +2,7 @@ import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 
-export default function Header() {
+export default function Header({handleActiveModal}) {
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -14,7 +14,7 @@ export default function Header() {
       </div>
      
       <div className="header__section header__section_right">
-          <button type="button" className="header__button">
+          <button type="button" className="header__button" onClick={handleActiveModal}>
         + Add clothing
       </button>
 

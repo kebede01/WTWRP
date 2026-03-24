@@ -8,6 +8,14 @@
   padding: var(--padding-modal);
   visibility: hidden;
   opacity: var(--opacity-none);
+  pointer-events: var(--interaction-hidden);
+  transition: var(--modal-transition);
+}
+
+.modal_opened {
+  visibility: visible;
+  opacity: var(--opacity-highest);
+ pointer-events: var(--interaction-visible);
 }
 
 .modal__content {
@@ -21,10 +29,7 @@
   box-shadow: var(--modal-shadow);
 }
 
-.modal_opened {
-  visibility: visible;
-  opacity: var(--opacity-highest);
-}
+
 .modal__title {
   text-align: left;
   margin: var(--margin-modal-title);
@@ -43,7 +48,7 @@
   top: var(--close-btn-position-top);
   right: var(--close-btn-position-right);
   opacity: var(--opacity-medium);
-  transition: var(--transition);
+  transition: var(--modal-transition);
   background-image: url("../../assets/images/close-img.svg");
 }
 .modal__form {
@@ -58,14 +63,14 @@
 }
 
 .modal__submit-btn {
-  max-width: var(--bg-modal);
+  max-width: var(--modal-submit-btn-width);
   width: 100%;
   border-radius: var(--radius-small);
-  border: none;
-  background-color: var(--bg-modal-submit-btn);
+  border:var( --border-none);
+  background-color: var(--bg-modal);
   padding: var(--padding-modal-submit-btn);
   cursor: pointer;
-  color:var( --text-btn) ;
+  color:var(--modal-transition);
 }
 .modal__submit-btn:hover {
   background-color: var(--bg-btn-hover);
