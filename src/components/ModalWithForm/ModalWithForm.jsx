@@ -1,6 +1,6 @@
 import "./ModalWithForm.css";
 export default function ModalWithForm({ children, title, buttonText, isOpen, activeModal, handleCloseModal, handleSubmitAddItem, handleSubmitPreviewItem,
-  handleSubmitRegister,    
+  handleSubmitRegister, handleSubmitLogIn,  handleProfileUpdate  
 }) {
   
  const handleSubmit = (e) => {
@@ -15,6 +15,12 @@ export default function ModalWithForm({ children, title, buttonText, isOpen, act
       break;
     case "register":
       handleSubmitRegister(e);
+      break;
+     case "login":
+      handleSubmitLogIn(e);
+      break;
+    case "profile":
+      handleProfileUpdate(e);
       break;
     default:
       console.warn("No handler for modal:", activeModal);

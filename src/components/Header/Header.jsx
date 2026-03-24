@@ -2,7 +2,7 @@ import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 
-export default function Header({handleActiveModal, handleAddRegistration}) {
+export default function Header({handleActiveModal, handleAddRegistration, handleLogIn, handleProfileOpen}) {
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -18,7 +18,8 @@ export default function Header({handleActiveModal, handleAddRegistration}) {
         + Add clothing
       </button>
         <button onClick={ handleAddRegistration}>Register</button>
-        <button>Log In</button>
+        <button onClick={handleLogIn}>Log In</button>
+        <button onClick={handleProfileOpen}>Profile Update</button>
       <p className="header__user-name">Terres Tegegne</p>
       
       <img src={avatar} alt="Terres Tegegne" className="header__avatar" />
