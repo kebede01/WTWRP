@@ -2,14 +2,20 @@ import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 
-export default function Header({handleActiveModal, handleAddRegistration, handleLogIn, handleProfileOpen}) {
+export default function Header({ handleActiveModal, handleAddRegistration, handleLogIn, handleProfileOpen }) {
+
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString('en-US', {
+  month: 'long', // "June"
+  day: 'numeric' // "15"
+});
   return (
     <header className="header">
       <div className="header__section header__section_left">
  <img src={logo} alt="what to wear logo" className="header__logo" />
       
       <p className="header__info">
-        June 15, <span className="header__location">New York</span>
+        {formattedDate}, <span className="header__location">New York</span>
       </p>
       </div>
      
