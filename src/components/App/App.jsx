@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -5,7 +6,8 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import PreviewItemModal from "../PreviewItemModal/PreviewItemModal";
 import RegisterModal from "../RegisterModal/RegisterModal"; 
 import LoginModal from "../LoginModal/LoginModal";
-import ProfileEditModal from "../ProfileEditModal/ProfileEditModal"
+import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
+import fetchWeatherData from "../../utils/weatherApi";
 import { useState } from "react";
 import { defaultClothingItems } from "../../utils/clothingItems";
 
@@ -63,7 +65,19 @@ function App() {
     const handleProfileUpdate = (e) => {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
-  };
+    };
+  
+  useEffect(() => {
+    fetchWeatherData()
+      .then(data => {
+        setWeatherData(data);
+        console.log("Weather Loaded:", data);
+      })
+      .catch(err => console.error("Effect Error:", err));
+  }, []); // Empty array ensures it only runs once on mount
+
+ 
+
   return (
     <div className="page">
       <div className="page__content">

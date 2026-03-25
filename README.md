@@ -42,6 +42,9 @@ export default defineConfig({
 },
 ```
 
+# Get weather API key by signing up from 
+-(https://openweathermap.org/) 
+https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid={API key}
 # How to run locally from dist folder without `npm run dev`.
 Run the following.
 -npx pnpm build
