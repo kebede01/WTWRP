@@ -2,7 +2,7 @@ import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 
-export default function Header({ handleActiveModal, handleAddRegistration, handleLogIn, handleProfileOpen }) {
+export default function Header({ handleActiveModal, handleAddRegistration, handleLogIn, handleProfileOpen, weatherData }) {
 
   const date = new Date();
   const formattedDate = date.toLocaleDateString('en-US', {
@@ -15,7 +15,7 @@ export default function Header({ handleActiveModal, handleAddRegistration, handl
  <img src={logo} alt="what to wear logo" className="header__logo" />
       
       <p className="header__info">
-        {formattedDate}, <span className="header__location">New York</span>
+          {formattedDate}, <span className="header__location">{weatherData.city }</span>
       </p>
       </div>
      

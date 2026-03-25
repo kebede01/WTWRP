@@ -90,12 +90,13 @@ function App() {
           handleAddRegistration={handleAddRegistration}
           handleLogIn={handleLogIn}
           handleProfileOpen={handleProfileOpen}
-          
+          weatherData={weatherData}
         />
         <Main
           clothingItems={clothingItems}
           weatherData={weatherData}
           handlePreviewModal={handlePreviewModal}
+           
         />
         <AddItemModal
           handleCloseModal={handleCloseModal}
