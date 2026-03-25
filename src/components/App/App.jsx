@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -8,13 +9,13 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 
-import { useState } from "react";
+
 import { defaultClothingItems } from "../../utils/constants";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 
 function App() {
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-  const [weatherData, setWeatherData] = useState({ city: "", condition: "", icon: "", isDayTime: "", temperature: "", weather: "" });
+  const [weatherData, setWeatherData] = useState({ city: "", weather: "", isDay: "",  condition: "", temp: {"°C": 999, "°F": 999}});
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   console.log(selectedCard);
@@ -70,20 +71,15 @@ function App() {
   
   useEffect(() => {
     fetchWeatherData()
-      .then(data => {
-        return filterWeatherData(data)
-      })
+      .then(data => filterWeatherData(data))
       .then((newData) => {
-        setWeatherData((prevValue) => { return { ...prevValue, ...newData } });
+        setWeatherData(newData);
       })
       .catch(err => console.error("Effect Error:", err));
   }, []);
-     
- // Empty array ensures it only runs once on mount
+  console.log(weatherData);
 
-  console.log("WEATHER DATA: " , weatherData);
-
-  return (
+return (
     <div className="page">
       <div className="page__content">
         <Header handleActiveModal={handleActiveModal}
@@ -94,7 +90,8 @@ function App() {
         />
         <Main
           clothingItems={clothingItems}
-          weatherData={weatherData}
+        weatherData={weatherData}
+        
           handlePreviewModal={handlePreviewModal}
            
         />
