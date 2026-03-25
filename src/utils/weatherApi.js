@@ -21,7 +21,7 @@ const  fetchWeatherData = () => {
 const filterWeatherData = (data) => {
   let filteredData = {};
  
-  filteredData.temperature = { "°C": data.main.temp, "°F": (data.main.temp * 9/5) + 32 };
+  filteredData.temperature = { "°C": data.main.temp, "°F": Math.round((data.main.temp * 9/5) + 32) };
   filteredData.condition = data.weather[0].main;
   filteredData.isDayTime = isDayTime(data);
   filteredData.weather = getWeatherCondition(filteredData);
