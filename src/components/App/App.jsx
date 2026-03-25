@@ -7,13 +7,14 @@ import PreviewItemModal from "../PreviewItemModal/PreviewItemModal";
 import RegisterModal from "../RegisterModal/RegisterModal"; 
 import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
-import fetchWeatherData from "../../utils/weatherApi";
+
 import { useState } from "react";
-import { defaultClothingItems } from "../../utils/clothingItems";
+import { defaultClothingItems } from "../../utils/constants";
+import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 
 function App() {
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-  const [weatherData, setWeatherData] = useState({ weather: "hot" });
+  const [weatherData, setWeatherData] = useState({ city: "", condition: "", icon: "", isDayTime: "", temperature: "", weather: "" });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   console.log(selectedCard);
@@ -70,13 +71,17 @@ function App() {
   useEffect(() => {
     fetchWeatherData()
       .then(data => {
-        setWeatherData(data);
-        console.log("Weather Loaded:", data);
+        return filterWeatherData(data)
+      })
+      .then((newData) => {
+        setWeatherData((prevValue) => { return { ...prevValue, ...newData } });
       })
       .catch(err => console.error("Effect Error:", err));
-  }, []); // Empty array ensures it only runs once on mount
+  }, []);
+     
+ // Empty array ensures it only runs once on mount
 
- 
+  console.log("WEATHER DATA: " , weatherData);
 
   return (
     <div className="page">
@@ -85,6 +90,7 @@ function App() {
           handleAddRegistration={handleAddRegistration}
           handleLogIn={handleLogIn}
           handleProfileOpen={handleProfileOpen}
+          
         />
         <Main
           clothingItems={clothingItems}
