@@ -106,13 +106,16 @@ function App() {
               />
             }
           />
-          <Route path="/profile" element={<Profile
-          clothingItems={clothingItems}
-          />} />
+          <Route
+            path="/profile"
+            element={<Profile clothingItems={clothingItems} />}
+          />
         </Routes>
 
         <AddItemModal
           handleCloseModal={handleCloseModal}
+          title="New garment"
+          buttonText="Add garment"
           isOpen={activeModal === "add garment"}
           activeModal={activeModal}
           handleSubmitAddItem={handleSubmitAddItem}

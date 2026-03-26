@@ -11,7 +11,7 @@ export default function Main({ clothingItems, weatherData, handlePreviewModal,  
       <section className="cards">
         <p className="cards__text">{`Today is ${weatherData.temp["°F"]} °F / You may want to wear:`}</p>
         <ul className="cards__list">
-          {clothingItems
+          {clothingItems && clothingItems
             .filter((item) => { return item.weather === weatherData.weather })
             .map((item) => {
               return <ItemCard key={item._id} item={item} handlePreviewModal={handlePreviewModal} />;
