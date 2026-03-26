@@ -1,6 +1,6 @@
 import "./ModalWithForm.css";
 export default function ModalWithForm({ children, title, buttonText, isOpen, activeModal, handleCloseModal, handleSubmitAddItem, handleSubmitPreviewItem,
-  handleSubmitRegister, handleSubmitLogIn,  handleProfileUpdate  
+  handleSubmitRegister, handleSubmitLogIn,  handleProfileUpdate, isFilled 
 }) {
   
  const handleSubmit = (e) => {
@@ -39,7 +39,7 @@ export default function ModalWithForm({ children, title, buttonText, isOpen, act
           handleSubmit(e)
         }}>
           {children}
-          <button type="submit" className="modal__submit-btn" >{buttonText}</button>
+          <button type="submit" className="modal__submit-btn" disabled={!isFilled}>{buttonText}</button>
         </form>
       </div>
    </section>

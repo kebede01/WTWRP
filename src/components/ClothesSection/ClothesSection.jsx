@@ -8,7 +8,7 @@ export default function ClothesSection({ clothingItems }) {
         <button className="clothes-heading__btn">+ Add new</button>
       </div>
       <ul className="cards__list">
-        {clothingItems.map((item) => {
+        {clothingItems && clothingItems.map((item) => {
           return <ItemCard key={item._id} item={item} />;
         })}
       </ul>
