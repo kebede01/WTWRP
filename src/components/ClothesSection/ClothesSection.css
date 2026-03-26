@@ -1,0 +1,42 @@
+.clothes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+  margin-left: 250px; 
+}
+.clothes-heading__title {
+  margin: 0;
+  padding: 0;
+}
+.clothes__heading {
+  margin: 0 0 16px 0;
+  display: flex;
+  gap: 20px;
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.clothes-heading__btn {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  cursor: pointer;
+}
+.clothes__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
