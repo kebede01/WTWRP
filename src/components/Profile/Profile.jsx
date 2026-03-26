@@ -1,8 +1,14 @@
 import "./Profile.css";
-export default function Profile() {
+import ClothesSection from "../ClothesSection/ClothesSection";
+import SideBar from "../SideBar/SideBar";
+export default function Profile({clothingItems}) {
   return (
-    <div>
-   
-    </div>
+    <section className="profile">
+      
+      <SideBar />
+      <ClothesSection
+        clothingItems={clothingItems } />
+    </section>
+        
   )
 }

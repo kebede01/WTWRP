@@ -1,0 +1,76 @@
+
+
+.side-bar{
+   display: flex;
+  flex-direction: column;
+ 
+  width: 250px;
+  height: 100vh; /* Full viewport height */
+  /* background-color: #f4f4f4; */
+  border-right: 1px solid #ddd;
+  position: fixed; /* Keeps it on the screen */
+  left: 0;
+  top: 0;
+  padding: 0px 20px;
+  margin-top: 116px;
+}
+.side-bar__header {
+  display: flex;
+  gap: 16px;
+}
+.side-bar__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+.side-bar__avatar-name {
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  width: 157px;
+  text-transform: capitalize;
+}
+
+.side-bar__buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar__button {
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: left;
+  cursor: pointer;
+}
+.side-bar__button-change {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  border: none;
+  background-color: none;
+  cursor: pointer;
+}
+
+.side-bar__button-logout {
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  border: none;
+  background-color: none;
+  cursor: pointer;
+}
