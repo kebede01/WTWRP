@@ -11,15 +11,15 @@
   border-radius: var(--radius-big);
 }
 .cards__img-name {
-  margin: 0;
+  margin: var(--margin-none);
   position: absolute;
-  top: 15px;
+  top: var(--position-top);
   font-size: var(--font-size-small);
   line-height: var(--line-height-small);
   padding: var(--padding-tag);
   background: #ffffff;
   border-radius: var(--radius-small);
-  color: #00000099;
+  color: var(--text-preview);
 }
 .cards__img {
   width: 100%;

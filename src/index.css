@@ -25,6 +25,7 @@
   --font-weight-bold: 700;
   --gap-medium: 20px;
   --gap-large: 24px;
+  
   --gap-small:8px;
   --header-padding: 32px 0 28px;
   --image-height: 328px;
@@ -62,6 +63,7 @@
   --text: #6b6375;
   --text-accent: red;
   --text-h: #08060d;
+  --text-preview:#00000099;
   --text-btn: #ffffff;
   --text-main: #000000;
   --text-primary: #000000;
