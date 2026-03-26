@@ -17,6 +17,16 @@
 .header__section_right {
   margin-left: auto;
 }
+
+.header-logo__navlink{
+ text-decoration: none;
+  color: inherit; 
+}
+.header__navlink{
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+}
 /* Element: Logo sizing */
 .header__logo {
   width: var(--logo-width);
