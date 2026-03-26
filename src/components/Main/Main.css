@@ -16,9 +16,6 @@
 }
 .cards__list {
   display: grid;
-
-  /* 1. We use 'min' to prevent breaking small screens (320px)
-     2. We use the variable for the max so they don't stretch and create gaps */
   grid-template-columns: repeat(auto-fill, min(var(--image-width), 100%));
   gap: var(--gap-medium);
   width: 100%;
@@ -45,8 +42,8 @@
   height: var(--image-height);
 }
 
-@media (max-width: 1024px){
-  .cards__list{
+@media (max-width: 1024px) {
+  .cards__list {
     justify-content: center;
   }
 }

@@ -1,23 +1,31 @@
 import { useState } from "react";
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-export default function RegisterModal({handleSubmitRegister, handleAddRegistration, activeModal, isOpen, buttonText, title, handleCloseModal}) {
-
-   const [emailRegister, setEmailRegister] = useState("");
+export default function RegisterModal({
+  handleSubmitRegister,
+  handleAddRegistration,
+  activeModal,
+  isOpen,
+  buttonText,
+  title,
+  handleCloseModal,
+}) {
+  const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
   const [nameRegister, setNameRegister] = useState("");
   const [avatarRegister, setAvatarRegister] = useState("");
-  
+
   return (
-    <ModalWithForm handleSubmitRegister={handleSubmitRegister}
+    <ModalWithForm
+      handleSubmitRegister={handleSubmitRegister}
       handleAddRegistration={handleAddRegistration}
       activeModal={activeModal}
       isOpen={isOpen}
       buttonText={buttonText}
       title={title}
-    handleCloseModal={handleCloseModal}
+      handleCloseModal={handleCloseModal}
     >
-        <label htmlFor="emailRegister" className="modal__label">
+      <label htmlFor="emailRegister" className="modal__label">
         Email
         <input
           id="emailRegister"
@@ -26,10 +34,9 @@ export default function RegisterModal({handleSubmitRegister, handleAddRegistrati
           placeholder="Email"
           required
           name="emailRegister"
-         
         />
       </label>
-        <label htmlFor="passwordRegister" className="modal__label">
+      <label htmlFor="passwordRegister" className="modal__label">
         Password
         <input
           id="passwordRegister"
@@ -39,10 +46,9 @@ export default function RegisterModal({handleSubmitRegister, handleAddRegistrati
           name="passwordRegister"
           required
           autoComplete="current-password"
-         
         />
       </label>
-         <label htmlFor="nameRegister" className="modal__label ">
+      <label htmlFor="nameRegister" className="modal__label ">
         Name
         <input
           type="text"
@@ -51,13 +57,11 @@ export default function RegisterModal({handleSubmitRegister, handleAddRegistrati
           maxLength="30"
           className="modal__input"
           name="nameRegister"
-         
           placeholder="Name"
           autoComplete="nameRegister"
-          
         />
       </label>
-       <label htmlFor="avatarRegister" className="modal__label ">
+      <label htmlFor="avatarRegister" className="modal__label ">
         Avatar URL
         <input
           type="url"
@@ -65,7 +69,6 @@ export default function RegisterModal({handleSubmitRegister, handleAddRegistrati
           className="modal__input"
           name="avatarRegister"
           placeholder="https://example.com"
-         
         />
       </label>
     </ModalWithForm>

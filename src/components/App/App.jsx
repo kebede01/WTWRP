@@ -1,21 +1,27 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import PreviewItemModal from "../PreviewItemModal/PreviewItemModal";
-import RegisterModal from "../RegisterModal/RegisterModal"; 
+import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
-
-
+import Profile from "../Profile/Profile";
 import { defaultClothingItems } from "../../utils/constants";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 
 function App() {
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-  const [weatherData, setWeatherData] = useState({ city: "", weather: "", isDay: "",  condition: "", temp: {"°C": 999, "°F": 999}});
+  const [weatherData, setWeatherData] = useState({
+    city: "",
+    weather: "",
+    isDay: "",
+    condition: "",
+    temp: { "°C": 999, "°F": 999 },
+  });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   console.log(selectedCard);
@@ -30,15 +36,15 @@ function App() {
     setSelectedCard(data);
   };
 
- const handleAddRegistration = () => {
+  const handleAddRegistration = () => {
     setActiveModal("register");
- };
-  
- const handleLogIn = () => {
+  };
+
+  const handleLogIn = () => {
     setActiveModal("login");
   };
 
-   const handleProfileOpen = () => {
+  const handleProfileOpen = () => {
     setActiveModal("profile");
   };
   const handleCloseModal = () => {
@@ -53,48 +59,56 @@ function App() {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
   };
-  
+
   const handleSubmitRegister = (e) => {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
   };
- 
-   const handleSubmitLogIn = (e) => {
+
+  const handleSubmitLogIn = (e) => {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
-   };
-  
-    const handleProfileUpdate = (e) => {
+  };
+
+  const handleProfileUpdate = (e) => {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
-    };
-  
+  };
+
   useEffect(() => {
     fetchWeatherData()
-      .then(data => filterWeatherData(data))
+      .then((data) => filterWeatherData(data))
       .then((newData) => {
         setWeatherData(newData);
       })
-      .catch(err => console.error("Effect Error:", err));
+      .catch((err) => console.error("Effect Error:", err));
   }, []);
   console.log(weatherData);
 
-return (
+  return (
     <div className="page">
       <div className="page__content">
-        <Header handleActiveModal={handleActiveModal}
+        <Header
+          handleActiveModal={handleActiveModal}
           handleAddRegistration={handleAddRegistration}
           handleLogIn={handleLogIn}
           handleProfileOpen={handleProfileOpen}
           weatherData={weatherData}
         />
-        <Main
-          clothingItems={clothingItems}
-        weatherData={weatherData}
-        
-          handlePreviewModal={handlePreviewModal}
-           
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                clothingItems={clothingItems}
+                weatherData={weatherData}
+                handlePreviewModal={handlePreviewModal}
+              />
+            }
+          />
+          <Route path="/profile"element={<Profile/>} />
+        </Routes>
+
         <AddItemModal
           handleCloseModal={handleCloseModal}
           isOpen={activeModal === "add garment"}
@@ -112,30 +126,30 @@ return (
           handleSubmitPreviewItem={handleSubmitPreviewItem}
         />
         <RegisterModal
-           handleCloseModal={handleCloseModal}
+          handleCloseModal={handleCloseModal}
           title="Register"
           buttonText="Register"
-           isOpen={activeModal === "register"}
+          isOpen={activeModal === "register"}
           activeModal={activeModal}
-         handleSubmitRegister={handleSubmitRegister }
-        />
- 
-        <LoginModal
-          handleCloseModal={handleCloseModal}
-            title="Log In"
-          buttonText="Log In"
-           isOpen={activeModal === "login"}
-          activeModal={activeModal}
-      handleSubmitLogIn={handleSubmitLogIn }
+          handleSubmitRegister={handleSubmitRegister}
         />
 
-        < ProfileEditModal
-             handleCloseModal={handleCloseModal}
-            title="Edit Profile"
-          buttonText="Edit profile"
-           isOpen={activeModal === "profile"}
+        <LoginModal
+          handleCloseModal={handleCloseModal}
+          title="Log In"
+          buttonText="Log In"
+          isOpen={activeModal === "login"}
           activeModal={activeModal}
-      handleProfileUpdate ={handleProfileUpdate }
+          handleSubmitLogIn={handleSubmitLogIn}
+        />
+
+        <ProfileEditModal
+          handleCloseModal={handleCloseModal}
+          title="Edit Profile"
+          buttonText="Edit profile"
+          isOpen={activeModal === "profile"}
+          activeModal={activeModal}
+          handleProfileUpdate={handleProfileUpdate}
         />
       </div>
     </div>

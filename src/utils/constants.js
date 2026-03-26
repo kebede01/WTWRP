@@ -188,12 +188,12 @@ export const weatherOptions = [
 export const defaultWeatherOptions = {
   day: {
     url: new URL("../assets/images/day-weather-img/default.svg", import.meta.url).href,
-    condition: "clear"
+    condition: "clouds"
   },
   night: {
     url: new URL("../assets/images/night-weather-img/default.svg", import.meta.url)
       .href,
-    condition: "clear"
+    condition: "clouds"
   },
 };
 

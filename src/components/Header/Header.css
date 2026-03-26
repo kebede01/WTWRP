@@ -1,5 +1,5 @@
 /* Block: The main container */
-.header{
+.header {
   display: flex;
   width: 100%;
   align-items: center;
@@ -10,13 +10,13 @@
   letter-spacing: 0%;
 }
 
-.header__section{
+.header__section {
   display: flex;
   align-items: center;
 }
-.header__section_right{
+.header__section_right {
   margin-left: auto;
-  }
+}
 /* Element: Logo sizing */
 .header__logo {
   width: var(--logo-width);
@@ -26,46 +26,40 @@
 
 /* Element: Date and Location text */
 .header__info {
-margin: 0;
+  margin: var(--margin-none);
   line-height: var(--line-height-medium);
 }
 
 .header__button {
   cursor: pointer;
   line-height: var(--line-height-medium);
-  border: none;
+  border: var(--border-none);
   font-family: var(--font-main);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-medium);
   letter-spacing: 0%;
- 
 }
 
-.header__user-name{
- margin: var(--user-margin);
+.header__user-name {
+  margin: var(--user-margin);
 }
-.header__avatar{
+.header__avatar {
   width: var(--avatar-size);
   height: var(--avatar-size);
   border-radius: 50%;
   object-fit: cover;
 }
 
-@media (max-width: 769px){
-.header{
-  justify-content: space-between;
-}
-.header__section_right{
-  margin-left: 0px;
-  flex-direction: column-reverse;
+@media (max-width: 769px) {
+  .header {
+    justify-content: space-between;
+  }
+  .header__section_right {
+    margin-left: var(--margin-none);
+    flex-direction: column-reverse;
   }
 
-  .header__section{
-  flex-direction: column;
-  
+  .header__section {
+    flex-direction: column;
+  }
 }
-}
-/* .header__title{
-  font-size: 36px;
-  color: var(--text-h);
-} */
