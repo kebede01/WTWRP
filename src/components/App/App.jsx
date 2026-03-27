@@ -43,9 +43,6 @@ function App() {
     setActiveModal("login");
   };
 
-  const handleProfileOpen = () => {
-    setActiveModal("profile");
-  };
   const handleCloseModal = () => {
     setActiveModal("");
   };
@@ -54,15 +51,15 @@ function App() {
     console.log({ name, image, weatherType });
   };
   const handleDeleteModalOpen = (data) => {
-   setActiveModal("delete");
-  setSelectedCard(data);
+    setActiveModal("delete");
+    setSelectedCard(data);
     console.log("Form submitted, but page refresh prevented!");
   };
 
-const handleDeleteClothingtem = (data) => {
-  console.log("DELETED CLOTYHING ITEM");
+  const handleDeleteClothingtem = (data) => {
+    console.log("DELETED CLOTYHING ITEM");
     console.log(data);
-   }
+  };
 
   const handleSubmitRegister = ({
     avatarRegister,
@@ -76,20 +73,15 @@ const handleDeleteClothingtem = (data) => {
       passwordRegister,
       emailRegister,
     });
-    
   };
 
   const handleSubmitLogIn = ({ email, password }) => {
     console.log({ email, password });
-   
   };
 
   const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
     console.log({ nameProfile, avatarUrl });
-   
   };
-
-  
 
   useEffect(() => {
     fetchWeatherData()
@@ -99,7 +91,6 @@ const handleDeleteClothingtem = (data) => {
       })
       .catch((err) => console.error("Effect Error:", err));
   }, []);
- 
 
   return (
     <div className="page">
@@ -108,7 +99,6 @@ const handleDeleteClothingtem = (data) => {
           handleActiveModal={handleActiveModal}
           handleAddRegistration={handleAddRegistration}
           handleLogIn={handleLogIn}
-          handleProfileOpen={handleProfileOpen}
           weatherData={weatherData}
         />
         <Routes>
@@ -147,7 +137,6 @@ const handleDeleteClothingtem = (data) => {
           selectedCard={selectedCard}
           isOpen={activeModal === "preview"}
           onSubmitDelete={handleDeleteModalOpen}
-           
         />
         <RegisterModal
           handleCloseModal={handleCloseModal}
@@ -176,7 +165,7 @@ const handleDeleteClothingtem = (data) => {
           handleCloseModal={handleCloseModal}
           isOpen={activeModal === "delete"}
           onDeleteClothingtem={handleDeleteClothingtem}
-           selectedCard={selectedCard}
+          selectedCard={selectedCard}
         />
       </div>
     </div>

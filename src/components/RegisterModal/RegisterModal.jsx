@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { useForm } from "../../../src/hooks/useForm";
 export default function RegisterModal({
   onSubmitRegister,
   handleAddRegistration,
@@ -9,31 +10,27 @@ export default function RegisterModal({
   title,
   handleCloseModal,
 }) {
-  const [values, setValues] = useState({
+// 1. Initialize the hook with your starting values
+  const { values, handleChange, handleReset } = useForm({
     emailRegister: "",
     passwordRegister: "",
     nameRegister: "",
     avatarRegister: "",
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+
+const handleClose = () => {
+    handleReset();           
+    handleCloseModal();  
   };
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
     onSubmitRegister(values);
+   
   };
 
-  useEffect(() => {
-    setValues({
-      emailRegister: "",
-      passwordRegister: "",
-      nameRegister: "",
-      avatarRegister: "",
-    });
-  }, [isOpen]);
+ 
 
   const isFilled =
     values.emailRegister &&
@@ -47,8 +44,9 @@ export default function RegisterModal({
       isOpen={isOpen}
       buttonText={buttonText}
       title={title}
-      handleCloseModal={handleCloseModal}
+      onCloseModal={handleClose}
       isFilled={isFilled}
+      
     >
       <label htmlFor="emailRegister" className="modal__label">
         Email

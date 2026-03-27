@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
 import "./ProfileEditModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-
+import { useForm } from "../../../src/hooks/useForm";
 export default function ProfileEditModal({
   handleCloseModal,
   title,
@@ -10,11 +9,14 @@ export default function ProfileEditModal({
   activeModal,
   onProfileUpdate,
 }) {
-  const [values, setValues] = useState({ nameProfile: "", avatarUrl: "" });
+  const { values, handleChange, handleReset } = useForm({
+    nameProfile: "",
+    avatarUrl: "",
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+  const handleClose = () => {
+    handleReset();
+    handleCloseModal();
   };
 
   const handleSubmitModal = (e) => {
@@ -23,13 +25,9 @@ export default function ProfileEditModal({
   };
   const isFilled = values.nameProfile && values.avatarUrl;
 
-  useEffect(() => {
-    setValues({ nameProfile: "", avatarUrl: "" });
-  }, [isOpen]);
-
   return (
     <ModalWithForm
-      handleCloseModal={handleCloseModal}
+      onCloseModal={handleClose}
       title={title}
       buttonText={buttonText}
       isOpen={isOpen}
