@@ -1,4 +1,3 @@
-
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useForm } from "../../../src/hooks/useForm";
@@ -10,7 +9,7 @@ export default function RegisterModal({
   title,
   handleCloseModal,
 }) {
-// 1. Initialize the hook with your starting values
+  // 1. Initialize the hook with your starting values
   const { values, handleChange, handleReset } = useForm({
     emailRegister: "",
     passwordRegister: "",
@@ -18,19 +17,23 @@ export default function RegisterModal({
     avatarRegister: "",
   });
 
-
-const handleClose = () => {
-    handleReset();           
-    handleCloseModal();  
+  const handleClose = () => {
+    handleReset();
+    handleCloseModal();
   };
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-    onSubmitRegister(values);
-   
+      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+    onSubmitRegister(values)
+      .then(() => {
+        handleReset();
+        handleCloseModal();
+      })
+      .catch((err) => {
+        console.error("Failed to add item:", err);
+      });
   };
-
- 
 
   const isFilled =
     values.emailRegister &&
@@ -46,7 +49,6 @@ const handleClose = () => {
       title={title}
       onCloseModal={handleClose}
       isFilled={isFilled}
-      
     >
       <label htmlFor="emailRegister" className="modal__label">
         Email
@@ -69,7 +71,7 @@ const handleClose = () => {
           className="modal__input"
           placeholder=" Password"
           name="passwordRegister"
-           value={values.passwordRegister}
+          value={values.passwordRegister}
           onChange={handleChange}
           required
           autoComplete="current-password"

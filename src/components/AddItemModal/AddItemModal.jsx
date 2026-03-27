@@ -23,7 +23,17 @@ const AddItemModal = ({
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-    onSubmitAddItem(values);
+    // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+    onSubmitAddItem(values)
+      .then(() => {
+        // Success! Clear the form and close the modal
+        handleReset();
+        handleCloseModal();
+      })
+      .catch((err) => {
+        // Error! Keep the data so the user can fix it
+        console.error("Failed to add item:", err);
+      });
   };
 
   const isFilled = values.name && values.image && values.weatherType;
