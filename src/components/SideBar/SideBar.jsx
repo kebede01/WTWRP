@@ -1,6 +1,6 @@
 import "./SideBar.css";
 import avatar from "../../assets/images/avatar.svg";
-export default function SideBar() {
+export default function SideBar({ handleProfileOpen }) {
   return (
     <section className="side-bar">
       <div className="side-bar__header">
@@ -12,10 +12,10 @@ export default function SideBar() {
         <button
           type="button"
           className="side-bar__button-change side-bar__button"
+          onClick={handleProfileOpen}
         >
           Change profile data
         </button>
-
         <button
           type="button"
           className="side-bar__button-logout side-bar__button"

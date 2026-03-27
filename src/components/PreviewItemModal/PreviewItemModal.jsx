@@ -15,7 +15,7 @@ onSubmitDelete(selectedCard)
   }
   return (
     <ModalWithForm
-      handleCloseModal={handleCloseModal}
+      onCloseModal={handleCloseModal}
       isOpen={isOpen}
       onItemDelete={onItemDelete}
       buttonText={buttonText}

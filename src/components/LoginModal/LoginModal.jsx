@@ -1,8 +1,6 @@
-
-import { useState, useEffect } from "react";
 import "./LoginModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-
+import { useForm } from "../../../src/hooks/useForm";
 export default function LoginModal({
   title,
   buttonText,
@@ -10,39 +8,30 @@ export default function LoginModal({
   onSubmitLogIn,
   handleCloseModal,
 }) {
+  const { values, handleChange, handleReset } = useForm({
+    email: "",
+    password: "",
+  });
 
-   const [values, setValues] = useState({
-      email: '',
-      password: ''
-      });
-      
- const handleChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+  const handleClose = () => {
+    handleReset(); 
+    handleCloseModal(); 
   };
 
-   const handleSubmitModal = (e) => {
+  const handleSubmitModal = (e) => {
     e.preventDefault();
-     onSubmitLogIn(values);
-};
+    onSubmitLogIn(values);
+  };
 
-   useEffect(() => {
-    setValues({
-      email: "",
-      password: ""
-       });
-   }, [isOpen]);
-  
   const isFilled = values.email && values.password;
-    
-  
+
   return (
     <ModalWithForm
       buttonText={buttonText}
       isOpen={isOpen}
       title={title}
       onSubmit={handleSubmitModal}
-      handleCloseModal={handleCloseModal}
+      onCloseModal={handleClose}
       isFilled={isFilled}
     >
       <label htmlFor="email" className="modal__label">
@@ -52,7 +41,7 @@ export default function LoginModal({
           type="email"
           className="modal__input"
           placeholder="Email"
-           value={values.email}
+          value={values.email}
           name="email"
           onChange={handleChange}
           required
@@ -65,7 +54,7 @@ export default function LoginModal({
           id="password"
           className="modal__input"
           name="password"
-           onChange={handleChange}
+          onChange={handleChange}
           placeholder="Password"
           value={values.password}
           required

@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useForm } from "../../../src/hooks/useForm";
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
@@ -11,33 +10,21 @@ const AddItemModal = ({
   openAddItemButton,
   onSubmitAddItem,
 }) => {
+  const { values, handleChange, handleReset } = useForm({
+    name: "",
+    image: "",
+    weatherType: "",
+  });
 
-   const [values, setValues] = useState({
-    name: '',
-    image: '',
-    weatherType: '',
-    
-   });
-  
-   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+  const handleClose = () => {
+    handleReset();
+    handleCloseModal();
   };
-
- 
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
     onSubmitAddItem(values);
   };
-
-  useEffect(() => {
-    setValues({
-    name: '',
-    image: '',
-    weatherType: '',
-  });
-  }, [isOpen]);
 
   const isFilled = values.name && values.image && values.weatherType;
 
@@ -46,9 +33,9 @@ const AddItemModal = ({
       buttonText={buttonText}
       title={title}
       openAddItemButton={openAddItemButton}
-      handleCloseModal={handleCloseModal}
+      onCloseModal={handleClose}
       isOpen={isOpen}
-       onSubmit={handleSubmitModal}
+      onSubmit={handleSubmitModal}
       isFilled={isFilled}
     >
       <label htmlFor="name" className="modal__label">
@@ -92,7 +79,9 @@ const AddItemModal = ({
           required
           onChange={handleChange}
         >
-          <option value="" disabled>Select weather...</option>
+          <option value="" disabled>
+            Select weather...
+          </option>
           <option value="hot">Hot</option>
           <option value="warm">Warm</option>
           <option value="cold">Cold</option>

@@ -6,13 +6,12 @@ export default function Header({
   handleActiveModal,
   handleAddRegistration,
   handleLogIn,
-  handleProfileOpen,
-  weatherData,
+ weatherData,
 }) {
   const date = new Date();
   const formattedDate = date.toLocaleDateString("en-US", {
-    month: "long", // "June"
-    day: "numeric", // "15"
+    month: "long",
+    day: "numeric",
   });
   return (
     <header className="header">
@@ -37,7 +36,7 @@ export default function Header({
         </button>
         <button onClick={handleAddRegistration}>Register</button>
         <button onClick={handleLogIn}>Log In</button>
-        <button onClick={handleProfileOpen}>Profile Update</button>
+
         <NavLink to="/profile" className="header__navlink">
           <p className="header__user-name">Terres Tegegne</p>
           <img src={avatar} alt="Terres Tegegne" className="header__avatar" />
