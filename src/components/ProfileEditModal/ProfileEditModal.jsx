@@ -21,7 +21,15 @@ export default function ProfileEditModal({
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-    onProfileUpdate(values);
+      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+    onProfileUpdate(values)
+      .then(() => {
+        handleReset();
+        handleCloseModal();
+      })
+      .catch((err) => {
+        console.error("Failed to add item:", err);
+      });
   };
   const isFilled = values.nameProfile && values.avatarUrl;
 

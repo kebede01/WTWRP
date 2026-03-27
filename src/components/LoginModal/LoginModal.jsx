@@ -14,13 +14,21 @@ export default function LoginModal({
   });
 
   const handleClose = () => {
-    handleReset(); 
-    handleCloseModal(); 
+    handleReset();
+    handleCloseModal();
   };
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-    onSubmitLogIn(values);
+      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+    onSubmitLogIn(values)
+      .then(() => {
+        handleReset();
+        handleCloseModal();
+      })
+      .catch((err) => {
+        console.error("Failed to add item:", err);
+      });
   };
 
   const isFilled = values.email && values.password;
