@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import "./ProfileEditModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
@@ -7,8 +8,25 @@ export default function ProfileEditModal({
   buttonText,
   isOpen,
   activeModal,
-  handleProfileUpdate,
+  onProfileUpdate,
 }) {
+  const [values, setValues] = useState({ nameProfile: "", avatarUrl: "" });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmitModal = (e) => {
+    e.preventDefault();
+    onProfileUpdate(values);
+  };
+  const isFilled = values.nameProfile && values.avatarUrl;
+
+  useEffect(() => {
+    setValues({ nameProfile: "", avatarUrl: "" });
+  }, [isOpen]);
+
   return (
     <ModalWithForm
       handleCloseModal={handleCloseModal}
@@ -16,7 +34,8 @@ export default function ProfileEditModal({
       buttonText={buttonText}
       isOpen={isOpen}
       activeModal={activeModal}
-      handleProfileUpdate={handleProfileUpdate}
+      onSubmit={handleSubmitModal}
+      isFilled={isFilled}
     >
       <label htmlFor="nameProfile" className="modal__label">
         Name
@@ -25,7 +44,9 @@ export default function ProfileEditModal({
           type="text"
           className="modal__input"
           placeholder="Name"
+          onChange={handleChange}
           name="nameProfile"
+          value={values.nameProfile}
           required
         />
       </label>
@@ -36,7 +57,9 @@ export default function ProfileEditModal({
           id="avatarUrl"
           className="modal__input"
           name="avatarUrl"
+          value={values.avatarUrl}
           placeholder="Avatar"
+          onChange={handleChange}
         />
       </label>
     </ModalWithForm>

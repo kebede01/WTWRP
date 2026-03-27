@@ -6,17 +6,17 @@ export default function PreviewItemModal({
   title,
   selectedCard,
   isOpen,
-  handleSubmitPreviewItem,
-  activeModal,
+  onSubmitPreviewItem,
+  
 }) {
   return (
     <ModalWithForm
       handleCloseModal={handleCloseModal}
       isOpen={isOpen}
-      activeModal={activeModal}
+      // activeModal={activeModal}
       buttonText={buttonText}
       title={title}
-      handleSubmitPreviewItem={handleSubmitPreviewItem}
+      onSubmit={onSubmitPreviewItem}
     >
       <img
         src={selectedCard.link}

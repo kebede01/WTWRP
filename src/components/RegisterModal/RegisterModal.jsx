@@ -1,29 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 export default function RegisterModal({
-  handleSubmitRegister,
+  onSubmitRegister,
   handleAddRegistration,
-  activeModal,
   isOpen,
   buttonText,
   title,
   handleCloseModal,
 }) {
-  const [emailRegister, setEmailRegister] = useState("");
-  const [passwordRegister, setPasswordRegister] = useState("");
-  const [nameRegister, setNameRegister] = useState("");
-  const [avatarRegister, setAvatarRegister] = useState("");
+  const [values, setValues] = useState({
+    emailRegister: "",
+    passwordRegister: "",
+    nameRegister: "",
+    avatarRegister: "",
+  });
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmitModal = (e) => {
+    e.preventDefault();
+    onSubmitRegister(values);
+  };
+
+  useEffect(() => {
+    setValues({
+      emailRegister: "",
+      passwordRegister: "",
+      nameRegister: "",
+      avatarRegister: "",
+    });
+  }, [isOpen]);
+
+  const isFilled =
+    values.emailRegister &&
+    values.passwordRegister &&
+    values.nameRegister &&
+    values.avatarRegister;
   return (
     <ModalWithForm
-      handleSubmitRegister={handleSubmitRegister}
+      onSubmit={handleSubmitModal}
       handleAddRegistration={handleAddRegistration}
-      activeModal={activeModal}
       isOpen={isOpen}
       buttonText={buttonText}
       title={title}
       handleCloseModal={handleCloseModal}
+      isFilled={isFilled}
     >
       <label htmlFor="emailRegister" className="modal__label">
         Email
@@ -34,6 +59,8 @@ export default function RegisterModal({
           placeholder="Email"
           required
           name="emailRegister"
+          value={values.emailRegister}
+          onChange={handleChange}
         />
       </label>
       <label htmlFor="passwordRegister" className="modal__label">
@@ -44,6 +71,8 @@ export default function RegisterModal({
           className="modal__input"
           placeholder=" Password"
           name="passwordRegister"
+           value={values.passwordRegister}
+          onChange={handleChange}
           required
           autoComplete="current-password"
         />
@@ -57,6 +86,8 @@ export default function RegisterModal({
           maxLength="30"
           className="modal__input"
           name="nameRegister"
+          value={values.nameRegister}
+          onChange={handleChange}
           placeholder="Name"
           autoComplete="nameRegister"
         />
@@ -68,6 +99,8 @@ export default function RegisterModal({
           id="avatarRegister"
           className="modal__input"
           name="avatarRegister"
+          value={values.avatarRegister}
+          onChange={handleChange}
           placeholder="https://example.com"
         />
       </label>

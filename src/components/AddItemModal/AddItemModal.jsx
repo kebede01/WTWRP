@@ -9,30 +9,37 @@ const AddItemModal = ({
   handleCloseModal,
   isOpen,
   openAddItemButton,
-  onSubmitAddItemModal,
+  onSubmitAddItem,
 }) => {
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [weatherType, setWeatherType] = useState("");
 
-  const handleNameInput = (e) => setName(e.target.value);
-  const handleImageInput = (e) => setImage(e.target.value);
+   const [values, setValues] = useState({
+    name: '',
+    image: '',
+    weatherType: '',
+    
+   });
   
-  // Updated to handle the select change
-  const handleSelectInput = (e) => setWeatherType(e.target.value);
+   const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  };
+
+ 
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-    onSubmitAddItemModal(name, image, weatherType);
+    onSubmitAddItem(values);
   };
 
   useEffect(() => {
-    setName("");
-    setImage("");
-    setWeatherType("");
+    setValues({
+    name: '',
+    image: '',
+    weatherType: '',
+  });
   }, [isOpen]);
 
-  const isFilled = name && image && weatherType;
+  const isFilled = values.name && values.image && values.weatherType;
 
   return (
     <ModalWithForm
@@ -41,7 +48,7 @@ const AddItemModal = ({
       openAddItemButton={openAddItemButton}
       handleCloseModal={handleCloseModal}
       isOpen={isOpen}
-      onItemSubmitModal={handleSubmitModal}
+       onSubmit={handleSubmitModal}
       isFilled={isFilled}
     >
       <label htmlFor="name" className="modal__label">
@@ -55,8 +62,8 @@ const AddItemModal = ({
           placeholder="Name"
           required
           name="name"
-          value={name}
-          onChange={handleNameInput}
+          value={values.name}
+          onChange={handleChange}
         />
       </label>
 
@@ -67,10 +74,10 @@ const AddItemModal = ({
           type="text"
           className="modal__input"
           placeholder="Image URL"
-          name="imageUrl"
-          value={image}
+          name="image"
+          value={values.image}
           required
-          onChange={handleImageInput}
+          onChange={handleChange}
         />
       </label>
 
@@ -80,10 +87,10 @@ const AddItemModal = ({
         <select
           id="weather"
           className="modal__input modal__input_type_select"
-          name="weather"
-          value={weatherType}
+          name="weatherType"
+          value={values.weatherType}
           required
-          onChange={handleSelectInput}
+          onChange={handleChange}
         >
           <option value="" disabled>Select weather...</option>
           <option value="hot">Hot</option>
