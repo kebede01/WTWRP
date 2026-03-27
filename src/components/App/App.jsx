@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
@@ -26,61 +25,147 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
 
-  const handleActiveModal = () => {
+  const handleActiveModal = useCallback(() => {
     setActiveModal("add-garment");
-  };
+  }, []);
 
-  const handlePreviewModal = (data) => {
+  const handlePreviewModal = useCallback((data) => {
     setActiveModal("preview");
     setSelectedCard(data);
-  };
+  }, []);
 
-  const handleAddRegistration = () => {
+  const handleAddRegistration = useCallback(() => {
     setActiveModal("register");
-  };
+  }, []);
 
-  const handleLogIn = () => {
+  const handleLogIn = useCallback(() => {
     setActiveModal("login");
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+
+ const handleOpenProfileUpdate = useCallback(() => {
+    setActiveModal("profile");
+  }, []);
+  const handleCloseModal = useCallback(() => {
     setActiveModal("");
-  };
+  }, []);
 
-  const handleSubmitAddItem = ({ name, image, weatherType }) => {
-    console.log({ name, image, weatherType });
-  };
-  const handleDeleteModalOpen = (data) => {
+  const handleSubmitAddItem = useCallback(
+    ({ name, image, weatherType }) => {
+      console.log("App.js received:", { name, image, weatherType });
+
+      return new Promise((resolve, reject) => {
+        const isSuccessful = true;
+
+        setTimeout(() => {
+          if (isSuccessful) {
+            const newItem = {
+              name: name, // Use 'name' instead of 'values.name'
+              link: image, // Use 'image' instead of 'values.image'
+              weather: weatherType, // Use 'weatherType' instead of 'values.weatherType'
+              _id: String(Math.random()),
+            };
+
+            setClothingItems((prevItems) => [newItem, ...prevItems]);
+            resolve(newItem);
+          } else {
+            reject("Server Error");
+          }
+        }, 1000);
+      });
+    },
+    [handleCloseModal],
+  );
+
+  const handleDeleteModalOpen = useCallback((data) => {
     setActiveModal("delete");
     setSelectedCard(data);
     console.log("Form submitted, but page refresh prevented!");
-  };
+  }, []);
 
-  const handleDeleteClothingtem = (data) => {
-    console.log("DELETED CLOTYHING ITEM");
-    console.log(data);
-  };
+  const handleDeleteClothingtem = useCallback(
+    (data) => {
+      console.log("DELETED CLOTYHING ITEM");
+      console.log(data);
+    },
+    [handleCloseModal],
+  );
 
-  const handleSubmitRegister = ({
-    avatarRegister,
-    nameRegister,
-    passwordRegister,
-    emailRegister,
-  }) => {
-    console.log({
-      avatarRegister,
-      nameRegister,
-      passwordRegister,
-      emailRegister,
+  const handleSubmitRegister = useCallback(
+    ({ avatarRegister, nameRegister, passwordRegister, emailRegister }) => {
+      console.log("App.js received:", {
+        nameRegister,
+        avatarRegister,
+        passwordRegister,
+        emailRegister,
+      });
+
+      return new Promise((resolve, reject) => {
+        const isSuccessful = true;
+
+        setTimeout(() => {
+          if (isSuccessful) {
+            const newItem = {
+              nameRegister: nameRegister, // Use 'name' instead of 'values.name'
+              avatarRegister: avatarRegister, // Use 'image' instead of 'values.image'
+              passwordRegister: passwordRegister, // Use 'weatherType' instead of 'values.weatherType'
+              emailRegister: emailRegister,
+              _id: String(Math.random()),
+            };
+
+            // setClothingItems((prevItems) => [newItem, ...prevItems]);
+            resolve(newItem);
+          } else {
+            reject("Server Error");
+          }
+        }, 1000);
+      });
+    },
+    [],
+  );
+
+  const handleSubmitLogIn = ({ email, password }) => {
+    console.log("App.js received:", { email, password });
+
+    return new Promise((resolve, reject) => {
+      const isSuccessful = true;
+
+      setTimeout(() => {
+        if (isSuccessful) {
+          const newItem = {
+            email: email, // Use 'name' instead of 'values.name'
+            password: password, // Use 'weatherType' instead of 'values.weatherType'
+            _id: String(Math.random()),
+          };
+
+          resolve(newItem);
+        } else {
+          reject("Server Error");
+        }
+      }, 1000);
     });
   };
 
-  const handleSubmitLogIn = ({ email, password }) => {
-    console.log({ email, password });
-  };
-
   const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
-    console.log({ nameProfile, avatarUrl });
+    console.log("App.js received:", { nameProfile, avatarUrl });
+
+    return new Promise((resolve, reject) => {
+      const isSuccessful = true;
+
+      setTimeout(() => {
+        if (isSuccessful) {
+          const newItem = {
+            nameProfile: nameProfile, // Use 'name' instead of 'values.name'
+            avatarUrl: avatarUrl, // Use 'weatherType' instead of 'values.weatherType'
+            _id: String(Math.random()),
+          };
+
+          resolve(newItem);
+        } else {
+          reject("Server Error");
+        }
+      }, 1000);
+    });
   };
 
   useEffect(() => {
@@ -117,7 +202,8 @@ function App() {
             element={
               <Profile
                 clothingItems={clothingItems}
-                handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
+                handlePreviewModal={() => { }} // This is a "No-Op" function. It does nothing but prevents the crash.
+                handleOpenProfileUpdate={handleOpenProfileUpdate}
               />
             }
           />

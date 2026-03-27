@@ -1,5 +1,6 @@
+import React from "react"
 import "./ItemCard.css";
-export default function ItemCard({ item, handlePreviewModal }) {
+ function ItemCard({ item, handlePreviewModal }) {
   const handleCardClick = () => {
    handlePreviewModal(item);
   };
@@ -17,3 +18,4 @@ export default function ItemCard({ item, handlePreviewModal }) {
     </li>
   );
 }
+export default React.memo(ItemCard);

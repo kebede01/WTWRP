@@ -1,8 +1,9 @@
+import React from "react";
 import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 import { NavLink } from "react-router-dom";
-export default function Header({
+ function Header({
   handleActiveModal,
   handleAddRegistration,
   handleLogIn,
@@ -45,3 +46,4 @@ export default function Header({
     </header>
   );
 }
+export default React.memo(Header);

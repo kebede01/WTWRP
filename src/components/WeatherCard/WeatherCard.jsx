@@ -1,7 +1,8 @@
+import React from "react";
 import "./WeatherCard.css";
 
 import { weatherOptions, defaultWeatherOptions } from "../../utils/constants";
-export default function WeatherCard({ weatherData}) {
+function WeatherCard({ weatherData}) {
   // 1. Find the matching option object
   const foundOption = weatherOptions.find((option) => {
     return (
@@ -22,3 +23,4 @@ export default function WeatherCard({ weatherData}) {
     </section>
   );
 }
+export default React.memo(WeatherCard);

@@ -1,6 +1,7 @@
+import React from "react";
 import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
-export default function ClothesSection({ clothingItems, handlePreviewModal}) {
+function ClothesSection({ clothingItems, handlePreviewModal}) {
   return (
     <section className="clothes">
       <div className="clothes__heading">
@@ -15,3 +16,4 @@ export default function ClothesSection({ clothingItems, handlePreviewModal}) {
     </section>
   );
 }
+export default React.memo(ClothesSection);

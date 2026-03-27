@@ -1,7 +1,8 @@
+import React from "react";
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard.jsx";
 import ItemCard from "../ItemCard/ItemCard.jsx";
-export default function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions }) {
+function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions }) {
   
 
  
@@ -29,3 +30,4 @@ export default function Main({ clothingItems, weatherData, handlePreviewModal, w
     </main>
   );
 }
+export default React.memo(Main);
