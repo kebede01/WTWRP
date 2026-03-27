@@ -1,6 +1,7 @@
+import React from "react";
 import "./SideBar.css";
 import avatar from "../../assets/images/avatar.svg";
-export default function SideBar({ handleProfileOpen }) {
+function SideBar({ handleProfileOpen }) {
   return (
     <section className="side-bar">
       <div className="side-bar__header">
@@ -26,3 +27,4 @@ export default function SideBar({ handleProfileOpen }) {
     </section>
   );
 }
+export default React.memo(SideBar);

@@ -1,11 +1,15 @@
+import React from "react";
 import "./Profile.css";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
-export default function Profile({clothingItems, handleProfileOpen, handlePreviewModal}) {
+ 
+function Profile({ clothingItems, handleOpenProfileUpdate, handlePreviewModal }) {
+                
+
   return (
     <section className="profile">
       
-      <SideBar handleProfileOpen={ handleProfileOpen} />
+      <SideBar handleProfileOpen={ handleOpenProfileUpdate} />
       <ClothesSection
         clothingItems={clothingItems}
       handlePreviewModal={handlePreviewModal}
@@ -14,3 +18,4 @@ export default function Profile({clothingItems, handleProfileOpen, handlePreview
         
   )
 }
+export default React.memo(Profile);

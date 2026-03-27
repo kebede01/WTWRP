@@ -22,17 +22,19 @@ const AddItemModal = ({
   };
 
   const handleSubmitModal = (e) => {
-    e.preventDefault();
+   
     // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+   e.preventDefault();
+    console.log("1. Modal Submit Clicked");
+
     onSubmitAddItem(values)
       .then(() => {
-        // Success! Clear the form and close the modal
+        console.log("2. Promise Resolved in Modal");
         handleReset();
         handleCloseModal();
       })
       .catch((err) => {
-        // Error! Keep the data so the user can fix it
-        console.error("Failed to add item:", err);
+        console.log("3. Promise Rejected in Modal", err);
       });
   };
 
