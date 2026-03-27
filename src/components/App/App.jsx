@@ -24,14 +24,14 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  console.log(selectedCard);
-  console.log(activeModal);
+ 
 
   const handleActiveModal = () => {
-    setActiveModal("add garment");
+    setActiveModal("add-garment");
   };
 
   const handlePreviewModal = (data) => {
+   
     setActiveModal("preview");
     setSelectedCard(data);
   };
@@ -51,27 +51,27 @@ function App() {
     setActiveModal("");
   };
 
-  const handleSubmitAddItem = (e) => {
-    e.preventDefault();
-    console.log("Form submitted, but page refresh prevented!");
+  const handleSubmitAddItem = ({ name, image, weatherType }) => {
+    console.log({ name, image, weatherType });
+   
   };
   const handleSubmitPreviewItem = (e) => {
     e.preventDefault();
     console.log("Form submitted, but page refresh prevented!");
   };
 
-  const handleSubmitRegister = (e) => {
-    e.preventDefault();
+  const handleSubmitRegister = ({avatarRegister, nameRegister, passwordRegister, emailRegister}) => {
+    console.log({ avatarRegister, nameRegister, passwordRegister, emailRegister });
     console.log("Form submitted, but page refresh prevented!");
   };
 
-  const handleSubmitLogIn = (e) => {
-    e.preventDefault();
+  const handleSubmitLogIn = ({ email, password}) => {
+  console.log({ email, password})
     console.log("Form submitted, but page refresh prevented!");
   };
 
-  const handleProfileUpdate = (e) => {
-    e.preventDefault();
+  const handleProfileUpdate = ({nameProfile, avatarUrl}) => {
+  console.log({nameProfile, avatarUrl})
     console.log("Form submitted, but page refresh prevented!");
   };
 
@@ -83,7 +83,7 @@ function App() {
       })
       .catch((err) => console.error("Effect Error:", err));
   }, []);
-  console.log(weatherData);
+  // console.log(weatherData);
 
   return (
     <div className="page">
@@ -108,7 +108,9 @@ function App() {
           />
           <Route
             path="/profile"
-            element={<Profile clothingItems={clothingItems} />}
+            element={<Profile clothingItems={clothingItems}
+             handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
+            />}
           />
         </Routes>
 
@@ -116,19 +118,20 @@ function App() {
           handleCloseModal={handleCloseModal}
           title="New garment"
           buttonText="Add garment"
-          isOpen={activeModal === "add garment"}
+          isOpen={activeModal === "add-garment"}
           activeModal={activeModal}
-          handleSubmitAddItem={handleSubmitAddItem}
+          onSubmitAddItem={handleSubmitAddItem}
+           
         />
         <PreviewItemModal
-          handlePreviewModal={handlePreviewModal}
+         
           handleCloseModal={handleCloseModal}
           buttonText="Delete card"
           title="Image preview"
           selectedCard={selectedCard}
           isOpen={activeModal === "preview"}
           activeModal={activeModal}
-          handleSubmitPreviewItem={handleSubmitPreviewItem}
+          onSubmitPreviewItem={handleSubmitPreviewItem}
         />
         <RegisterModal
           handleCloseModal={handleCloseModal}
@@ -136,7 +139,7 @@ function App() {
           buttonText="Register"
           isOpen={activeModal === "register"}
           activeModal={activeModal}
-          handleSubmitRegister={handleSubmitRegister}
+          onSubmitRegister={handleSubmitRegister}
         />
 
         <LoginModal
@@ -145,7 +148,7 @@ function App() {
           buttonText="Log In"
           isOpen={activeModal === "login"}
           activeModal={activeModal}
-          handleSubmitLogIn={handleSubmitLogIn}
+          onSubmitLogIn={handleSubmitLogIn}
         />
 
         <ProfileEditModal
@@ -154,7 +157,7 @@ function App() {
           buttonText="Edit profile"
           isOpen={activeModal === "profile"}
           activeModal={activeModal}
-          handleProfileUpdate={handleProfileUpdate}
+          onProfileUpdate={handleProfileUpdate}
         />
       </div>
     </div>

@@ -9,7 +9,11 @@
   object-position: right;
   border: var(--card-border);
   border-radius: var(--radius-big);
+  cursor: pointer;
+
 }
+
+
 .cards__img-name {
   margin: var(--margin-none);
   position: absolute;
