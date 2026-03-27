@@ -6,17 +6,21 @@ export default function PreviewItemModal({
   title,
   selectedCard,
   isOpen,
-  onSubmitPreviewItem,
-  
+  onSubmitDelete,
+  onItemDelete
 }) {
+
+  const handleDeletion = () => {
+onSubmitDelete(selectedCard)
+  }
   return (
     <ModalWithForm
       handleCloseModal={handleCloseModal}
       isOpen={isOpen}
-      // activeModal={activeModal}
+      onItemDelete={onItemDelete}
       buttonText={buttonText}
       title={title}
-      onSubmit={onSubmitPreviewItem}
+     onSubmitDelete={handleDeletion}
     >
       <img
         src={selectedCard.link}

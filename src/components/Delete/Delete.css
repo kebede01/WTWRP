@@ -1,0 +1,62 @@
+.modal {
+  position: fixed;
+  inset:0;
+  background-color: #0000004d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  padding: 0 10px;
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  background-color: #ffffff;
+  max-width: 670px;
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 28px 28px 36px;
+}
+.modal__content_type-delete {
+  height: 280px;
+  align-items: center;
+}
+.modal_opened {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.modal__text {
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+.modal__title-delete {
+  text-align: center;
+  width: 367px;
+  margin-top: 60px 0 40px 0;
+}
+
+.modal__button {
+  background-color: transparent;
+  border: none;
+  color: #ff4d00;
+  margin: 0 0 24px 0;
+}
+
+.modal__button-cancel {
+  margin: 0 0 60px 0;
+  background: transparent;
+  border: none;
+}

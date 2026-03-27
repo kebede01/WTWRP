@@ -1,6 +1,7 @@
 import "./ModalWithForm.css";
-export default function ModalWithForm({ children, title, buttonText, isOpen, handleCloseModal,  onSubmit, isFilled 
+export default function ModalWithForm({ children, title, buttonText, isOpen, handleCloseModal,  onSubmit,  isFilled , onSubmitDelete
 }) {
+
   
 
  
@@ -14,7 +15,16 @@ export default function ModalWithForm({ children, title, buttonText, isOpen, han
         <form className="modal__form modal__form_add" name="modalWithForm" id="add-item"
           onSubmit={ onSubmit}>
           {children}
-          <button type="submit" className="modal__submit-btn" disabled={!isFilled}>{buttonText}</button>
+          
+{onSubmitDelete ? (
+              <button 
+                type="button" 
+                className="modal__delete-btn" 
+                onClick={onSubmitDelete}
+              >
+                Delete
+              </button>
+            ) : (<button type="submit" className="modal__submit-btn" disabled={!isFilled}>{buttonText}</button>)}
         </form>
       </div>
    </section>
