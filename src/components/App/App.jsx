@@ -10,6 +10,7 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 import Profile from "../Profile/Profile";
+import DeleteModal from "../Delete/Delete";
 import { defaultClothingItems } from "../../utils/constants";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 
@@ -24,14 +25,12 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
- 
 
   const handleActiveModal = () => {
     setActiveModal("add-garment");
   };
 
   const handlePreviewModal = (data) => {
-   
     setActiveModal("preview");
     setSelectedCard(data);
   };
@@ -53,27 +52,44 @@ function App() {
 
   const handleSubmitAddItem = ({ name, image, weatherType }) => {
     console.log({ name, image, weatherType });
+  };
+  const handleDeleteModalOpen = (data) => {
+   setActiveModal("delete");
+  setSelectedCard(data);
+    console.log("Form submitted, but page refresh prevented!");
+  };
+
+const handleDeleteClothingtem = (data) => {
+  console.log("DELETED CLOTYHING ITEM");
+    console.log(data);
+   }
+
+  const handleSubmitRegister = ({
+    avatarRegister,
+    nameRegister,
+    passwordRegister,
+    emailRegister,
+  }) => {
+    console.log({
+      avatarRegister,
+      nameRegister,
+      passwordRegister,
+      emailRegister,
+    });
+    
+  };
+
+  const handleSubmitLogIn = ({ email, password }) => {
+    console.log({ email, password });
    
   };
-  const handleSubmitPreviewItem = (e) => {
-    e.preventDefault();
-    console.log("Form submitted, but page refresh prevented!");
+
+  const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
+    console.log({ nameProfile, avatarUrl });
+   
   };
 
-  const handleSubmitRegister = ({avatarRegister, nameRegister, passwordRegister, emailRegister}) => {
-    console.log({ avatarRegister, nameRegister, passwordRegister, emailRegister });
-    console.log("Form submitted, but page refresh prevented!");
-  };
-
-  const handleSubmitLogIn = ({ email, password}) => {
-  console.log({ email, password})
-    console.log("Form submitted, but page refresh prevented!");
-  };
-
-  const handleProfileUpdate = ({nameProfile, avatarUrl}) => {
-  console.log({nameProfile, avatarUrl})
-    console.log("Form submitted, but page refresh prevented!");
-  };
+  
 
   useEffect(() => {
     fetchWeatherData()
@@ -83,7 +99,7 @@ function App() {
       })
       .catch((err) => console.error("Effect Error:", err));
   }, []);
-  // console.log(weatherData);
+ 
 
   return (
     <div className="page">
@@ -108,9 +124,12 @@ function App() {
           />
           <Route
             path="/profile"
-            element={<Profile clothingItems={clothingItems}
-             handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
-            />}
+            element={
+              <Profile
+                clothingItems={clothingItems}
+                handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
+              />
+            }
           />
         </Routes>
 
@@ -119,26 +138,22 @@ function App() {
           title="New garment"
           buttonText="Add garment"
           isOpen={activeModal === "add-garment"}
-          activeModal={activeModal}
           onSubmitAddItem={handleSubmitAddItem}
-           
         />
         <PreviewItemModal
-         
           handleCloseModal={handleCloseModal}
           buttonText="Delete card"
           title="Image preview"
           selectedCard={selectedCard}
           isOpen={activeModal === "preview"}
-          activeModal={activeModal}
-          onSubmitPreviewItem={handleSubmitPreviewItem}
+          onSubmitDelete={handleDeleteModalOpen}
+           
         />
         <RegisterModal
           handleCloseModal={handleCloseModal}
           title="Register"
           buttonText="Register"
           isOpen={activeModal === "register"}
-          activeModal={activeModal}
           onSubmitRegister={handleSubmitRegister}
         />
 
@@ -147,7 +162,6 @@ function App() {
           title="Log In"
           buttonText="Log In"
           isOpen={activeModal === "login"}
-          activeModal={activeModal}
           onSubmitLogIn={handleSubmitLogIn}
         />
 
@@ -156,8 +170,13 @@ function App() {
           title="Edit Profile"
           buttonText="Edit profile"
           isOpen={activeModal === "profile"}
-          activeModal={activeModal}
           onProfileUpdate={handleProfileUpdate}
+        />
+        <DeleteModal
+          handleCloseModal={handleCloseModal}
+          isOpen={activeModal === "delete"}
+          onDeleteClothingtem={handleDeleteClothingtem}
+           selectedCard={selectedCard}
         />
       </div>
     </div>
