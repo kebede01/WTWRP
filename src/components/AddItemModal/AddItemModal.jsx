@@ -12,7 +12,7 @@ const AddItemModal = ({
 }) => {
   const { values, handleChange, handleReset } = useForm({
     name: "",
-    imageUrl: "",
+    image: "",
     weather: "",
   });
 
@@ -69,11 +69,11 @@ const AddItemModal = ({
       <label htmlFor="imageUrl" className="modal__label">
         Image
         <input
-          id="imageUrl"
+          id="image"
           type="text"
           className="modal__input"
           placeholder="Image URL"
-          name="imageUrl"
+          name="image"
           value={values.imageUrl}
           required
           onChange={handleChange}
