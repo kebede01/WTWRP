@@ -137,6 +137,12 @@
       "weather": "cold",
       "imageUrl": "https://img.freepik.com/free-psd/grey-knit-sweater-mens-fashion-winter-apparel-casual-wear-soft-texture-comfortable-clothing_191095-84711.jpg",
       "_id": 22
+    },
+    {
+      "name": "BBBBBBBB",
+      "weather": "coldDDDDD",
+      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Beanie.png?etag=bc10497cc80fa557f036e94f9999f7b2",
+      "_id": 23
     }
   ]
 }
