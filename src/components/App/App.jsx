@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
+
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -53,32 +54,24 @@ function App() {
     setActiveModal("");
   }, []);
 
-  const handleSubmitAddItem = useCallback(
-    ({ name, image, weather }) => {
-      console.log("App.js received:", { name, image, weather });
-
-      return new Promise((resolve, reject) => {
-        const isSuccessful = true;
-
-        setTimeout(() => {
-          if (isSuccessful) {
-            const newItem = {
-              name: name, // Use 'name' instead of 'values.name'
-             link: image, // Use 'image' instead of 'values.image'
-              weather,
-              _id: String(Math.random()),
-            };
-
-            setClothingItems((prevItems) => [newItem, ...prevItems]);
-            resolve(newItem);
-          } else {
-            reject("Server Error");
-          }
-        }, 1000);
+const handleSubmitAddItem = useCallback(
+  (data) => {
+    // We MUST return the fetch call so the Modal can use .then()
+    return addClothingItem(data)
+      .then((newItem) => {
+        // SUCCESS: Update the local state so the new card appears!
+        setClothingItems((prevItems) => [newItem, ...prevItems]);
+        
+        // Return newItem again so the NEXT .then() in the Modal gets the data
+        return newItem; 
+      })
+      .catch((err) => {
+        console.error("API Error:", err);
+        throw err; // Re-throw so the Modal's .catch() triggers
       });
-    },
-    [handleCloseModal],
-  );
+  },
+  [setClothingItems] // handleCloseModal isn't strictly needed here since Modal handles it
+);
 
   const handleDeleteModalOpen = useCallback((data) => {
     setActiveModal("delete");
@@ -195,6 +188,10 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
   
+
+
+
+
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}

@@ -101,6 +101,42 @@
       "name": "T-Shirt",
       "weather": "hot",
       "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/T-Shirt.png?etag=44ed1963c44ab19cd2f5011522c5fc09"
+    },
+    {
+      "name": "Emma",
+      "image": "https://img.freepik.com/premium-psd/winter-clothing-design_694877-1775.jpg?semt=ais_hybrid",
+      "weather": "cold",
+      "_id": 17
+    },
+    {
+      "name": "Emma",
+      "image": "https://img.freepik.com/free-psd/grey-knit-sweater-mens-fashion-winter-apparel-casual-wear-soft-texture-comfortable-clothing_191095-84711.jpg",
+      "weather": "cold",
+      "_id": 18
+    },
+    {
+      "name": "Emma",
+      "image": "https://img.freepik.com/free-psd/grey-knit-sweater-mens-fashion-winter-apparel-casual-wear-soft-texture-comfortable-clothing_191095-84711.jpg",
+      "weather": "cold",
+      "_id": 19
+    },
+    {
+      "name": "Lorem Ipsum",
+      "image": "https://bfasset.costco-static.com/U447IH35/at/3wxbb8cpcrkbfbvcb977vb/mens-clothing-c.png?auto=webp&format=jpg&width=1400",
+      "weather": "cold",
+      "_id": 20
+    },
+    {
+      "name": "Emma",
+      "image": "https://bfasset.costco-static.com/U447IH35/at/3wxbb8cpcrkbfbvcb977vb/mens-clothing-c.png?auto=webp&format=jpg&width=1400",
+      "weather": "cold",
+      "_id": 21
+    },
+    {
+      "name": "Emma",
+      "weather": "cold",
+      "imageUrl": "https://img.freepik.com/free-psd/grey-knit-sweater-mens-fashion-winter-apparel-casual-wear-soft-texture-comfortable-clothing_191095-84711.jpg",
+      "_id": 22
     }
   ]
 }
