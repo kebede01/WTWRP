@@ -22,15 +22,24 @@ const AddItemModal = ({
   };
 
   const handleSubmitModal = (e) => {
-   
+   e.preventDefault(); 
+  // Map 'image' to 'imageUrl' before sending it to the server
+    const itemData = {
+      name: values.name,
+      weather: values.weather,
+      imageUrl: values.image, // Translation happens here!
+    };
     // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
    e.preventDefault();
     console.log("1. Modal Submit Clicked");
 
-    onSubmitAddItem(values)
-      .then(() => {
+    onSubmitAddItem(itemData)
+      .then((data) => {
+       
+        console.log(data);
         console.log("2. Promise Resolved in Modal");
         handleReset();
+        console.log("Baton received in Modal!", data);
         handleCloseModal();
       })
       .catch((err) => {
@@ -38,7 +47,7 @@ const AddItemModal = ({
       });
   };
 
-  const isFilled = values.name && values.image && values.weatherType;
+ const isFilled = values.name && (values.image || values.imageUrl) && values.weather;
 
   return (
     <ModalWithForm
@@ -74,7 +83,7 @@ const AddItemModal = ({
           className="modal__input"
           placeholder="Image URL"
           name="image"
-          value={values.imageUrl}
+          value={values.image}
           required
           onChange={handleChange}
         />
