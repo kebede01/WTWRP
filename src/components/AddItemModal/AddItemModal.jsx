@@ -12,8 +12,8 @@ const AddItemModal = ({
 }) => {
   const { values, handleChange, handleReset } = useForm({
     name: "",
-    image: "",
-    weatherType: "",
+    imageUrl: "",
+    weather: "",
   });
 
   const handleClose = () => {
@@ -73,8 +73,8 @@ const AddItemModal = ({
           type="text"
           className="modal__input"
           placeholder="Image URL"
-          name="image"
-          value={values.image}
+          name="imageUrl"
+          value={values.imageUrl}
           required
           onChange={handleChange}
         />
@@ -86,8 +86,8 @@ const AddItemModal = ({
         <select
           id="weather"
           className="modal__input modal__input_type_select"
-          name="weatherType"
-          value={values.weatherType}
+          name="weather"
+          value={values.weather}
           required
           onChange={handleChange}
         >

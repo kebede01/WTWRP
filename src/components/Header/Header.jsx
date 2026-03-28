@@ -3,6 +3,7 @@ import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 import { NavLink } from "react-router-dom";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
  function Header({
   handleActiveModal,
   handleAddRegistration,
@@ -28,6 +29,7 @@ import { NavLink } from "react-router-dom";
       </div>
 
       <div className="header__section header__section_right">
+      
         <button
           type="button"
           className="header__button"
@@ -35,6 +37,7 @@ import { NavLink } from "react-router-dom";
         >
           + Add clothing
         </button>
+          <ToggleSwitch/>
         <button onClick={handleAddRegistration}>Register</button>
         <button onClick={handleLogIn}>Log In</button>
 
