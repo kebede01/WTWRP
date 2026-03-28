@@ -10,7 +10,7 @@ import "./ItemCard.css";
       <div  className="card__list-content">
         <p className="cards__img-name">{item.name}</p>
         <img
-          src={item.link}
+          src={item.imageUrl}
           alt={`A photo of ${item.name}`}
           className="cards__img"
         />
