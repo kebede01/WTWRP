@@ -7,6 +7,7 @@ const handleResponse = async (response) => {
 };
 
 const headers = {
+  Accept: "application/json",
   "Content-Type": "application/json",
 };
 export const getAllClothingItems = async () => {
@@ -21,3 +22,16 @@ export const addClothingItem = async (itemData) => {
   });
   return handleResponse(response);
 };
+
+export const getClothingItem = async (itemId) => {
+  const response = await fetch(`${baseUrl}/items/${itemId}`, {headers, method: "GET"});
+  return handleResponse(response);
+}
+
+export const deleteClothingItem = async (itemId) => { 
+  const response = await fetch(`${baseUrl}/items/${itemId}`, {
+    method: "DELETE",
+    headers,
+  });
+  return handleResponse(response);
+}

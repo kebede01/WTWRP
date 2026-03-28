@@ -10,13 +10,14 @@ import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 import Profile from "../Profile/Profile";
 import DeleteModal from "../Delete/Delete";
-import { defaultClothingItems } from "../../utils/constants";
+
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
 function App() {
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+ 
+    const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
     city: "",
     weather: "",
@@ -53,8 +54,8 @@ function App() {
   }, []);
 
   const handleSubmitAddItem = useCallback(
-    ({ name, image, weatherType }) => {
-      console.log("App.js received:", { name, image, weatherType });
+    ({ name, image, weather }) => {
+      console.log("App.js received:", { name, image, weather });
 
       return new Promise((resolve, reject) => {
         const isSuccessful = true;
@@ -63,8 +64,8 @@ function App() {
           if (isSuccessful) {
             const newItem = {
               name: name, // Use 'name' instead of 'values.name'
-              link: image, // Use 'image' instead of 'values.image'
-              weather: weatherType, // Use 'weatherType' instead of 'values.weatherType'
+             link: image, // Use 'image' instead of 'values.image'
+              weather,
               _id: String(Math.random()),
             };
 
@@ -193,7 +194,7 @@ function App() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
