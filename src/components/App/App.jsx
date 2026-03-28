@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
-
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -17,8 +16,7 @@ import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
 function App() {
- 
-    const [clothingItems, setClothingItems] = useState([]);
+  const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
     city: "",
     weather: "",
@@ -54,24 +52,24 @@ function App() {
     setActiveModal("");
   }, []);
 
-const handleSubmitAddItem = useCallback(
-  (data) => {
-    // We MUST return the fetch call so the Modal can use .then()
-    return addClothingItem(data)
-      .then((newItem) => {
-        // SUCCESS: Update the local state so the new card appears!
-        setClothingItems((prevItems) => [newItem, ...prevItems]);
-        
-        // Return newItem again so the NEXT .then() in the Modal gets the data
-        return newItem; 
-      })
-      .catch((err) => {
-        console.error("API Error:", err);
-        throw err; // Re-throw so the Modal's .catch() triggers
-      });
-  },
-  [setClothingItems] // handleCloseModal isn't strictly needed here since Modal handles it
-);
+  const handleSubmitAddItem = useCallback(
+    (data) => {
+      // We MUST return the fetch call so the Modal can use .then()
+      return addClothingItem(data)
+        .then((newItem) => {
+          // SUCCESS: Update the local state so the new card appears!
+          setClothingItems((prevItems) => [newItem, ...prevItems]);
+
+          // Return newItem again so the NEXT .then() in the Modal gets the data
+          return newItem;
+        })
+        .catch((err) => {
+          console.error("API Error:", err);
+          throw err; // Re-throw so the Modal's .catch() triggers
+        });
+    },
+    [setClothingItems], // handleCloseModal isn't strictly needed here since Modal handles it
+  );
 
   const handleDeleteModalOpen = useCallback((data) => {
     setActiveModal("delete");
@@ -187,10 +185,6 @@ const handleSubmitAddItem = useCallback(
       })
       .catch((err) => console.error(err));
   }, []);
-  
-
-
-
 
   return (
     <CurrentTemperatureUnitContext.Provider

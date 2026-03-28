@@ -63,3 +63,15 @@ Run the following.
 ```
 - npm run server
 
+# Backend server set up
+-Create directory backend/
+-npm init -y
+-npm i express
+-npm i nodemon --save-dev
+- Inside package.json setup "main": "index.js", or your main entry like app.js
+- Now replace "test": "echo \"Error: no test specified\" && exit 1" with `"test": "nodemon index.js"`
+- add "type": "module"  inside package.json, otherwise it might crash.
+- Now create your index.js file with content console.log("Backend index.js loaded");
+- Next run "npm test" and see if the above is console logged.i.e SUCCESS!
+- You can replace "test": "nodemon index.js" with "dev": "nodemon index.js" and use `npm run dev`
+
