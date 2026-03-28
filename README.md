@@ -50,3 +50,16 @@ Run the following.
 -npx pnpm build
 -npx pnpm preview
 -Now if you navigate to [local](http://localhost:4173/), you'll be able to see your project up and running.
+
+# How to set up mock server
+-create db.json at root file.
+- npm install --save-dev json-server@^0
+-  add to package.json scripts, 
+```
+"scripts":{
+ "start": "react-scripts start",
+  "server": "json-server --watch db.json --id _id --port 3001"
+}
+```
+- npm run server
+

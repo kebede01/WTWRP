@@ -12,7 +12,8 @@ import Profile from "../Profile/Profile";
 import DeleteModal from "../Delete/Delete";
 import { defaultClothingItems } from "../../utils/constants";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
-
+import VideoPlayer from "../Video/Video.jsx";
+import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 function App() {
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
   const [weatherData, setWeatherData] = useState({
@@ -24,6 +25,8 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
 
   const handleActiveModal = useCallback(() => {
     setActiveModal("add-garment");
@@ -99,6 +102,7 @@ function App() {
         passwordRegister,
         emailRegister,
       });
+ 
 
       return new Promise((resolve, reject) => {
         const isSuccessful = true;
@@ -168,6 +172,11 @@ function App() {
     });
   };
 
+//This switches temperature unit through out the components.
+  const handleToggleSwitchChange = () => {
+    setCurrentTemperatureUnit(currentTemperatureUnit === "°F" ? "°C" : "°F");
+  };
+
   useEffect(() => {
     fetchWeatherData()
       .then((data) => filterWeatherData(data))
@@ -178,7 +187,8 @@ function App() {
   }, []);
 
   return (
-    <div className="page">
+    <CurrentTemperatureUnitContext.Provider  value={{ currentTemperatureUnit, handleToggleSwitchChange }} >
+       <div className="page">
       <div className="page__content">
         <Header
           handleActiveModal={handleActiveModal}
@@ -253,8 +263,11 @@ function App() {
           onDeleteClothingtem={handleDeleteClothingtem}
           selectedCard={selectedCard}
         />
+        <VideoPlayer/>
       </div>
     </div>
+    </CurrentTemperatureUnitContext.Provider>
+   
   );
 }
 
