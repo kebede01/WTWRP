@@ -2,7 +2,7 @@ import User from '../models/user.js';
 import { Router } from 'express';
 export const router = Router();
 
-router.post('/users', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const newUser = await User.create(req.body);
     res.status(201).json(newUser);
