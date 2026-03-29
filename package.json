@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "react-scripts start",
-  "server": "json-server --watch db.json --id _id --port 3001"
+    "start": "react-scripts start"
+  
   },
   "dependencies": {
     "react": "^19.2.4",
