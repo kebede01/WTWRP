@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from 'path'; // <--- Add this line!
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
+import { router } from "./routes/users.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
@@ -24,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 
-// app.use("/", router);
+app.use("/", router);
 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening to
