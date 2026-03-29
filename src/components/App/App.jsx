@@ -86,12 +86,12 @@ function App() {
   );
 
   const handleSubmitRegister = useCallback(
-    ({ avatarRegister, nameRegister, passwordRegister, emailRegister }) => {
+    ({ avatar, name, password, email }) => {
       console.log("App.js received:", {
-        nameRegister,
-        avatarRegister,
-        passwordRegister,
-        emailRegister,
+        name,
+        avatar,
+        password,
+        email,
       });
 
       return new Promise((resolve, reject) => {
