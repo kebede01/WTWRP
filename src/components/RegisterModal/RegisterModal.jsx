@@ -11,10 +11,10 @@ export default function RegisterModal({
 }) {
   // 1. Initialize the hook with your starting values
   const { values, handleChange, handleReset } = useForm({
-    emailRegister: "",
-    passwordRegister: "",
-    nameRegister: "",
-    avatarRegister: "",
+    email: "",
+    password: "",
+    name: "",
+    avatar: "",
   });
 
   const handleClose = () => {
@@ -36,10 +36,10 @@ export default function RegisterModal({
   };
 
   const isFilled =
-    values.emailRegister &&
-    values.passwordRegister &&
-    values.nameRegister &&
-    values.avatarRegister;
+    values.email &&
+    values.password &&
+    values.name &&
+    values.avatar;
   return (
     <ModalWithForm
       onSubmit={handleSubmitModal}
@@ -59,7 +59,7 @@ export default function RegisterModal({
           placeholder="Email"
           required
           name="emailRegister"
-          value={values.emailRegister}
+          value={values.email}
           onChange={handleChange}
         />
       </label>
@@ -71,7 +71,7 @@ export default function RegisterModal({
           className="modal__input"
           placeholder=" Password"
           name="passwordRegister"
-          value={values.passwordRegister}
+          value={values.password}
           onChange={handleChange}
           required
           autoComplete="current-password"
@@ -86,7 +86,7 @@ export default function RegisterModal({
           maxLength="30"
           className="modal__input"
           name="nameRegister"
-          value={values.nameRegister}
+          value={values.name}
           onChange={handleChange}
           placeholder="Name"
           autoComplete="nameRegister"
@@ -99,7 +99,7 @@ export default function RegisterModal({
           id="avatarRegister"
           className="modal__input"
           name="avatarRegister"
-          value={values.avatarRegister}
+          value={values.avatar}
           onChange={handleChange}
           placeholder="https://example.com"
         />
