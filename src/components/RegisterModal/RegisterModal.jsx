@@ -11,10 +11,10 @@ export default function RegisterModal({
 }) {
   // 1. Initialize the hook with your starting values
   const { values, handleChange, handleReset } = useForm({
-    email: "",
-    password: "",
     name: "",
     avatar: "",
+    email: "",
+    password: "",
   });
 
   const handleClose = () => {
@@ -24,22 +24,15 @@ export default function RegisterModal({
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
-    onSubmitRegister(values)
-      .then(() => {
-        handleReset();
-        handleCloseModal();
-      })
-      .catch((err) => {
-        console.error("Failed to add item:", err);
-      });
+    // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+    onSubmitRegister(values).then(() => {
+      handleReset();
+      handleCloseModal();
+    });
   };
 
   const isFilled =
-    values.email &&
-    values.password &&
-    values.name &&
-    values.avatar;
+    values.email && values.password && values.name && values.avatar;
   return (
     <ModalWithForm
       onSubmit={handleSubmitModal}
@@ -50,55 +43,55 @@ export default function RegisterModal({
       onCloseModal={handleClose}
       isFilled={isFilled}
     >
-      <label htmlFor="emailRegister" className="modal__label">
+      <label htmlFor="email" className="modal__label">
         Email
         <input
-          id="emailRegister"
+          id="email"
           type="email"
           className="modal__input"
           placeholder="Email"
           required
-          name="emailRegister"
+          name="email"
           value={values.email}
           onChange={handleChange}
         />
       </label>
-      <label htmlFor="passwordRegister" className="modal__label">
+      <label htmlFor="password" className="modal__label">
         Password
         <input
-          id="passwordRegister"
+          id="password"
           type="password"
           className="modal__input"
           placeholder=" Password"
-          name="passwordRegister"
+          name="password"
           value={values.password}
           onChange={handleChange}
           required
           autoComplete="current-password"
         />
       </label>
-      <label htmlFor="nameRegister" className="modal__label ">
+      <label htmlFor="name" className="modal__label ">
         Name
         <input
           type="text"
-          id="nameRegister"
+          id="name"
           minLength="2"
           maxLength="30"
           className="modal__input"
-          name="nameRegister"
+          name="name"
           value={values.name}
           onChange={handleChange}
           placeholder="Name"
           autoComplete="nameRegister"
         />
       </label>
-      <label htmlFor="avatarRegister" className="modal__label ">
+      <label htmlFor="avatar" className="modal__label ">
         Avatar URL
         <input
           type="url"
-          id="avatarRegister"
+          id="avatar"
           className="modal__input"
-          name="avatarRegister"
+          name="avatar"
           value={values.avatar}
           onChange={handleChange}
           placeholder="https://example.com"
