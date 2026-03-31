@@ -23,6 +23,25 @@ return res.status(400).send({ error: "Email and password are required" });
 
     .catch((err) => {
       console.error(err);
+      if (err.name === "ValidationError") {
+        return res.status(400).send({
+          error: "Invalid user data provided.",
+        });
+      }
+        else if (err.name === "syntaxError") {
+      return res.status(400).send({
+      error: "Invalid JSON syntax. Please check your quotes and commas.",
+      });
+      }
+      else if (err.code === 11000) {
+        return res.status(409).send({
+          error: "A user with that email already exists.",
+        });
+      } else {
+        return res.status(500).send({
+          error: "An error occurred while creating the user.",
+        });
+      }
     });
 };
 
@@ -35,7 +54,7 @@ export const login = (req, res) => {
     });
   }
   User.findOne({ email })
-    .select("+password")
+    .select("+password").orFail()
     .then((user) => {
       console.log("Found User Object:", user);
       if (!user) {
@@ -46,7 +65,9 @@ export const login = (req, res) => {
         return res.status(401).send({
           error: "Invalid email or password!",
         });
-      } else {
+      }
+      
+      else {
         const userObject = user.toObject();
         delete userObject.password;
         return res.status(200).send({
@@ -56,9 +77,25 @@ export const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(500).send({
-        error: "An error occurred while processing your request.",
+          if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid user ID format.",
+        });
+          }
+            else if (err.name === "syntaxError") {
+      return res.status(400).send({
+      error: "Invalid JSON syntax. Please check your quotes and commas.",
       });
+    }
+          else if (err.name === "ValidationError") {
+            return res.status(400).send({
+              error: "Invalid data provided for update.",
+            });
+          } else {
+            return res.status(500).send({
+        error: "An error occurred while processing your request.",
+      });}
+     
     });
 };
  
@@ -83,10 +120,97 @@ export const getAllUsers = (req, res) => {
   );
 };
 
-export const getUser = (req, res) => { 
- res.send({ message: "Hello, GET USER PROFILE World!" });
+export const getUser = (req, res) => {
+  const { userId } = req.params;
+  User.findById(userId).orFail().then((user) => {
+    res.status(200).send({
+      data: user,
+    });
+  }).catch((err) => {
+    console.error(err);
+    if (err.name === "DocumentNotFoundError") {
+      return res.status(404).send({
+        error: "User not found.",
+      });
+    } else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid user ID format.",
+        });
+    } else {
+      res.status(500).send({
+        error: "An error occurred while fetching the user.",
+      });
+    }
+  });
 };
- 
+
 export const updateProfile = (req, res) => {
-  res.send({ message: "Hello, UPDATE PROFILE World!" });
- }
+  const { userId } = req.params;  
+  const { name, avatar } = req.body;
+  User.findByIdAndUpdate(userId, { name, avatar }, { returnDocument: 'after', runValidators: true }).orFail()
+    .then((updatedUser) => {
+      res.status(200).send({
+        data: updatedUser,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "User not found.",
+        });
+      } else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid user ID format.",
+        });
+      }
+        else if (err.name === "syntaxError") {
+      return res.status(400).send({
+      error: "Invalid JSON syntax. Please check your quotes and commas.",
+      });
+    }
+      else if (err.name === "ValidationError") {
+        return res.status(400).send({
+          error: "Invalid data provided for update.",
+        });
+      } else {
+        res.status(500).send({
+          error: "An error occurred while updating the user.",
+        });
+      }
+    });
+};
+
+export const deleteProfile = (req, res) => {
+  const { userId } = req.params;
+  User.findByIdAndDelete(userId).orFail()
+    .then(() => {
+
+      res.status(200).send({
+        message: "User profile deleted successfully.",
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "User not found.",
+        });
+      }
+      else if (err.name === "syntaxError") {
+        return res.status(400).send({
+          error: "Invalid JSON syntax. Please check your quotes and commas.",
+        });
+      }
+      else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid user ID format.",
+        });
+      } else {
+        res.status(500).send({
+          error: "An error occurred while deleting the user.",
+        });
+      }
+      
+    });
+}

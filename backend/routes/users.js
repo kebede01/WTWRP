@@ -1,6 +1,6 @@
 // import User from '../models/user.js'; 
 import { Router } from 'express';
-import { getUser, getAllUsers, updateProfile } from '../controllers/users.js';
+import { getUser, getAllUsers, updateProfile, deleteProfile } from '../controllers/users.js';
 
 
  const router = Router();
@@ -8,6 +8,7 @@ import { getUser, getAllUsers, updateProfile } from '../controllers/users.js';
 // Define the actual routes here!
 
 router.get('/', getAllUsers);
-router.get('/me', getUser);
-router.patch('/me', updateProfile);
+router.get('/:userId', getUser);
+router.patch('/:userId', updateProfile);
+router.delete('/:userId', deleteProfile);
 export default router;

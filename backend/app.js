@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path'; // <--- Add this line!
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
-import  router  from "./routes/index.js";
+import  indexRouter  from "./routes/index.js";
 import { createUser, login } from "./controllers/users.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,10 +25,15 @@ app.use(express.static(path.join(__dirname, 'public')));
   }
 })();
 
-
+app.use((req, res, next) => {
+  req.user = {
+    _id: "99cbfb4a305b3bcadddd3090" // Your hardcoded ID
+  };
+  next(); // This is crucial! It passes the request to the next function.
+});; // Temporary hardcoded user ID for testing
 app.post("/signup", createUser);
 app.post("/login", login);
-app.use("/", router);
+app.use("/", indexRouter); // Use the index router for all routes starting with "/"
 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening to
