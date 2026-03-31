@@ -38,7 +38,7 @@ export default function ModalWithForm({
             <button
               type="submit"
               className="modal__submit-btn"
-              disabled={!isFilled}
+              // disabled={!isFilled}
             >
               {buttonText}
             </button>

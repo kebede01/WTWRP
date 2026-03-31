@@ -21,10 +21,15 @@ export default function VideoPlayer() {
     setIsPlaying(false); // 3. Update the UI button
   }
 
-
-
   return (
-    <div style={{ padding: "20px" }}>
+    <div
+      style={{
+        padding: "20px",
+        position: "fixed", // Ensures it stays in the background
+        zIndex: -1, // Pushes it behind the modal
+        pointerEvents: "none",
+      }}
+    >
       {/* This DIV is now the resizable handle */}
       <div
         style={{

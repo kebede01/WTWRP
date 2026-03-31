@@ -14,7 +14,8 @@ import DeleteModal from "../Delete/Delete";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
-import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
+// import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
+import { register, authorize, getUserInfo } from "../../utils/auth.js";
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -27,6 +28,7 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [currentUser, setCurrentUser] = useState({});
 
   const handleActiveModal = useCallback(() => {
     setActiveModal("add-garment");
@@ -42,7 +44,7 @@ function App() {
   }, []);
 
   const handleLogIn = useCallback(() => {
-    setActiveModal("login");
+ setActiveModal("login");
   }, []);
 
   const handleOpenProfileUpdate = useCallback(() => {
@@ -85,60 +87,23 @@ function App() {
     [handleCloseModal],
   );
 
-  const handleSubmitRegister = useCallback(
-    ({ avatar, name, password, email }) => {
-      console.log("App.js received:", {
-        name,
-        avatar,
-        password,
-        email,
-      });
-
-      return new Promise((resolve, reject) => {
-        const isSuccessful = true;
-
-        setTimeout(() => {
-          if (isSuccessful) {
-            const newItem = {
-              nameRegister: nameRegister, // Use 'name' instead of 'values.name'
-              avatarRegister: avatarRegister, // Use 'image' instead of 'values.image'
-              passwordRegister: passwordRegister, // Use 'weatherType' instead of 'values.weatherType'
-              emailRegister: emailRegister,
-              _id: String(Math.random()),
-            };
-
-            // setClothingItems((prevItems) => [newItem, ...prevItems]);
-            resolve(newItem);
-          } else {
-            reject("Server Error");
-          }
-        }, 1000);
-      });
-    },
-    [],
-  );
-
-  const handleSubmitLogIn = ({ email, password }) => {
-    console.log("App.js received:", { email, password });
-
-    return new Promise((resolve, reject) => {
-      const isSuccessful = true;
-
-      setTimeout(() => {
-        if (isSuccessful) {
-          const newItem = {
-            email: email, // Use 'name' instead of 'values.name'
-            password: password, // Use 'weatherType' instead of 'values.weatherType'
-            _id: String(Math.random()),
-          };
-
-          resolve(newItem);
-        } else {
-          reject("Server Error");
-        }
-      }, 1000);
+  const handleSubmitRegister = useCallback((data) => {
+    return register(data).then((data) => {
+      setCurrentUser(data);
+      console.log(data);
+    }).catch((err) => {
+      console.error(err);
     });
-  };
+  }, []);
+
+  const handleSubmitLogIn = (data) => {
+   return authorize(data).then((newdata) => {
+      console.log(newdata);
+    }).catch((err) => {
+      console.error(err);
+    })
+
+   };
 
   const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
     console.log("App.js received:", { nameProfile, avatarUrl });
@@ -177,11 +142,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getAllClothingItems()
+    // getAllClothingItems()
+    //   .then((data) => {
+    //     return data
+    //       ? setClothingItems(data)
+    //       : Promise.reject("Error: server error");
+    //   })
+    //   .catch((err) => console.error(err));
+  }, []);
+
+    useEffect(() => {
+    getUserInfo()
       .then((data) => {
-        return data
-          ? setClothingItems(data)
-          : Promise.reject("Error: server error");
+      console.log(data)
       })
       .catch((err) => console.error(err));
   }, []);

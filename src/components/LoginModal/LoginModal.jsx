@@ -20,15 +20,12 @@ export default function LoginModal({
 
   const handleSubmitModal = (e) => {
     e.preventDefault();
-      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
-    onSubmitLogIn(values)
-      .then(() => {
-        handleReset();
-        handleCloseModal();
-      })
-      .catch((err) => {
-        console.error("Failed to add item:", err);
-      });
+    // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
+   onSubmitLogIn(values)
+  .then(() => {
+    handleReset();
+    handleCloseModal();
+  });
   };
 
   const isFilled = values.email && values.password;

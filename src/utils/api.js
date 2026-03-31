@@ -1,6 +1,6 @@
 
 const BASE_URL = import.meta.env.VITE_BASE_URL ;
-const handleResponse = async (response) => {
+export const handleResponse = async (response) => {
   return response.ok
     ? await response.json()
     : Promise.reject(`Error: ${response.status}`);
