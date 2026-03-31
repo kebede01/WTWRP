@@ -4,12 +4,14 @@ import cors from 'cors';
 import path from 'path'; // <--- Add this line!
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
-import { router } from "./routes/users.js";
+import  router  from "./routes/index.js";
+import { createUser, login } from "./controllers/users.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
 
 const app = express();
+app.use(cors());
 app.use(express.json()); 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -23,8 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
   }
 })();
 
-app.use(cors());
 
+app.post("/signup", createUser);
+app.post("/login", login);
 app.use("/", router);
 
 app.listen(PORT, () => {

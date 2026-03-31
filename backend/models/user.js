@@ -1,11 +1,7 @@
+
 import mongoose from "mongoose";
-import isEmail from 'validator/lib/isEmail.js';
-import isURL from 'validator/lib/isURL.js';
-
-
-
-
-
+import isEmail from "validator/lib/isEmail.js";
+import isURL from "validator/lib/isURL.js";
 
 const userSchema = new mongoose.Schema({
   name: {
