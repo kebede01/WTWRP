@@ -9,6 +9,6 @@ import { getUser, getAllUsers, updateProfile, deleteProfile } from '../controlle
 
 router.get('/', getAllUsers);
 router.get('/:userId', getUser);
-router.patch('/:userId', updateProfile);
+router.put('/:userId', updateProfile);
 router.delete('/:userId', deleteProfile);
 export default router;
