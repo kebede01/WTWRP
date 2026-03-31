@@ -1,19 +1,166 @@
 import ClothingItem from "../models/clothingItem.js";
 
 export const createClothingItem = (req, res) => {
-  res.send({ message: "Hello, CREATE CLOTHING ITEM World!" });
- 
+  const id = req.user._id;
+  const { name, weather, image } = req.body;
+  ClothingItem.create({
+    name,
+    weather,
+    image,
+    owner: id,
+  })
+    .then((clothingItem) => {
+      res.status(201).send({
+        data: clothingItem,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ValidationError") {
+        return res.status(400).send({
+          error: "Invalid clothing item data provided.",
+        });
+      } else if (err.name === "syntaxError") {
+        return res.status(400).send({
+          error: "Invalid JSON syntax. Please check your quotes and commas.",
+        });
+      }
+       else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid item ID format.",
+        });
+      }
+      else {
+        return res.status(500).send({
+          error: "An error occurred while creating the clothing item.",
+        });
+      }
+    });
 };
-
 export const deleteClothingItem = (req, res) => {
-  res.send({ message: "Hello, DELETE CLOTHING ITEM World!" });
- 
+  const { itemId } = req.params;
+  ClothingItem.findByIdAndDelete(itemId)
+    .orFail()
+    .then(() => {
+      res.status(200).send({
+        message: "Clothing item deleted successfully.",
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "Clothing item not found.",
+        });
+      } else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid item ID format.",
+        });
+      } else if (err.name === "syntaxError") {
+        return res.status(400).send({
+          error: "Invalid JSON syntax. Please check your quotes and commas.",
+        });
+      }
+       else {
+        res.status(500).send({
+          error: "An error occurred while deleting the user.",
+        });
+      }
+    });
 };
 
-export const getClothingItem = (req, res) => { 
-  res.send({ message: "Hello, GET CLOTHING ITEM World!" });
+export const getClothingItem = (req, res) => {
+  const { itemId } = req.params;
+  ClothingItem.findById(itemId)
+    .orFail()
+    .then((clothingItem) => {
+      res.status(200).send({
+        data: clothingItem,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "Clothing item not found.",
+        });
+      } else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid item ID format.",
+        });
+      } else if (err.name === "syntaxError") {
+        return res.status(400).send({
+          error: "Invalid JSON syntax. Please check your quotes and commas.",
+        });
+      } else {
+        res.status(500).send({
+          error: "An error occurred while deleting the user.",
+        });
+      }
+    });
 };
-
 export const getClothingItems = (req, res) => {
-  res.send({ message: "Hello, GET ALL CLOTHING ITEMS World!" });
-}
+ ClothingItem.find({ owner: req.user._id }).orFail()
+    .then((clothingItems) => {
+      res.status(200).send({
+        data: clothingItems,
+      });   
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "No clothing items found for this user.",
+        }); 
+      }
+      else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid user ID format.",
+        });
+      }
+      else {
+        res.status(500).send({
+          error: "An error occurred while deleting the user.",
+        });
+      }
+    });
+
+};
+
+export const updateClothingItem = (req, res) => {
+const { itemId } = req.params;
+const { name, weather, image } = req.body;
+ClothingItem.findByIdAndUpdate(itemId, { name, weather, image }, { returnDocument: 'after', runValidators: true })
+    .orFail()
+    .then((updatedClothingItem) => {
+      res.status(200).send({
+        data: updatedClothingItem,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({
+          error: "Clothing item not found.",
+        });
+      } else if (err.name === "CastError") {
+        return res.status(400).send({
+          error: "Invalid item ID format.",
+        });
+      } else if (err.name === "ValidationError") {
+        return res.status(400).send({
+          error: "Invalid clothing item data provided.",
+        });
+      }
+       else if (err.name === "syntaxError") {
+        return res.status(400).send({
+          error: "Invalid JSON syntax. Please check your quotes and commas.",
+        });
+      }else {
+        res.status(500).send({
+          error: "An error occurred while updating the clothing item.",
+        });
+      }
+    });
+
+};

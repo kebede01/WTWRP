@@ -1,11 +1,13 @@
 # Initialize backend
 -Inside WTWRP mkdir /backend
-- npm init
 - Create .gitignore file
+- git init
+- npm init
 - Create .editorconfig file
 - Create npm install express@^5.2.1
-- npm i eslint@8 eslint-config-airbnb-base@15 eslint-plugin-import@2 --save-dev
 - Create .eslintrc.js file
+- npm i eslint@8 eslint-config-airbnb-base@15 eslint-plugin-import@2 --save-dev
+
 
 - Integrate prettier
 npm install eslint-config-prettier@8 prettier@2 --save-dev
