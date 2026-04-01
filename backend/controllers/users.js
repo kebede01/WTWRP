@@ -59,30 +59,26 @@ export const login = (req, res) => {
   }
   User.findUserByCredentials(email, password)
     .then((user) => {
-      
       if (!user) {
         return res.status(401).send({
           error: "Invalid email or password!",
         });
       }
-         // we're creating a token
-       
-      
+      // we're creating a token
       return res.status(200).send({
-        data:  jwt.sign(
-        { _id: user._id },
-        SECRET_KEY,
-        { expiresIn: 3600 } // this token will expire an hour after creation
-      ),
+        data: jwt.sign(
+          { _id: user._id },
+          SECRET_KEY,
+          { expiresIn: 3600 }, // this token will expire an hour after creation
+        ),
       });
-      
     })
     .catch((err) => {
-     console.error(err);
-    if (err.message === "Incorrect email or password") {
+      console.error(err);
+      if (err.message === "Incorrect email or password") {
         return res.status(401).send({ error: err.message });
       }
-    res.status(500).send({ error: "An error occurred during login." });
+      res.status(500).send({ error: "An error occurred during login." });
     });
 };
 

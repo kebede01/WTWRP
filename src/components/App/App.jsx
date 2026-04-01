@@ -98,7 +98,9 @@ function App() {
 
   const handleSubmitLogIn = (data) => {
    return authorize(data).then((newdata) => {
-      console.log(newdata);
+   
+     const token = newdata.data;
+     console.log(token);
     }).catch((err) => {
       console.error(err);
     })
@@ -152,11 +154,11 @@ function App() {
   }, []);
 
     useEffect(() => {
-    getUserInfo()
-      .then((data) => {
-      console.log(data)
-      })
-      .catch((err) => console.error(err));
+    // getUserInfo()
+    //   .then((data) => {
+    //   console.log(data)
+    //   })
+    //   .catch((err) => console.error(err));
   }, []);
 
   return (
