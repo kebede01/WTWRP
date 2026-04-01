@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import  indexRouter  from "./routes/index.js";
 import { createUser, login } from "./controllers/users.js";
+import auth from "./middleware/auth.js";  
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
@@ -25,14 +26,10 @@ app.use(express.static(path.join(__dirname, 'public')));
   }
 })();
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "99cbfb4a305b3bcadddd3090" // Your hardcoded ID
-  };
-  next(); // This is crucial! It passes the request to the next function.
-});; // Temporary hardcoded user ID for testing
+
 app.post("/signup", createUser);
 app.post("/login", login);
+app.use(auth); // Apply the auth middleware to all routes below this line
 app.use("/", indexRouter); // Use the index router for all routes starting with "/"
 
 app.listen(PORT, () => {
