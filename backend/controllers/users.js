@@ -1,5 +1,7 @@
 import User from "../models/user.js";
-
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+const { SECRET_KEY } = process.env;
 export const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
   if (!email || !password) {
@@ -57,15 +59,21 @@ export const login = (req, res) => {
   }
   User.findUserByCredentials(email, password)
     .then((user) => {
+      
       if (!user) {
         return res.status(401).send({
           error: "Invalid email or password!",
         });
       }
-      const userObject = user.toObject();
-      delete userObject.password;
+         // we're creating a token
+       
+      
       return res.status(200).send({
-        data: userObject,
+        data:  jwt.sign(
+        { _id: user._id },
+        SECRET_KEY,
+        { expiresIn: 3600 } // this token will expire an hour after creation
+      ),
       });
       
     })
