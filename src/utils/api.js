@@ -14,17 +14,17 @@ export const getAllClothingItems = async () => {
   const response = await fetch(`${BASE_URL}/items`, {headers});
   return handleResponse(response);
 };
-export const addClothingItem = async (itemData) => {
+export const addClothingItem = async ({name,weather, image}) => {
   const response = await fetch(`${BASE_URL}/items`, {
     method: "POST",
     headers: headers,
-    body: JSON.stringify(itemData),
+    body: JSON.stringify({name,weather, image}),
   });
   return handleResponse(response);
 };
 
 export const getClothingItem = async (itemId) => {
-  const response = await fetch(`${BASE_URL}/items/${itemId}`, {headers, method: "GET"});
+  const response = await fetch(`${BASE_URL}/items/${itemId}`, { method: "GET", headers});
   return handleResponse(response);
 }
 

@@ -23,9 +23,9 @@ export const authorize = ({ email, password }) => {
 };
 
 // getContent accepts the token as an argument.
-export const getUserInfo = () => {
+export const getUserInfo = (userId) => {
   // Send a GET request to /users/me
-  return fetch(`${BASE_URL}/user/me`, {
+  return fetch(`${BASE_URL}/user/${userId}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -37,8 +37,8 @@ export const getUserInfo = () => {
   }).then(handleResponse);
 };
 
-export const changeUserInfo = (name, avatar) => {
-  return fetch(`${BASE_URL}/user/me`, {
+export const changeUserInfo = (userId, { name, avatar }) => {
+  return fetch(`${BASE_URL}/user/${userId}`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
@@ -50,3 +50,17 @@ export const changeUserInfo = (name, avatar) => {
     body: JSON.stringify({ name, avatar}),
   }).then(handleResponse);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
