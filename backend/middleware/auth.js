@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 const { SECRET_KEY } = process.env;
 
-export const auth = (req, res, next) => {
+ const auth = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return res
@@ -24,3 +24,4 @@ export const auth = (req, res, next) => {
 
   next(); // sending the request to the next middleware
 };
+export default auth;
