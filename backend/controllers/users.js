@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-const { SECRET_KEY } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 export const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
   if (!email || !password) {
@@ -59,6 +59,7 @@ export const login = (req, res) => {
   }
   User.findUserByCredentials(email, password)
     .then((user) => {
+     
       if (!user) {
         return res.status(401).send({
           error: "Invalid email or password!",
@@ -68,7 +69,7 @@ export const login = (req, res) => {
       return res.status(200).send({
         data: jwt.sign(
           { _id: user._id },
-          SECRET_KEY,
+          NODE_ENV === "production" ? JWT_SECRET : "super-strong-secret",
           { expiresIn: 3600 }, // this token will expire an hour after creation
         ),
       });
@@ -110,8 +111,8 @@ export const getAllUsers = (req, res) => {
 };
 
 export const getCurrentUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
+  const { _id} = req.user; // we get the userId from the auth middleware
+  User.findById(_id)
     .orFail()
     .then((user) => {
       res.status(200).send({
@@ -137,10 +138,10 @@ export const getCurrentUser = (req, res) => {
 };
 
 export const updateProfile = (req, res) => {
-  const { userId } = req.params;
+  const { _id} = req.user; // we get the userId from the auth middleware
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
-    userId,
+    _id,
     { name, avatar },
     { returnDocument: "after", runValidators: true },
   )
@@ -177,8 +178,8 @@ export const updateProfile = (req, res) => {
 };
 
 export const deleteProfile = (req, res) => {
-  const { userId } = req.params;
-  User.findByIdAndDelete(userId)
+  const { _id } = req.user; // we get the userId from the auth middleware
+  User.findByIdAndDelete(_id)
     .orFail()
     .then(() => {
       res.status(200).send({
