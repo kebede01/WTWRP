@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import React from "react";
 import "./Header.css";
 import logo from "../../assets/images/logo.svg";
 import avatar from "../../assets/images/avatar.svg";
 import { NavLink } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
  function Header({
   handleActiveModal,
   handleAddRegistration,
@@ -15,6 +17,8 @@ import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
     month: "long",
     day: "numeric",
   });
+   
+ const {currentUser, isLoggedIn} = useContext(CurrentUserContext)
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -42,8 +46,8 @@ import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
         <button onClick={handleLogIn}>Log In</button>
 
         <NavLink to="/profile" className="header__navlink">
-          <p className="header__user-name">Terres Tegegne</p>
-          <img src={avatar} alt="Terres Tegegne" className="header__avatar" />
+          <p className="header__user-name">{currentUser?.name || "Terres Tegegne"}</p>
+          <img src={currentUser?.avatar || avatar} alt={currentUser?.name || "User Avatar"}className="header__avatar" />
         </NavLink>
       </div>
     </header>
