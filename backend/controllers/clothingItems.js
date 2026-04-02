@@ -20,7 +20,7 @@ export const createClothingItem = (req, res) => {
         return res.status(400).send({
           error: "Invalid clothing item data provided.",
         });
-      } else if (err.name === "syntaxError") {
+      } else if (err.name === "SyntaxError") {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
@@ -39,8 +39,18 @@ export const createClothingItem = (req, res) => {
 };
 export const deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
-  ClothingItem.findByIdAndDelete(itemId)
+  const { _id } = req.user; 
+  ClothingItem.findById(itemId)
     .orFail()
+    .then((clothingItem) => {
+      if (clothingItem.owner.toString() !== _id.toString()) {
+      // We throw a custom error to jump straight to the .catch() block
+        const forbiddenError = new Error("You are not the owner of this clothing item.");
+        forbiddenError.name = "ForbiddenError";
+        throw forbiddenError;
+      }
+      return ClothingItem.findByIdAndDelete(itemId);
+    })
     .then(() => {
       res.status(200).send({
         message: "Clothing item deleted successfully.",
@@ -56,10 +66,13 @@ export const deleteClothingItem = (req, res) => {
         return res.status(400).send({
           error: "Invalid item ID format.",
         });
-      } else if (err.name === "syntaxError") {
+      } else if (err.name === "SyntaxError") {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
+      }
+        else if (err.name === "ForbiddenError") {
+        return res.status(403).send({ error: err.message });
       }
        else {
         res.status(500).send({
@@ -88,7 +101,7 @@ export const getClothingItem = (req, res) => {
         return res.status(400).send({
           error: "Invalid item ID format.",
         });
-      } else if (err.name === "syntaxError") {
+      } else if (err.name === "SyntaxError") {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
@@ -100,6 +113,7 @@ export const getClothingItem = (req, res) => {
     });
 };
 export const getClothingItems = (req, res) => {
+  // We use req.user._id to find clothing items that belong to the authenticated user
  ClothingItem.find({ owner: req.user._id }).orFail()
     .then((clothingItems) => {
       res.status(200).send({
@@ -152,7 +166,7 @@ ClothingItem.findByIdAndUpdate(itemId, { name, weather, image }, { returnDocumen
           error: "Invalid clothing item data provided.",
         });
       }
-       else if (err.name === "syntaxError") {
+       else if (err.name === "SyntaxError") {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });

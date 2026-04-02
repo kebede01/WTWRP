@@ -75,8 +75,13 @@ export const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.message === "Incorrect email or password") {
+      if (err.message.includes("Incorrect email or password")) {
         return res.status(401).send({ error: err.message });
+      }
+      if (err.name === "ValidationError") {
+        return res.status(400).send({
+          error: "Invalid data provided for login.",
+        });
       }
       res.status(500).send({ error: "An error occurred during login." });
     });
@@ -104,7 +109,7 @@ export const getAllUsers = (req, res) => {
     });
 };
 
-export const getUser = (req, res) => {
+export const getCurrentUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
     .orFail()
