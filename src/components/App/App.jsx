@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -14,8 +14,11 @@ import DeleteModal from "../Delete/Delete";
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
+import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 // import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
 import { register, authorize, getUserInfo } from "../../utils/auth.js";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
+import * as tokenStore from "../../utils/token.js";
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -29,6 +32,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [currentUser, setCurrentUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleActiveModal = useCallback(() => {
     setActiveModal("add-garment");
@@ -44,7 +48,7 @@ function App() {
   }, []);
 
   const handleLogIn = useCallback(() => {
- setActiveModal("login");
+    setActiveModal("login");
   }, []);
 
   const handleOpenProfileUpdate = useCallback(() => {
@@ -87,25 +91,49 @@ function App() {
     [handleCloseModal],
   );
 
-  const handleSubmitRegister = useCallback((data) => {
-    return register(data).then((data) => {
-      setCurrentUser(data);
-      console.log(data);
-    }).catch((err) => {
-      console.error(err);
-    });
-  }, []);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleSubmitLogIn = useCallback(
+    ({ email, password }) => {
+      if (!email || !password) {
+        return;
+      }
+      return authorize({ email, password })
+        .then((newdata) => {
+          tokenStore.setToken(newdata.data); //storing token in localStorage
 
-  const handleSubmitLogIn = (data) => {
-   return authorize(data).then((newdata) => {
-   
-     const token = newdata.data;
-     console.log(token);
-    }).catch((err) => {
-      console.error(err);
-    })
+          return getUserInfo(newdata.data).then((value) => {
+            console.log("VALUE:", value);
+            setIsLoggedIn(true);
+            setCurrentUser(value.data);
+            // Smart redirection logic
+            const from = location.state?.from?.pathname || "/profile";
+            navigate(from);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    [navigate, location, setIsLoggedIn, setCurrentUser],
+  );
 
-   };
+  const handleSubmitRegister = useCallback(
+    ({ name, avatar, email, password }) => {
+      return register({ name, avatar, email, password })
+        .then(() => {
+          return handleSubmitLogIn({ email, password });
+        })
+        .then(() => {
+          // This only runs after a successful login
+          handleCloseModal();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    [handleSubmitLogIn, handleCloseModal],
+  );
 
   const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
     console.log("App.js received:", { nameProfile, avatarUrl });
@@ -153,7 +181,7 @@ function App() {
     //   .catch((err) => console.error(err));
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     // getUserInfo()
     //   .then((data) => {
     //   console.log(data)
@@ -165,84 +193,89 @@ function App() {
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
     >
-      <div className="page">
-        <div className="page__content">
-          <Header
-            handleActiveModal={handleActiveModal}
-            handleAddRegistration={handleAddRegistration}
-            handleLogIn={handleLogIn}
-            weatherData={weatherData}
-          />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Main
-                  clothingItems={clothingItems}
-                  weatherData={weatherData}
-                  handlePreviewModal={handlePreviewModal}
-                />
-              }
+      <CurrentUserContext.Provider value={{ currentUser, isLoggedIn }}>
+        <div className="page">
+          <div className="page__content">
+            <Header
+              handleActiveModal={handleActiveModal}
+              handleAddRegistration={handleAddRegistration}
+              handleLogIn={handleLogIn}
+              weatherData={weatherData}
             />
-            <Route
-              path="/profile"
-              element={
-                <Profile
-                  clothingItems={clothingItems}
-                  handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
-                  handleOpenProfileUpdate={handleOpenProfileUpdate}
-                />
-              }
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    clothingItems={clothingItems}
+                    weatherData={weatherData}
+                    handlePreviewModal={handlePreviewModal}
+                  />
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile
+                      clothingItems={clothingItems}
+                      handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
+                      handleOpenProfileUpdate={handleOpenProfileUpdate}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+
+            <AddItemModal
+              handleCloseModal={handleCloseModal}
+              title="New garment"
+              buttonText="Add garment"
+              isOpen={activeModal === "add-garment"}
+              onSubmitAddItem={handleSubmitAddItem}
             />
-          </Routes>
+            <PreviewItemModal
+              handleCloseModal={handleCloseModal}
+              buttonText="Delete card"
+              title="Image preview"
+              selectedCard={selectedCard}
+              isOpen={activeModal === "preview"}
+              onSubmitDelete={handleDeleteModalOpen}
+            />
 
-          <AddItemModal
-            handleCloseModal={handleCloseModal}
-            title="New garment"
-            buttonText="Add garment"
-            isOpen={activeModal === "add-garment"}
-            onSubmitAddItem={handleSubmitAddItem}
-          />
-          <PreviewItemModal
-            handleCloseModal={handleCloseModal}
-            buttonText="Delete card"
-            title="Image preview"
-            selectedCard={selectedCard}
-            isOpen={activeModal === "preview"}
-            onSubmitDelete={handleDeleteModalOpen}
-          />
-          <RegisterModal
-            handleCloseModal={handleCloseModal}
-            title="Register"
-            buttonText="Register"
-            isOpen={activeModal === "register"}
-            onSubmitRegister={handleSubmitRegister}
-          />
+            <RegisterModal
+              handleCloseModal={handleCloseModal}
+              title="Register"
+              buttonText="Register"
+              isOpen={activeModal === "register"}
+              onSubmitRegister={handleSubmitRegister}
+            />
 
-          <LoginModal
-            handleCloseModal={handleCloseModal}
-            title="Log In"
-            buttonText="Log In"
-            isOpen={activeModal === "login"}
-            onSubmitLogIn={handleSubmitLogIn}
-          />
+            <LoginModal
+              handleCloseModal={handleCloseModal}
+              title="Log In"
+              buttonText="Log In"
+              isOpen={activeModal === "login"}
+              onSubmitLogIn={handleSubmitLogIn}
+            />
 
-          <ProfileEditModal
-            handleCloseModal={handleCloseModal}
-            title="Edit Profile"
-            buttonText="Edit profile"
-            isOpen={activeModal === "profile"}
-            onProfileUpdate={handleProfileUpdate}
-          />
-          <DeleteModal
-            handleCloseModal={handleCloseModal}
-            isOpen={activeModal === "delete"}
-            onDeleteClothingtem={handleDeleteClothingtem}
-            selectedCard={selectedCard}
-          />
-          <VideoPlayer />
+            <ProfileEditModal
+              handleCloseModal={handleCloseModal}
+              title="Edit Profile"
+              buttonText="Edit profile"
+              isOpen={activeModal === "profile"}
+              onProfileUpdate={handleProfileUpdate}
+            />
+            <DeleteModal
+              handleCloseModal={handleCloseModal}
+              isOpen={activeModal === "delete"}
+              onDeleteClothingtem={handleDeleteClothingtem}
+              selectedCard={selectedCard}
+            />
+            <VideoPlayer />
+          </div>
         </div>
-      </div>
+      </CurrentUserContext.Provider>
     </CurrentTemperatureUnitContext.Provider>
   );
 }
