@@ -39,8 +39,9 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleActiveModal = useCallback(() => {
@@ -53,22 +54,21 @@ function App() {
   }, []);
 
   const handleAddRegistration = useCallback(() => {
-   navigate("/register");
+    navigate("/register");
   }, [navigate]);
 
   const handleLogIn = useCallback(() => {
     // Instead of setActiveModal("login"), we move the user to the route
-  navigate("/login");
+    navigate("/login");
   }, [navigate]);
 
   const handleCloseModal = useCallback(() => {
-  navigate("/");
+    navigate("/");
   }, [navigate]);
 
   const handleOpenProfileUpdate = useCallback(() => {
     setActiveModal("profile");
   }, []);
-
 
   const handleSubmitAddItem = useCallback(
     (data) => {
@@ -102,8 +102,6 @@ function App() {
     },
     [handleCloseModal],
   );
-
- 
 
   const handleSubmitLogIn = useCallback(
     ({ email, password }) => {
@@ -194,15 +192,29 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // getUserInfo()
-    //   .then((data) => {
-    //   console.log(data)
-    //   })
-    //   .catch((err) => console.error(err));
-  }, []);
+    // Calling setState synchronously within an effect can trigger cascading renders so, define a function to handle the wrap-up
+    const jwt = tokenStore.getToken(); // Or however you retrieve it from localStorage
+   const finishLoading = (loggedIn = false, user = {}) => {
+    setIsLoggedIn(loggedIn);
+    setCurrentUser(user);
+    setIsLoading(false);
+  };
 
+  if (!jwt) {
+    finishLoading(false); 
+    return;
+  }
 
-
+  getUserInfo(jwt)
+    .then((res) => {
+      finishLoading(true, res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+      tokenStore.removeToken();
+      finishLoading(false);
+    });
+  }, []); // Runs only once on mount
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -216,61 +228,79 @@ function App() {
               handleLogIn={handleLogIn}
               weatherData={weatherData}
             />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main
-                    clothingItems={clothingItems}
-                    weatherData={weatherData}
-                    handlePreviewModal={handlePreviewModal}
-                  />
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile
+            {isLoading ? (
+              <div className="loading-spinner">
+                <p>Loading your closet...</p>
+                {/* You can replace this with a real Spinner component */}
+              </div>
+            ) : (
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Main
                       clothingItems={clothingItems}
-                      handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
-                      handleOpenProfileUpdate={handleOpenProfileUpdate}
+                      weatherData={weatherData}
+                      handlePreviewModal={handlePreviewModal}
                     />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <LoginModal
-                   handleCloseModal={handleCloseModal}
-                    title="Log In"
-                    buttonText="Log In"
-                    isOpen={true}
-                    onSubmitLogIn={handleSubmitLogIn}
-                  />
-                }
-              />
-              <Route path="/register" element={
-                 <RegisterModal
-             handleCloseModal={handleCloseModal}
-              title="Register"
-              buttonText="Register"
-              isOpen={true}
-              onSubmitRegister={handleSubmitRegister}
-            />
-              } />
-              <Route
-                path="*"
-                element={
-                  isLoggedIn ? (
-                    <Navigate to={"/profile"} />
-                  ) : (
-                    <Navigate to={"/login"} />
-                  )
-                }
-              />
-            </Routes>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile
+                        clothingItems={clothingItems}
+                        handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
+                        handleOpenProfileUpdate={handleOpenProfileUpdate}
+                      />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    isLoggedIn ? (
+                      <Navigate to="/profile" replace />
+                    ) : (
+                      <LoginModal
+                        handleCloseModal={handleCloseModal}
+                        title="Log In"
+                        buttonText="Log In"
+                        isOpen={true}
+                        onSubmitLogIn={handleSubmitLogIn}
+                      />
+                    )
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    isLoggedIn ? (
+                      <Navigate to="/profile" replace />
+                    ) : (
+                      <RegisterModal
+                        handleCloseModal={handleCloseModal}
+                        title="Register"
+                        buttonText="Register"
+                        isOpen={true}
+                        onSubmitRegister={handleSubmitRegister}
+                      />
+                    )
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    isLoggedIn ? (
+                      <Navigate to={"/profile"} replace />
+                    ) : (
+                      <Navigate to={"/login"} replace />
+                    )
+                  }
+                />
+              </Routes>
+            )}
 
             <AddItemModal
               handleCloseModal={handleCloseModal}
@@ -288,7 +318,6 @@ function App() {
               onSubmitDelete={handleDeleteModalOpen}
             />
 
-           
             <ProfileEditModal
               handleCloseModal={handleCloseModal}
               title="Edit Profile"
