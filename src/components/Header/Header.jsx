@@ -6,19 +6,19 @@ import avatar from "../../assets/images/avatar.svg";
 import { NavLink } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
- function Header({
+function Header({
   handleActiveModal,
   handleAddRegistration,
   handleLogIn,
- weatherData,
+  weatherData,
 }) {
   const date = new Date();
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
   });
-   
- const {currentUser, isLoggedIn} = useContext(CurrentUserContext)
+
+  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -33,7 +33,6 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
       </div>
 
       <div className="header__section header__section_right">
-      
         <button
           type="button"
           className="header__button"
@@ -41,14 +40,25 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
         >
           + Add clothing
         </button>
-          <ToggleSwitch/>
-        <button onClick={handleAddRegistration}>Register</button>
-        <button onClick={handleLogIn}>Log In</button>
+        <ToggleSwitch />
 
-        <NavLink to="/profile" className="header__navlink">
-          <p className="header__user-name">{currentUser?.name || "Terres Tegegne"}</p>
-          <img src={currentUser?.avatar || avatar} alt={currentUser?.name || "User Avatar"}className="header__avatar" />
-        </NavLink>
+        {isLoggedIn ? (
+          <NavLink to="/profile" className="header__navlink">
+            <p className="header__user-name">
+              {currentUser?.name || "Terres Tegegne"}
+            </p>
+            <img
+              src={currentUser?.avatar || avatar}
+              alt={currentUser?.name || "User Avatar"}
+              className="header__avatar"
+            />
+          </NavLink>
+        ) : (
+          <div>
+            <button onClick={handleAddRegistration}>  Sign up</button>
+            <button onClick={handleLogIn}>Sign in</button>
+          </div>
+        )}
       </div>
     </header>
   );
