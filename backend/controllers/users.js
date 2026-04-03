@@ -66,15 +66,22 @@ export const login = (req, res) => {
         });
       }
       // we're creating a token
-      return res.status(200).send({
-        data: jwt.sign(
-          { _id: user._id },
-          NODE_ENV === "production" ? JWT_SECRET : "super-strong-secret",
-          { expiresIn: 3600 }, // this token will expire an hour after creation
-        ),
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === "production" ? JWT_SECRET : "super-strong-secret",
+        { expiresIn: "7d" } // 1 hour is short for a cookie; 7d is more common
+      );
+      // Set the Cookie
+      res.cookie("jwt", token, {
+        maxAge: 3600000 * 24 * 7, // 7 days in milliseconds
+        httpOnly: true,           // Security: JavaScript cannot read this cookie
+        sameSite: "Lax",          // Security: CSRF protection
+        secure: NODE_ENV === "production", // Security: Only send over HTTPS in prod
       });
+      // Send a success message (No token in the body!)
+      return res.status(200).send({ message: "Login successful" });
     })
-    .catch((err) => {
+     .catch((err) => {
       console.error(err);
       if (err.message.includes("Incorrect email or password")) {
         return res.status(401).send({ error: err.message });
@@ -88,6 +95,14 @@ export const login = (req, res) => {
     });
 };
 
+export const logout = (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,   
+    sameSite: "Lax",
+    secure: NODE_ENV === "production",
+  });
+  res.status(200).send({ message: "Logout successful" });
+}
 export const getAllUsers = (req, res) => {
   User.find({})
     .orFail()

@@ -8,12 +8,12 @@ if (NODE_ENV === "production" && !JWT_SECRET) {
   );
 }
 const auth = (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith("Bearer ")) {
+  // Look for the cookie instead of the header
+  const token = req.cookies.jwt;
+  if (!token) {
     return res.status(401).send({ message: "Authorization Required" });
   }
 
-  const token = authorization.replace("Bearer ", "");
   let payload;
 
   try {

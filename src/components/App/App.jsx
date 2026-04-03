@@ -22,7 +22,7 @@ import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 // import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
-import { register, authorize, getUserInfo } from "../../utils/auth.js";
+import { register, authorize, getUserInfo, signOut } from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import * as tokenStore from "../../utils/token.js";
 function App() {
@@ -71,13 +71,19 @@ function App() {
   }, []);
 
   // function to logout
-  const logOut = () => {
-    tokenStore.removeToken();
-    setCurrentUser({});
-    setIsLoggedIn(false);
-    navigate("/");
-  };
-
+  const logOut = useCallback(() => {
+  signOut() // Call the API function we just made
+    .then(() => {
+     setIsLoggedIn(false);
+      setCurrentUser({});
+       navigate("/");
+       console.log("User logged out successfully");
+    })
+    .catch((err) => {
+      console.error("Logout failed:", err);
+    });
+  }, [navigate]);
+  
   const handleSubmitAddItem = useCallback(
     (data) => {
       // We MUST return the fetch call so the Modal can use .then()
