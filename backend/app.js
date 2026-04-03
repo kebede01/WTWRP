@@ -9,6 +9,7 @@ import  indexRouter  from "./routes/index.js";
 import { createUser, login } from "./controllers/users.js";
 import auth from "./middleware/auth.js";  
 import { logout } from './controllers/users.js';
+import { limiter, authLimiter } from "../utils/rateLimit.js";  
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
@@ -16,11 +17,13 @@ const { PORT = 4000, MONGO_URI } = process.env;
 const app = express();
 app.use(cors({
   origin: 'http://localhost:3000',
-  credentials: true,               // This allows the browser to send/receive cookies
+  credentials: true,               
 }));
+app.use(express.static(path.join(__dirname, 'public')));//Now images don't count toward the 100-request limit
+app.use(limiter); // Apply the rate limiter middleware to all routes below this line
 app.use(express.json()); 
-app.use(cookieParser()); // Parses cookies into req.cookies
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser()); 
+
 
 (async () => { 
   try {
@@ -33,8 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 })();
 
 
-app.post("/signup", createUser);
-app.post("/login", login);
+app.post("/signup", authLimiter, createUser);
+app.post("/login", authLimiter, login);
 app.post("/logout", logout);
 app.use(auth); // Apply the auth middleware to all routes below this line
 app.use("/", indexRouter); // Use the index router for all routes starting with "/"
