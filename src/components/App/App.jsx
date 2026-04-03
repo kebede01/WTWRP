@@ -111,14 +111,12 @@ function App() {
       return authorize({ email, password })
         .then((newdata) => {
           tokenStore.setToken(newdata.data); //storing token in localStorage
-
           return getUserInfo(newdata.data).then((value) => {
-            console.log("VALUE:", value);
             setIsLoggedIn(true);
             setCurrentUser(value.data);
             // Smart redirection logic
-            const from = location.state?.from?.pathname || "/profile";
-            navigate(from);
+            const redirectedPath = location.state?.from?.pathname || "/profile";
+            navigate(redirectedPath);
           });
         })
         .catch((err) => {
@@ -194,26 +192,26 @@ function App() {
   useEffect(() => {
     // Calling setState synchronously within an effect can trigger cascading renders so, define a function to handle the wrap-up
     const jwt = tokenStore.getToken(); // Or however you retrieve it from localStorage
-   const finishLoading = (loggedIn = false, user = {}) => {
-    setIsLoggedIn(loggedIn);
-    setCurrentUser(user);
-    setIsLoading(false);
-  };
+    const finishLoading = (loggedIn = false, user = {}) => {
+      setIsLoggedIn(loggedIn);
+      setCurrentUser(user);
+      setIsLoading(false);
+    };
 
-  if (!jwt) {
-    finishLoading(false); 
-    return;
-  }
-
-  getUserInfo(jwt)
-    .then((res) => {
-      finishLoading(true, res.data);
-    })
-    .catch((err) => {
-      console.error(err);
-      tokenStore.removeToken();
+    if (!jwt) {
       finishLoading(false);
-    });
+      return;
+    }
+
+    getUserInfo(jwt)
+      .then((res) => {
+        finishLoading(true, res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        tokenStore.removeToken();
+        finishLoading(false);
+      });
   }, []); // Runs only once on mount
   return (
     <CurrentTemperatureUnitContext.Provider
@@ -260,9 +258,7 @@ function App() {
                 <Route
                   path="/login"
                   element={
-                    isLoggedIn ? (
-                      <Navigate to="/profile" replace />
-                    ) : (
+                    <ProtectedRoute anonymous>
                       <LoginModal
                         handleCloseModal={handleCloseModal}
                         title="Log In"
@@ -270,15 +266,14 @@ function App() {
                         isOpen={true}
                         onSubmitLogIn={handleSubmitLogIn}
                       />
-                    )
+                    </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/register"
                   element={
-                    isLoggedIn ? (
-                      <Navigate to="/profile" replace />
-                    ) : (
+                    <ProtectedRoute anonymous>
                       <RegisterModal
                         handleCloseModal={handleCloseModal}
                         title="Register"
@@ -286,7 +281,7 @@ function App() {
                         isOpen={true}
                         onSubmitRegister={handleSubmitRegister}
                       />
-                    )
+                    </ProtectedRoute>
                   }
                 />
                 <Route

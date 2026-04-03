@@ -4,16 +4,17 @@ import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
 export default function ProtectedRoute({ children, anonymous = false }) {
   const location = useLocation();
-  const from = location.state?.from || "/";
 
   const { isLoggedIn } = useContext(CurrentUserContext);
 
   if (anonymous && isLoggedIn) {
+    // Forces a logged-in user to stay exactly where they are.
+    const from = location.state?.from?.pathname || "/";
     return <Navigate to={from} />;
   }
 
   if (!anonymous && !isLoggedIn) {
-    return <Navigate to="/" state={{ from: location }} />;
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
   return children;
