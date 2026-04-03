@@ -21,10 +21,10 @@ import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
-// import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
+import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
 import { register, authorize, getUserInfo, signOut } from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
-import * as tokenStore from "../../utils/token.js";
+
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -63,6 +63,7 @@ function App() {
   }, [navigate]);
 
   const handleCloseModal = useCallback(() => {
+    setActiveModal("");
     navigate("/");
   }, [navigate]);
 
@@ -72,28 +73,28 @@ function App() {
 
   // function to logout
   const logOut = useCallback(() => {
-  signOut() // Call the API function we just made
-    .then(() => {
-     setIsLoggedIn(false);
-      setCurrentUser({});
-       navigate("/");
-       console.log("User logged out successfully");
-    })
-    .catch((err) => {
-      console.error("Logout failed:", err);
-    });
+    signOut() // Call the API function we just made
+      .then(() => {
+        setIsLoggedIn(false);
+        setCurrentUser({});
+        navigate("/");
+        console.log("User logged out successfully");
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err);
+      });
   }, [navigate]);
-  
+
   const handleSubmitAddItem = useCallback(
     (data) => {
       // We MUST return the fetch call so the Modal can use .then()
       return addClothingItem(data)
         .then((newItem) => {
           // SUCCESS: Update the local state so the new card appears!
-          setClothingItems((prevItems) => [newItem, ...prevItems]);
+          setClothingItems((prevItems) => [newItem.data, ...prevItems]);
 
           // Return newItem again so the NEXT .then() in the Modal gets the data
-          return newItem;
+          return newItem.data;
         })
         .catch((err) => {
           console.error("API Error:", err);
@@ -124,7 +125,7 @@ function App() {
       }
       return authorize({ email, password })
         .then((newdata) => {
-          tokenStore.setToken(newdata.data); //storing token in localStorage
+          // tokenStore.setToken(newdata.data); //storing token in localStorage
           return getUserInfo(newdata.data).then((value) => {
             setIsLoggedIn(true);
             setCurrentUser(value.data);
@@ -194,36 +195,28 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // getAllClothingItems()
-    //   .then((data) => {
-    //     return data
-    //       ? setClothingItems(data)
-    //       : Promise.reject("Error: server error");
-    //   })
-    //   .catch((err) => console.error(err));
+    getAllClothingItems()
+      .then((value) => {
+        return value
+          ? setClothingItems(value.data)
+          : Promise.reject("Error: server error");
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
-    // Calling setState synchronously within an effect can trigger cascading renders so, define a function to handle the wrap-up
-    const jwt = tokenStore.getToken(); // Or however you retrieve it from localStorage
     const finishLoading = (loggedIn = false, user = {}) => {
       setIsLoggedIn(loggedIn);
       setCurrentUser(user);
       setIsLoading(false);
     };
-
-    if (!jwt) {
-      finishLoading(false);
-      return;
-    }
-
-    getUserInfo(jwt)
+    getUserInfo()
       .then((res) => {
-        finishLoading(true, res.data);
+        finishLoading(true, res.data || res);
       })
       .catch((err) => {
-        console.error(err);
-        tokenStore.removeToken();
+        // 401 means the cookie was missing, expired, or invalid
+        console.log("Check token failed or no session exists:", err);
         finishLoading(false);
       });
   }, []); // Runs only once on mount

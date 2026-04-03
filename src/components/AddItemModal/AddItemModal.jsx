@@ -22,32 +22,25 @@ const AddItemModal = ({
   };
 
   const handleSubmitModal = (e) => {
-   e.preventDefault(); 
-  // Map 'image' to 'imageUrl' before sending it to the server
+    e.preventDefault();
+
     const itemData = {
       name: values.name,
       weather: values.weather,
-      imageUrl: values.image, // Translation happens here!
+      image: values.image, // Translation happens here!
     };
-    // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
-   e.preventDefault();
-    console.log("1. Modal Submit Clicked");
 
     onSubmitAddItem(itemData)
-      .then((data) => {
-       
-        console.log(data);
-        console.log("2. Promise Resolved in Modal");
-        handleReset();
-        console.log("Baton received in Modal!", data);
-        handleCloseModal();
+      .then(() => {
+        handleClose();
       })
       .catch((err) => {
         console.log("3. Promise Rejected in Modal", err);
       });
   };
 
- const isFilled = values.name && (values.image || values.imageUrl) && values.weather;
+  const isFilled =
+    values.name && (values.image || values.imageUrl) && values.weather;
 
   return (
     <ModalWithForm
