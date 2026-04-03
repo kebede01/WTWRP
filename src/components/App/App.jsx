@@ -1,5 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -34,6 +40,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+ const navigate = useNavigate();
+  const location = useLocation();
+
   const handleActiveModal = useCallback(() => {
     setActiveModal("add-garment");
   }, []);
@@ -44,19 +53,22 @@ function App() {
   }, []);
 
   const handleAddRegistration = useCallback(() => {
-    setActiveModal("register");
-  }, []);
+   navigate("/register");
+  }, [navigate]);
 
   const handleLogIn = useCallback(() => {
-    setActiveModal("login");
-  }, []);
+    // Instead of setActiveModal("login"), we move the user to the route
+  navigate("/login");
+  }, [navigate]);
+
+  const handleCloseModal = useCallback(() => {
+  navigate("/");
+  }, [navigate]);
 
   const handleOpenProfileUpdate = useCallback(() => {
     setActiveModal("profile");
   }, []);
-  const handleCloseModal = useCallback(() => {
-    setActiveModal("");
-  }, []);
+
 
   const handleSubmitAddItem = useCallback(
     (data) => {
@@ -91,8 +103,8 @@ function App() {
     [handleCloseModal],
   );
 
-  const navigate = useNavigate();
-  const location = useLocation();
+ 
+
   const handleSubmitLogIn = useCallback(
     ({ email, password }) => {
       if (!email || !password) {
@@ -189,6 +201,8 @@ function App() {
     //   .catch((err) => console.error(err));
   }, []);
 
+
+
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -225,6 +239,37 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/login"
+                element={
+                  <LoginModal
+                   handleCloseModal={handleCloseModal}
+                    title="Log In"
+                    buttonText="Log In"
+                    isOpen={true}
+                    onSubmitLogIn={handleSubmitLogIn}
+                  />
+                }
+              />
+              <Route path="/register" element={
+                 <RegisterModal
+             handleCloseModal={handleCloseModal}
+              title="Register"
+              buttonText="Register"
+              isOpen={true}
+              onSubmitRegister={handleSubmitRegister}
+            />
+              } />
+              <Route
+                path="*"
+                element={
+                  isLoggedIn ? (
+                    <Navigate to={"/profile"} />
+                  ) : (
+                    <Navigate to={"/login"} />
+                  )
+                }
+              />
             </Routes>
 
             <AddItemModal
@@ -243,22 +288,7 @@ function App() {
               onSubmitDelete={handleDeleteModalOpen}
             />
 
-            <RegisterModal
-              handleCloseModal={handleCloseModal}
-              title="Register"
-              buttonText="Register"
-              isOpen={activeModal === "register"}
-              onSubmitRegister={handleSubmitRegister}
-            />
-
-            <LoginModal
-              handleCloseModal={handleCloseModal}
-              title="Log In"
-              buttonText="Log In"
-              isOpen={activeModal === "login"}
-              onSubmitLogIn={handleSubmitLogIn}
-            />
-
+           
             <ProfileEditModal
               handleCloseModal={handleCloseModal}
               title="Edit Profile"
