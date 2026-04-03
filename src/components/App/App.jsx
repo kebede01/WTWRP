@@ -70,6 +70,14 @@ function App() {
     setActiveModal("profile");
   }, []);
 
+  // function to logout
+  const logOut = () => {
+    tokenStore.removeToken();
+    setCurrentUser({});
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
   const handleSubmitAddItem = useCallback(
     (data) => {
       // We MUST return the fetch call so the Modal can use .then()
@@ -251,6 +259,7 @@ function App() {
                         clothingItems={clothingItems}
                         handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
                         handleOpenProfileUpdate={handleOpenProfileUpdate}
+                        logOut={logOut}
                       />
                     </ProtectedRoute>
                   }

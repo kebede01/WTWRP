@@ -1,7 +1,7 @@
 import React from "react";
 import "./SideBar.css";
 import avatar from "../../assets/images/avatar.svg";
-function SideBar({ handleProfileOpen }) {
+function SideBar({ handleProfileOpen, logOut}) {
   return (
     <section className="side-bar">
       <div className="side-bar__header">
@@ -20,6 +20,7 @@ function SideBar({ handleProfileOpen }) {
         <button
           type="button"
           className="side-bar__button-logout side-bar__button"
+          onClick={logOut}
         >
           Log out
         </button>
