@@ -1,10 +1,14 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-export const handleResponse = async (response) => {
-  return response.ok
-    ? await response.json()
-    : Promise.reject(`Error: ${response.status}`);
-};
 
+export const handleResponse = async (response) => {
+  if (response.ok) {
+    return await response.json();
+  }
+  // If NOT ok, we reach into the body to find the server's error message
+  const errorData = await response.json();
+  // We reject with the whole object { error: "..." } or { message: "..." }
+  return Promise.reject(errorData);
+};
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",

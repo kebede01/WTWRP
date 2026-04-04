@@ -136,6 +136,7 @@ function App() {
         })
         .catch((err) => {
           console.error(err);
+          throw err; // <--- CRITICAL: This allows LoginModal to see the 429 error
         });
     },
     [navigate, location, setIsLoggedIn, setCurrentUser],
