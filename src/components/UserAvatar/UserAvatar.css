@@ -1,0 +1,41 @@
+.avatar-image, 
+.avatar-placeholder {
+  width: 40px;  
+  height: 40px;
+  border-radius: 50%; 
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  background-color: #563d7c; /* A nice purple or brand color */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.header__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* This creates the circle */
+  object-fit: cover;   /* Prevents actual images from stretching */
+  
+  /* Placeholder specific styles */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #563d7c; /* Brand color */
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.header__avatar:hover {
+  opacity: 0.8;
+}
