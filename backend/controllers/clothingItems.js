@@ -24,13 +24,11 @@ export const createClothingItem = (req, res) => {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
-      }
-       else if (err.name === "CastError") {
+      } else if (err.name === "CastError") {
         return res.status(400).send({
           error: "Invalid item ID format.",
         });
-      }
-      else {
+      } else {
         return res.status(500).send({
           error: "An error occurred while creating the clothing item.",
         });
@@ -39,13 +37,15 @@ export const createClothingItem = (req, res) => {
 };
 export const deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
-  const { _id } = req.user; 
+  const { _id } = req.user;
   ClothingItem.findById(itemId)
     .orFail()
     .then((clothingItem) => {
       if (clothingItem.owner.toString() !== _id.toString()) {
-      // We throw a custom error to jump straight to the .catch() block
-        const forbiddenError = new Error("You are not the owner of this clothing item.");
+        // We throw a custom error to jump straight to the .catch() block
+        const forbiddenError = new Error(
+          "You are not the owner of this clothing item.",
+        );
         forbiddenError.name = "ForbiddenError";
         throw forbiddenError;
       }
@@ -70,11 +70,9 @@ export const deleteClothingItem = (req, res) => {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
-      }
-        else if (err.name === "ForbiddenError") {
+      } else if (err.name === "ForbiddenError") {
         return res.status(403).send({ error: err.message });
-      }
-       else {
+      } else {
         res.status(500).send({
           error: "An error occurred while deleting the user.",
         });
@@ -112,39 +110,41 @@ export const getClothingItem = (req, res) => {
       }
     });
 };
+
 export const getClothingItems = (req, res) => {
-  // We use req.user._id to find clothing items that belong to the authenticated user
- ClothingItem.find({ owner: req.user._id }).orFail()
+  ClothingItem.find({})
+    .orFail()
     .then((clothingItems) => {
       res.status(200).send({
         data: clothingItems,
-      });   
+      });
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(404).send({
           error: "No clothing items found for this user.",
-        }); 
-      }
-      else if (err.name === "CastError") {
+        });
+      } else if (err.name === "CastError") {
         return res.status(400).send({
           error: "Invalid user ID format.",
         });
-      }
-      else {
+      } else {
         res.status(500).send({
           error: "An error occurred while deleting the user.",
         });
       }
     });
-
 };
 
 export const updateClothingItem = (req, res) => {
-const { itemId } = req.params;
-const { name, weather, image } = req.body;
-ClothingItem.findByIdAndUpdate(itemId, { name, weather, image }, { returnDocument: 'after', runValidators: true })
+  const { itemId } = req.params;
+  const { name, weather, image } = req.body;
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { name, weather, image },
+    { returnDocument: "after", runValidators: true },
+  )
     .orFail()
     .then((updatedClothingItem) => {
       res.status(200).send({
@@ -165,16 +165,14 @@ ClothingItem.findByIdAndUpdate(itemId, { name, weather, image }, { returnDocumen
         return res.status(400).send({
           error: "Invalid clothing item data provided.",
         });
-      }
-       else if (err.name === "SyntaxError") {
+      } else if (err.name === "SyntaxError") {
         return res.status(400).send({
           error: "Invalid JSON syntax. Please check your quotes and commas.",
         });
-      }else {
+      } else {
         res.status(500).send({
           error: "An error occurred while updating the clothing item.",
         });
       }
     });
-
 };

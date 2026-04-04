@@ -20,7 +20,7 @@ function WeatherCard({ weatherData }) {
   const weatherOption = foundOption || fallback;
   return (
     <section className="weather-card">
-      <p className="weather-card__text">{`${weatherData.temp["°F"]} ${currentTemperatureUnit}`}</p>
+      <p className="weather-card__text">{`${weatherData.temp[currentTemperatureUnit]} ${currentTemperatureUnit}`}</p>
       <img src={weatherOption?.url} alt={`${weatherOption?.condition}-weather-image`} className="weather-card__img" />
     </section>
   );

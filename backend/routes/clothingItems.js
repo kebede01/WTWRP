@@ -1,12 +1,18 @@
 import { Router } from "express";
-import { createClothingItem, deleteClothingItem, getClothingItem, getClothingItems, updateClothingItem} from "../controllers/clothingItems.js";
-
+import {
+  createClothingItem,
+  deleteClothingItem,
+  getClothingItem,
+  getClothingItems,
+  updateClothingItem,
+} from "../controllers/clothingItems.js";
+import auth from "../middleware/auth.js";
 
 const router = Router();
-router.post("/", createClothingItem);
-router.get("/", getClothingItems);
- 
 
+router.get("/", getClothingItems);
+router.use(auth); // Apply the auth middleware to all routes below this line
+router.post("/", createClothingItem);
 router.get("/:itemId", getClothingItem);
 
 router.delete("/:itemId", deleteClothingItem);

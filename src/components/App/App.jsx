@@ -36,7 +36,7 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("°F");
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -216,7 +216,7 @@ function App() {
       })
       .catch((err) => {
         // 401 means the cookie was missing, expired, or invalid
-        console.log("Check token failed or no session exists:", err);
+        console.error(err);
         finishLoading(false);
       });
   }, []); // Runs only once on mount

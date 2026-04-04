@@ -23,7 +23,7 @@ onSubmitDelete(selectedCard)
      onSubmitDelete={handleDeletion}
     >
       <img
-        src={selectedCard.imageUrl}
+        src={selectedCard.image}
         alt={selectedCard.name}
         className="modal__preview-img"
       ></img>

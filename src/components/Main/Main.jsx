@@ -14,7 +14,7 @@ function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions }
        weatherOptions={ weatherOptions}
       />
       <section className="cards">
-        <p className="cards__text">{`Today is ${weatherData.temp["°F"]} ${currentTemperatureUnit} / You may want to wear:`}</p>
+        <p className="cards__text">{`Today is ${weatherData.temp[currentTemperatureUnit]} ${currentTemperatureUnit} / You may want to wear:`}</p>
         <ul className="cards__list">
           {clothingItems && clothingItems
             .filter((item) => { return item.weather === weatherData.weather })

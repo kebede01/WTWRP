@@ -39,7 +39,6 @@ app.use(cookieParser());
 app.post("/signup", authLimiter, createUser);
 app.post("/login", authLimiter, login);
 app.post("/logout", logout);
-app.use(auth); // Apply the auth middleware to all routes below this line
 app.use("/", indexRouter); // Use the index router for all routes starting with "/"
 
 app.listen(PORT, () => {
