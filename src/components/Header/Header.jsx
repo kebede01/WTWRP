@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import React from "react";
 import "./Header.css";
+import UserAvatar from "../UserAvatar/UserAvatar";
 import logo from "../../assets/images/logo.svg";
-import avatar from "../../assets/images/avatar.svg";
 import { NavLink } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
@@ -19,6 +19,7 @@ function Header({
   });
 
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -47,15 +48,12 @@ function Header({
             <p className="header__user-name">
               {currentUser?.name || "Terres Tegegne"}
             </p>
-            <img
-              src={currentUser?.avatar || avatar}
-              alt={currentUser?.name || "User Avatar"}
-              className="header__avatar"
-            />
+            {/* {you can pass any class name to customize as you want} */}
+            <UserAvatar user={currentUser} className="header__avatar" />
           </NavLink>
         ) : (
           <div>
-            <button onClick={handleAddRegistration}>  Sign up</button>
+            <button onClick={handleAddRegistration}> Sign up</button>
             <button onClick={handleLogIn}>Sign in</button>
           </div>
         )}
