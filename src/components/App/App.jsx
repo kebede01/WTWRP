@@ -84,7 +84,7 @@ function App() {
         setIsLoggedIn(false);
         setCurrentUser({});
         navigate("/");
-        })
+      })
       .catch((err) => {
         console.error("Logout failed:", err);
       });
@@ -102,13 +102,13 @@ function App() {
           throw err; // Re-throw so the Modal's .catch() triggers
         });
     },
-    [setClothingItems] 
+    [setClothingItems],
   );
 
   const handleDeleteModalOpen = useCallback((data) => {
     setActiveModal("delete");
     setSelectedCard(data);
-    }, []);
+  }, []);
 
   const handleDeleteClothingtem = useCallback(
     (data) => {
@@ -125,7 +125,7 @@ function App() {
       }
       return authorize({ email, password })
         .then((newdata) => {
-           return getUserInfo(newdata.data).then((value) => {
+          return getUserInfo(newdata.data).then((value) => {
             setIsLoggedIn(true);
             setCurrentUser(value.data);
             // Smart redirection logic
@@ -225,18 +225,35 @@ function App() {
       });
   }, []); // Runs only once on mount
 
+  // 1. Get the current pathname from useLocation 
+  const isAuthRoute =
+    location.pathname === "/login" || location.pathname === "/register";
+
   useEffect(() => {
-    if (!activeModal) return;
+    // Now it checks for the string state OR the route path
+    if (!activeModal && !isAuthRoute) return;
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
         handleCloseModal();
       }
     };
+
+    const handleOverlayClick = (e) => {
+      // If you use document listener, this check is tricky.
+      // It's better to check if the click was exactly on the modal wrapper class.
+      if (e.target.classList.contains("modal_opened")) {
+        handleCloseModal();
+      }
+    };
+
     document.addEventListener("keydown", handleEscClose);
+    document.addEventListener("mousedown", handleOverlayClick);
+
     return () => {
       document.removeEventListener("keydown", handleEscClose);
+      document.removeEventListener("mousedown", handleOverlayClick);
     };
-  }, [activeModal, handleCloseModal]);
+  }, [activeModal, handleCloseModal, isAuthRoute]);
 
   return (
     <CurrentTemperatureUnitContext.Provider
