@@ -5,6 +5,7 @@ function DeleteModal({
   isOpen,
   onDeleteClothingtem,
   selectedCard,
+ 
 }) {
   function handleCallBack() {
     onDeleteClothingtem(selectedCard)

@@ -6,7 +6,7 @@ export default function ModalWithForm({
   isOpen,
   onCloseModal,
   onSubmit,
-  isFilled,
+  name,
   
 }) {
   return (
@@ -19,8 +19,9 @@ export default function ModalWithForm({
           onClick={onCloseModal}
         ></button>
         <form
-          className="modal__form modal__form_add"
-          name="modalWithForm"
+          
+          className={`modal__form modal_type_${name}`}
+          name={`${name}`}
           id="add-item"
           onSubmit={onSubmit}
         >

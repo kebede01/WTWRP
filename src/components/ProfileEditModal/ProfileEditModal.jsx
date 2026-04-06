@@ -8,6 +8,7 @@ export default function ProfileEditModal({
   isOpen,
   activeModal,
   onProfileUpdate,
+  name
 }) {
   const { values, handleChange, handleReset } = useForm({
     name: "",
@@ -35,6 +36,7 @@ onProfileUpdate(values)
 
   return (
     <ModalWithForm
+      name={name}
       onCloseModal={handleClose}
       title={title}
       buttonText={buttonText}

@@ -8,6 +8,7 @@ export default function RegisterModal({
   buttonText,
   title,
   handleCloseModal,
+  name
 }) {
   // 1. Initialize the hook with your starting values
   const { values, handleChange, handleReset } = useForm({
@@ -35,6 +36,7 @@ export default function RegisterModal({
     values.email && values.password && values.name && values.avatar;
   return (
     <ModalWithForm
+      name={name}
       onSubmit={handleSubmitModal}
       handleAddRegistration={handleAddRegistration}
       isOpen={isOpen}

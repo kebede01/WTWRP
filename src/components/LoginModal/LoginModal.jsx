@@ -8,7 +8,7 @@ export default function LoginModal({
   isOpen,
   onSubmitLogIn,
   handleCloseModal,
- 
+ name
 }) {
 
   const [apiError, setApiError] = useState("");
@@ -48,6 +48,7 @@ export default function LoginModal({
         onSubmit={handleSubmitModal}
         onCloseModal={handleClose}
         isFilled={isFilled}
+        name={name}
       >
         <label htmlFor="email" className="modal__label">
           Email

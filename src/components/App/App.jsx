@@ -225,6 +225,19 @@ function App() {
       });
   }, []); // Runs only once on mount
 
+  useEffect(() => {
+    if (!activeModal) return;
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        handleCloseModal();
+      }
+    };
+    document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal, handleCloseModal]);
+
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -274,6 +287,7 @@ function App() {
                   element={
                     <ProtectedRoute anonymous>
                       <LoginModal
+                        name="login"
                         handleCloseModal={handleCloseModal}
                         title="Log In"
                         buttonText="Log In"
@@ -289,6 +303,7 @@ function App() {
                   element={
                     <ProtectedRoute anonymous>
                       <RegisterModal
+                        name="register"
                         handleCloseModal={handleCloseModal}
                         title="Register"
                         buttonText="Register"
@@ -312,6 +327,7 @@ function App() {
             )}
 
             <AddItemModal
+              name="add-item"
               handleCloseModal={handleCloseModal}
               title="New garment"
               buttonText="Add garment"
@@ -326,6 +342,7 @@ function App() {
             />
 
             <ProfileEditModal
+              name="profile"
               handleCloseModal={handleCloseModal}
               title="Edit Profile"
               buttonText="Edit profile"

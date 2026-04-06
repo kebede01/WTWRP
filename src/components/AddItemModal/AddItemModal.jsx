@@ -9,6 +9,7 @@ const AddItemModal = ({
   isOpen,
   openAddItemButton,
   onSubmitAddItem,
+  name
 }) => {
   const { values, handleChange, handleReset } = useForm({
     name: "",
@@ -44,6 +45,7 @@ const AddItemModal = ({
 
   return (
     <ModalWithForm
+      name={name}
       buttonText={buttonText}
       title={title}
       openAddItemButton={openAddItemButton}
