@@ -15,19 +15,15 @@ function ClothesSection({ clothingItems, handlePreviewModal }) {
         <button className="clothes-heading__btn">+ Add new</button>
       </div>
       <ul className="cards__list">
-        {/* ONLY check for ownership, ignore weather entirely */}
+        {/* No need filtering for clthes(owner id) and user(_id) b/c backend sends data filtered by user id*/}
         {clothingItems &&
-          clothingItems
-            .filter(
-              (item) => item.owner.toString() === currentUser?._id.toString(),
-            )
-            .map((item) => (
-              <ItemCard
-                key={item._id}
-                item={item}
-                handlePreviewModal={handlePreviewModal}
-              />
-            ))}
+          clothingItems.map((item) => (
+            <ItemCard
+              key={item._id}
+              item={item}
+              handlePreviewModal={handlePreviewModal}
+            />
+          ))}
       </ul>
     </section>
   );
