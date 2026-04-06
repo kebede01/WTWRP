@@ -24,20 +24,21 @@
   padding: 28px 28px 36px;
 }
 
-.modal__close-preview {
-  position: absolute;
+.modal__close-btn_type-preview {
+ 
+   position: absolute;
   background: none;
   top: 27px;
   right: 27px;
   opacity: 1;
   transition: 1s;
-  background-image: url("../../assets/images/close-img.svg");
+ background-image: url("../../assets/images/close-img.svg");
   background-repeat: no-repeat;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 9999
 }
 
-.modal__close-preview:hover {
+.modal__close-btn_type-preview:hover {
   opacity: 0;
 }
 

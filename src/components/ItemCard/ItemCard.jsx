@@ -28,9 +28,9 @@ function ItemCard({ item, handlePreviewModal, handleCardLikesDislikes }) {
   }, [item.likes, currentUser?._id]);
 
   return (
-    <li className="cards__list-item" >
-      <div className="card__list-content">
-        <p className="cards__img-name">{item.name}</p>
+    <li className="card" >
+      <div className="card__header">
+        <p className="card__name">{item.name}</p>
           {isLoggedIn ? (
           <button
             type="button"
@@ -43,7 +43,7 @@ function ItemCard({ item, handlePreviewModal, handleCardLikesDislikes }) {
         <img
           src={item.image}
           alt={`A photo of ${item.name}`}
-        className="cards__img"
+        className="card__img"
         onClick={handleCardClick}
         />
      

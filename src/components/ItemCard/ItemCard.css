@@ -1,4 +1,4 @@
-.cards__list-item {
+.card {
    position: relative;
   width: 323px;
   display: flex;
@@ -12,7 +12,7 @@
   border-radius: 20px;
 
 }
-.card__list-content{
+.card__header{
     display: flex;
   justify-content: center;
   align-items: center;
@@ -23,18 +23,15 @@
 
 
 
-.cards__img-name {
-  margin: var(--margin-none);
-  /* position: absolute; */
-  top: var(--position-top);
-  font-size: var(--font-size-small);
-  line-height: var(--line-height-small);
-  padding: var(--padding-tag);
+.card__name {
+ font-size: 16px;
+  line-height: 20px;
+  padding: 2px 12px;
   background: #ffffff;
-  border-radius: var(--radius-small);
-  color: var(--text-preview);
+  border-radius: 4px;
+  color: #00000099;
 }
-.cards__img {
+.card__img {
   width: 100%;
   cursor: pointer;
 }

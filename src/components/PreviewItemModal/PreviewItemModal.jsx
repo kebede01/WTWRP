@@ -27,7 +27,7 @@ function PreviewItemModal({
       <div className="modal__content">
         <button
           type="button"
-          className="modal__close-preview"
+          className="modal__close-btn modal__close-btn_type-preview"
           onClick={handleCloseModal}
         ></button>
         <img
