@@ -21,7 +21,7 @@ import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
-import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
+import { getAllMyClothingItems, addClothingItem } from "../../utils/api.js";
 import { register, authorize, getUserInfo, signOut } from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import { apiItemLike,  apiItemUnlike } from "../../utils/apiLikeDislike.js";
@@ -217,7 +217,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getAllClothingItems()
+    //backend filters based on the logged user id obtained from auth.js middleware.
+    getAllMyClothingItems()
       .then((value) => {
         return value
           ? setClothingItems(value.data)

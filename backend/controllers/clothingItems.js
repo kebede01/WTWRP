@@ -112,7 +112,8 @@ export const getClothingItem = (req, res) => {
 };
 
 export const getClothingItems = (req, res) => {
-  ClothingItem.find({})
+  const { _id } = req.user;
+  ClothingItem.find({ owner: _id })
     .orFail()
     .then((clothingItems) => {
       res.status(200).send({

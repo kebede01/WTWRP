@@ -12,8 +12,9 @@ import auth from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", getClothingItems);
+
 router.use(auth); // Apply the auth middleware to all routes below this line
+router.get("/me", getClothingItems);
 router.post("/", createClothingItem);
 router.get("/:itemId", getClothingItem);
 

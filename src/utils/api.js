@@ -13,8 +13,8 @@ export const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
-export const getAllClothingItems = async () => {
-  const response = await fetch(`${BASE_URL}/items`, {
+export const getAllMyClothingItems = async () => {
+  const response = await fetch(`${BASE_URL}/items/me`, {
     method: "GET",
     headers,
     credentials: "include", // Sends the JWT cookie automatically
