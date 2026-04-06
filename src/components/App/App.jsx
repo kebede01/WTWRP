@@ -22,9 +22,15 @@ import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 import { getAllMyClothingItems, addClothingItem } from "../../utils/api.js";
-import { register, authorize, getUserInfo, signOut } from "../../utils/auth.js";
+import {
+  register,
+  authorize,
+  getUserInfo,
+  signOut,
+  changeUserInfo,
+} from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
-import { apiItemLike,  apiItemUnlike } from "../../utils/apiLikeDislike.js";
+import { apiItemLike, apiItemUnlike } from "../../utils/apiLikeDislike.js";
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -78,8 +84,7 @@ function App() {
         setIsLoggedIn(false);
         setCurrentUser({});
         navigate("/");
-        console.log("User logged out successfully");
-      })
+        })
       .catch((err) => {
         console.error("Logout failed:", err);
       });
@@ -87,13 +92,9 @@ function App() {
 
   const handleSubmitAddItem = useCallback(
     (data) => {
-      // We MUST return the fetch call so the Modal can use .then()
       return addClothingItem(data)
         .then((newItem) => {
-          // SUCCESS: Update the local state so the new card appears!
           setClothingItems((prevItems) => [newItem.data, ...prevItems]);
-
-          // Return newItem again so the NEXT .then() in the Modal gets the data
           return newItem.data;
         })
         .catch((err) => {
@@ -101,14 +102,13 @@ function App() {
           throw err; // Re-throw so the Modal's .catch() triggers
         });
     },
-    [setClothingItems], // handleCloseModal isn't strictly needed here since Modal handles it
+    [setClothingItems] 
   );
 
   const handleDeleteModalOpen = useCallback((data) => {
     setActiveModal("delete");
     setSelectedCard(data);
-    console.log("Form submitted, but page refresh prevented!");
-  }, []);
+    }, []);
 
   const handleDeleteClothingtem = useCallback(
     (data) => {
@@ -125,8 +125,7 @@ function App() {
       }
       return authorize({ email, password })
         .then((newdata) => {
-          // tokenStore.setToken(newdata.data); //storing token in localStorage
-          return getUserInfo(newdata.data).then((value) => {
+           return getUserInfo(newdata.data).then((value) => {
             setIsLoggedIn(true);
             setCurrentUser(value.data);
             // Smart redirection logic
@@ -148,58 +147,40 @@ function App() {
         .then(() => {
           return handleSubmitLogIn({ email, password });
         })
-        .then(() => {
-          // This only runs after a successful login
-          handleCloseModal();
-        })
+        .then(() => {})
         .catch((err) => {
           console.error(err);
         });
     },
-    [handleSubmitLogIn, handleCloseModal],
+    [handleSubmitLogIn],
   );
 
   const handleCardLikesDislikes = ({ _id }, isLiked) => {
     // Determine which API call to make
     const request = !isLiked ? apiItemLike(_id) : apiItemUnlike(_id);
     request
-    .then((updatedItem) => {
-      // updatedItem.data should be the fresh item object from the server
-      setClothingItems((prevItems) =>
-        prevItems.map((item) =>
-          item._id === _id ? updatedItem.data : item
-        )
-      );
-    })
-    .catch((err) => {
-      console.error("Error toggling like:", err);
-    });
-
-   
-    
+      .then((updatedItem) => {
+        // updatedItem.data should be the fresh item object from the server
+        setClothingItems((prevItems) =>
+          prevItems.map((item) => (item._id === _id ? updatedItem.data : item)),
+        );
+      })
+      .catch((err) => {
+        console.error("Error toggling like:", err);
+      });
   };
 
-  
-  const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
-    console.log("App.js received:", { nameProfile, avatarUrl });
-
-    return new Promise((resolve, reject) => {
-      const isSuccessful = true;
-
-      setTimeout(() => {
-        if (isSuccessful) {
-          const newItem = {
-            nameProfile: nameProfile, // Use 'name' instead of 'values.name'
-            avatarUrl: avatarUrl, // Use 'weatherType' instead of 'values.weatherType'
-            _id: String(Math.random()),
-          };
-
-          resolve(newItem);
-        } else {
-          reject("Server Error");
-        }
-      }, 1000);
-    });
+  const handleProfileUpdate = ({ name, avatar }) => {
+    return changeUserInfo({ name, avatar })
+      .then((user) => {
+        setCurrentUser((prevValue) => {
+          return { ...prevValue, ...user.data };
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        throw err; // <--- CRITICAL: This allows LoginModal to see the 429 error
+      });
   };
 
   //This switches temperature unit through out the components.
@@ -339,7 +320,6 @@ function App() {
             />
             <PreviewItemModal
               handleCloseModal={handleCloseModal}
-            
               selectedCard={selectedCard}
               activeModal={activeModal}
               onSubmitDelete={handleDeleteModalOpen}

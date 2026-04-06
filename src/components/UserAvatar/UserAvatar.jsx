@@ -3,6 +3,7 @@ import "./UserAvatar.css";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 const UserAvatar = ({ className }) => {
+  //destructuring avatar from currentUser
   const { currentUser } = useContext(CurrentUserContext);
   const { avatar } = currentUser || {};
   

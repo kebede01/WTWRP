@@ -38,7 +38,7 @@ export const getUserInfo = () => {
 
 export const changeUserInfo = ({ name, avatar }) => {
   return fetch(`${BASE_URL}/users/me`, {
-    method: "PATCH",
+    method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

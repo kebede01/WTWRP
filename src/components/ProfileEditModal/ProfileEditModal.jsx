@@ -10,8 +10,8 @@ export default function ProfileEditModal({
   onProfileUpdate,
 }) {
   const { values, handleChange, handleReset } = useForm({
-    nameProfile: "",
-    avatarUrl: "",
+    name: "",
+    avatar: "",
   });
 
   const handleClose = () => {
@@ -19,19 +19,19 @@ export default function ProfileEditModal({
     handleCloseModal();
   };
 
-  const handleSubmitModal = (e) => {
-    e.preventDefault();
-      // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
-    onProfileUpdate(values)
-      .then(() => {
-        handleReset();
-        handleCloseModal();
-      })
-      .catch((err) => {
-        console.error("Failed to add item:", err);
-      });
-  };
-  const isFilled = values.nameProfile && values.avatarUrl;
+ const handleSubmitModal = (e) => {
+  e.preventDefault();
+onProfileUpdate(values)
+    .then(() => {
+      handleReset();
+      handleCloseModal(); 
+    })
+    .catch((err) => {
+       console.error("Profile update failed:", err);
+      // Optional: Add a 'setErrorMessage' here to show the user the error in the UI
+    });
+};
+  const isFilled = values.name && values.avatar;
 
   return (
     <ModalWithForm
@@ -51,8 +51,8 @@ export default function ProfileEditModal({
           className="modal__input"
           placeholder="Name"
           onChange={handleChange}
-          name="nameProfile"
-          value={values.nameProfile}
+          name="name"
+          value={values.name}
           required
         />
       </label>
@@ -62,8 +62,8 @@ export default function ProfileEditModal({
           type="url"
           id="avatarUrl"
           className="modal__input"
-          name="avatarUrl"
-          value={values.avatarUrl}
+          name="avatar"
+          value={values.avatar}
           placeholder="Avatar"
           onChange={handleChange}
         />
