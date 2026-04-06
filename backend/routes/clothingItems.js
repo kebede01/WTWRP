@@ -5,6 +5,8 @@ import {
   getClothingItem,
   getClothingItems,
   updateClothingItem,
+  likeItem,
+  dislikeItem,
 } from "../controllers/clothingItems.js";
 import auth from "../middleware/auth.js";
 
@@ -17,4 +19,6 @@ router.get("/:itemId", getClothingItem);
 
 router.delete("/:itemId", deleteClothingItem);
 router.put("/:itemId", updateClothingItem);
+router.post("/:itemId/likes", likeItem); 
+router.delete("/:itemId/likes", dislikeItem); 
 export default router;

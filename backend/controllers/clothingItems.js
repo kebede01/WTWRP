@@ -176,3 +176,42 @@ export const updateClothingItem = (req, res) => {
       }
     });
 };
+export const likeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { returnDocument: "after" }
+  )
+    .orFail()
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({ message: "Item not found" });
+      } 
+      if (err.name === "CastError") {
+        return res.status(400).send({ message: "Invalid item ID format" });
+      }
+      res.status(500).send({ message: "An error occurred on the server" });
+    });
+};
+
+export const dislikeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { returnDocument: "after" }
+  )
+    .orFail()
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).send({ message: "Item not found" });
+      } 
+      if (err.name === "CastError") {
+        return res.status(400).send({ message: "Invalid item ID format" });
+      }
+      res.status(500).send({ message: "An error occurred on the server" });
+    });
+};
