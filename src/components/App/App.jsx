@@ -24,7 +24,7 @@ import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 import { getAllClothingItems, addClothingItem } from "../../utils/api.js";
 import { register, authorize, getUserInfo, signOut } from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
-
+import { apiItemLike,  apiItemUnlike } from "../../utils/apiLikeDislike.js";
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -159,6 +159,27 @@ function App() {
     [handleSubmitLogIn, handleCloseModal],
   );
 
+  const handleCardLikesDislikes = ({ _id }, isLiked) => {
+    // Determine which API call to make
+    const request = !isLiked ? apiItemLike(_id) : apiItemUnlike(_id);
+    request
+    .then((updatedItem) => {
+      // updatedItem.data should be the fresh item object from the server
+      setClothingItems((prevItems) =>
+        prevItems.map((item) =>
+          item._id === _id ? updatedItem.data : item
+        )
+      );
+    })
+    .catch((err) => {
+      console.error("Error toggling like:", err);
+    });
+
+   
+    
+  };
+
+  
   const handleProfileUpdate = ({ nameProfile, avatarUrl }) => {
     console.log("App.js received:", { nameProfile, avatarUrl });
 
@@ -221,6 +242,7 @@ function App() {
         finishLoading(false);
       });
   }, []); // Runs only once on mount
+
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -248,6 +270,7 @@ function App() {
                       clothingItems={clothingItems}
                       weatherData={weatherData}
                       handlePreviewModal={handlePreviewModal}
+                      handleCardLikesDislikes={handleCardLikesDislikes}
                     />
                   }
                 />
@@ -315,10 +338,9 @@ function App() {
             />
             <PreviewItemModal
               handleCloseModal={handleCloseModal}
-              buttonText="Delete card"
-              title="Image preview"
+            
               selectedCard={selectedCard}
-              isOpen={activeModal === "preview"}
+              activeModal={activeModal}
               onSubmitDelete={handleDeleteModalOpen}
             />
 

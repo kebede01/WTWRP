@@ -3,7 +3,7 @@ import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard.jsx";
 import ItemCard from "../ItemCard/ItemCard.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
-function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions }) {
+function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions, handleCardLikesDislikes }) {
   
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
  
@@ -22,7 +22,9 @@ function Main({ clothingItems, weatherData, handlePreviewModal, weatherOptions }
               return <ItemCard
                 key={item._id}
                 item={item}
-                handlePreviewModal={handlePreviewModal} />;
+                handlePreviewModal={handlePreviewModal}
+                handleCardLikesDislikes={handleCardLikesDislikes}
+              />;
             })}
          
          

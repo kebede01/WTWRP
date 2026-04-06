@@ -7,7 +7,7 @@ export default function ModalWithForm({
   onCloseModal,
   onSubmit,
   isFilled,
-  onSubmitDelete,
+  
 }) {
   return (
     <section className={`modal ${isOpen ? "modal_opened" : ""}`}>
@@ -26,15 +26,7 @@ export default function ModalWithForm({
         >
           {children}
 
-          {onSubmitDelete ? (
-            <button
-              type="button"
-              className="modal__delete-btn"
-              onClick={onSubmitDelete}
-            >
-              Delete
-            </button>
-          ) : (
+          
             <button
               type="submit"
               className="modal__submit-btn"
@@ -42,7 +34,7 @@ export default function ModalWithForm({
             >
               {buttonText}
             </button>
-          )}
+          
         </form>
       </div>
     </section>

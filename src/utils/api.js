@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const handleResponse = async (response) => {
   if (response.ok) {
@@ -9,7 +9,7 @@ export const handleResponse = async (response) => {
   // We reject with the whole object { error: "..." } or { message: "..." }
   return Promise.reject(errorData);
 };
-const headers = {
+export const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
