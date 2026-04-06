@@ -1,36 +1,78 @@
+import { useContext } from "react";
 import "./PreviewItemModal.css";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
-export default function PreviewItemModal({
-  handleCloseModal,
-  buttonText,
-  title,
-  selectedCard,
-  isOpen,
-  onSubmitDelete,
-  onItemDelete
-}) {
+import CurrentUserContext from "../../contexts/CurrentUserContext"
 
-  const handleDeletion = () => {
-onSubmitDelete(selectedCard)
-  }
+function PreviewItemModal({
+  activeModal,
+  selectedCard,
+  handleCloseModal,
+  onSubmitDelete,
+}) {
+  const { currentUser } = useContext(CurrentUserContext);
+
+  // Checking if the current user is the owner of the current clothing item
+  const isOwn = selectedCard?.owner === currentUser?._id;
+
+  // Creating a variable which you'll then set in `className` for the delete button
+  const itemDeleteButtonClassName = `modal__button-delete modal__footer_text ${
+    isOwn ? "" : "modal__button-delete_hidden"
+  }`;
+
   return (
-    <ModalWithForm
-      onCloseModal={handleCloseModal}
-      isOpen={isOpen}
-      onItemDelete={onItemDelete}
-      buttonText={buttonText}
-      title={title}
-     onSubmitDelete={handleDeletion}
+    <div
+      className={`modal  ${
+        activeModal === "preview" ? "modal_opened" : ""
+      }`}
     >
-      <img
-        src={selectedCard.image}
-        alt={selectedCard.name}
-        className="modal__preview-img"
-      ></img>
-      <div className="modal__caption">
-        <p className="modal__caption-name">Name: {selectedCard.name}</p>
-        <p className="modal__caption-weather">Weather: {selectedCard.weather}</p>
+      <div className="modal__content">
+        <button
+          type="button"
+          className="modal__close-preview"
+          onClick={handleCloseModal}
+        ></button>
+        <img
+          src={selectedCard?.image}
+          alt={selectedCard?.name}
+          className="modal__content-image"
+        />
+        <div className="modal__footer modal__footer_text">
+          <div className="modal__footer__heading">
+            <h2 className="modal__footer-name modal__footer_text">
+              {selectedCard?.name}
+            </h2>
+            <button
+              type="button"
+              onClick={onSubmitDelete}
+              className={itemDeleteButtonClassName}
+            >
+              Delete
+            </button>
+          </div>
+
+          <p className="modal__weather modal__footer_text">
+            Weather: {selectedCard?.weather}
+          </p>
+        </div>
       </div>
-    </ModalWithForm>
+    </div>
   );
 }
+export default PreviewItemModal;
+
+
+
+
+
+
+     
+     
+     
+     
+     
+    
+    
+
+
+
+            
+        
