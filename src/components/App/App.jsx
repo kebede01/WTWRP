@@ -49,7 +49,9 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("°F");
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(
+    sessionStorage.getItem("isLoggedIn") === "true",
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,12 +87,16 @@ function App() {
   const logOut = useCallback(() => {
     signOut() // Call the API function we just made
       .then(() => {
-        setIsLoggedIn(false);
-        setCurrentUser({});
-        navigate("/");
+        console.log("Session terminated on the server side.");
       })
       .catch((err) => {
         console.error("Logout failed:", err);
+      })
+      .finally(() => {
+        sessionStorage.clear(); // Now this actually has something to remove!
+        setIsLoggedIn(false);
+        setCurrentUser({});
+        navigate("/");
       });
   }, [navigate]);
 
@@ -143,6 +149,8 @@ function App() {
           return getUserInfo(newdata.data).then((value) => {
             setIsLoggedIn(true);
             setCurrentUser(value.data);
+            // To make your session survive a page refresh
+            sessionStorage.setItem("isLoggedIn", "true");
             // Smart redirection logic
             const redirectedPath = location.state?.from?.pathname || "/profile";
             navigate(redirectedPath);
