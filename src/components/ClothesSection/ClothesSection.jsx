@@ -3,7 +3,7 @@ import React from "react";
 import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-function ClothesSection({ clothingItems, handlePreviewModal }) {
+function ClothesSection({ clothingItems, handlePreviewModal, handleActiveModal }) {
   const { currentUser } = useContext(CurrentUserContext);
 
   if (!currentUser) return <p>Loading wardrobe...</p>;
@@ -12,7 +12,7 @@ function ClothesSection({ clothingItems, handlePreviewModal }) {
     <section className="clothes">
       <div className="clothes__heading">
         <p className="clothes-heading__title">Your Items</p>
-        <button className="clothes-heading__btn">+ Add new</button>
+        <button className="clothes-heading__btn" onClick={handleActiveModal}>+ Add new</button>
       </div>
       <ul className="cards__list">
         {/* No need filtering for clthes(owner id) and user(_id) b/c backend sends data filtered by user id*/}

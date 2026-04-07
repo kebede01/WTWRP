@@ -21,7 +21,11 @@ import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
 import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
-import { getAllMyClothingItems, addClothingItem } from "../../utils/api.js";
+import {
+  getAllMyClothingItems,
+  addClothingItem,
+  deleteClothingItem,
+} from "../../utils/api.js";
 import {
   register,
   authorize,
@@ -106,17 +110,28 @@ function App() {
   );
 
   const handleDeleteModalOpen = useCallback((data) => {
+    console.log("Opening Delete Modal with card:", data);
     setActiveModal("delete");
     setSelectedCard(data);
   }, []);
 
-  const handleDeleteClothingtem = useCallback(
-    (data) => {
-      console.log("DELETED CLOTYHING ITEM");
-      console.log(data);
+  const handleDeleteClothingItem = useCallback(
+    (selectedCard) => {
+      const itemId = selectedCard._id;
+
+      return deleteClothingItem(itemId)
+        .then(() => {
+          setClothingItems((prevItems) =>
+            prevItems.filter((item) => item._id !== selectedCard._id),
+          );
+          handleCloseModal();
+        })
+        .catch((error) => {
+          console.error("Error deleting item:", error);
+        });
     },
     [handleCloseModal],
-  );
+  ); // Now this dependency array is truly correct
 
   const handleSubmitLogIn = useCallback(
     ({ email, password }) => {
@@ -225,7 +240,7 @@ function App() {
       });
   }, []); // Runs only once on mount
 
-  // 1. Get the current pathname from useLocation 
+  // 1. Get the current pathname from useLocation
   const isAuthRoute =
     location.pathname === "/login" || location.pathname === "/register";
 
@@ -295,6 +310,7 @@ function App() {
                         handlePreviewModal={() => {}} // This is a "No-Op" function. It does nothing but prevents the crash.
                         handleOpenProfileUpdate={handleOpenProfileUpdate}
                         logOut={logOut}
+                        handleActiveModal={handleActiveModal}
                       />
                     </ProtectedRoute>
                   }
@@ -369,7 +385,7 @@ function App() {
             <DeleteModal
               handleCloseModal={handleCloseModal}
               isOpen={activeModal === "delete"}
-              onDeleteClothingtem={handleDeleteClothingtem}
+              onDeleteClothingItem={handleDeleteClothingItem}
               selectedCard={selectedCard}
             />
             <VideoPlayer />

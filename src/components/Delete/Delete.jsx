@@ -3,12 +3,12 @@ import "./Delete.css";
 function DeleteModal({
   handleCloseModal,
   isOpen,
-  onDeleteClothingtem,
+  onDeleteClothingItem,
   selectedCard,
  
 }) {
   function handleCallBack() {
-    onDeleteClothingtem(selectedCard)
+    onDeleteClothingItem(selectedCard)
   }
 
   

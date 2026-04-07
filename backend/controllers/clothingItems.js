@@ -41,14 +41,11 @@ export const deleteClothingItem = (req, res) => {
   ClothingItem.findById(itemId)
     .orFail()
     .then((clothingItem) => {
-      if (clothingItem.owner.toString() !== _id.toString()) {
-        // We throw a custom error to jump straight to the .catch() block
-        const forbiddenError = new Error(
-          "You are not the owner of this clothing item.",
-        );
-        forbiddenError.name = "ForbiddenError";
-        throw forbiddenError;
-      }
+     if (!clothingItem.owner.equals(_id)) {
+  const forbiddenError = new Error("You are not the owner of this clothing item.");
+  forbiddenError.name = "ForbiddenError";
+  throw forbiddenError;
+}
       return ClothingItem.findByIdAndDelete(itemId);
     })
     .then(() => {

@@ -9,6 +9,9 @@ function PreviewItemModal({
   onSubmitDelete,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
+  const handleCallBack = () => {
+    onSubmitDelete(selectedCard);
+  }
 
   // Checking if the current user is the owner of the current clothing item
   const isOwn = selectedCard?.owner === currentUser?._id;
@@ -42,7 +45,7 @@ function PreviewItemModal({
             </h2>
             <button
               type="button"
-              onClick={onSubmitDelete}
+              onClick={handleCallBack}
               className={itemDeleteButtonClassName}
             >
               Delete

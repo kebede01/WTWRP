@@ -8,6 +8,7 @@ function Profile({
   handleOpenProfileUpdate,
   handlePreviewModal,
   logOut,
+  handleActiveModal
 }) {
   return (
     <section className="profile">
@@ -15,6 +16,7 @@ function Profile({
       <ClothesSection
         clothingItems={clothingItems}
         handlePreviewModal={handlePreviewModal}
+        handleActiveModal={handleActiveModal}
       />
     </section>
   );

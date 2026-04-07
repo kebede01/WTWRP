@@ -34,6 +34,7 @@ function Header({
       </div>
 
       <div className="header__section header__section_right">
+        <ToggleSwitch />
         <button
           type="button"
           className="header__button"
@@ -41,7 +42,6 @@ function Header({
         >
           + Add clothing
         </button>
-        <ToggleSwitch />
 
         {isLoggedIn ? (
           <NavLink to="/profile" className="header__navlink">
