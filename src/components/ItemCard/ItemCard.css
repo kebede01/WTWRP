@@ -47,12 +47,11 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.4;
   cursor: pointer;
 }
 .card__like-button:hover {
   transition: 1.3s;
-  opacity: 1;
+  opacity: 0.4;
 }
 .card__like-button_liked {
   background-image: url("../../assets/images/liked.svg");

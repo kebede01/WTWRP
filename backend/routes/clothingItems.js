@@ -4,7 +4,7 @@ import {
   deleteClothingItem,
   getClothingItem,
   getClothingItems,
-  updateClothingItem,
+
   likeItem,
   dislikeItem,
 } from "../controllers/clothingItems.js";
@@ -19,7 +19,7 @@ router.post("/", createClothingItem);
 router.get("/:itemId", getClothingItem);
 
 router.delete("/:itemId", deleteClothingItem);
-router.put("/:itemId", updateClothingItem);
+
 router.post("/:itemId/likes", likeItem); 
 router.delete("/:itemId/likes", dislikeItem); 
 export default router;

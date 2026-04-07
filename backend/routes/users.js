@@ -8,4 +8,5 @@ router.use(auth); // Apply the auth middleware to all routes below this line
 router.get('/me', getCurrentUser);
 router.put('/me', updateProfile);
 
+
 export default router;
