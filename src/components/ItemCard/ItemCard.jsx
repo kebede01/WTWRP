@@ -1,37 +1,33 @@
-import { useState, useContext, useEffect } from "react";
-import React from "react";
+import React, { useContext } from "react";
 import "./ItemCard.css";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-function ItemCard({ item, handlePreviewModal, handleCardLikesDislikes }) {
 
-   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
- const [isLiked, setIsLiked] = useState(false);
+function ItemCard({ item, handlePreviewModal, handleCardLikesDislikes }) {
+  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+
+ 
+  const isLiked = item.likes.some((id) => id === currentUser?._id);
 
   const handleLikeStatus = (e) => {
-    // Prevent the click from bubbling up if the card itself has an onClick
-    e.stopPropagation(); 
+    // Prevent the click from bubbling up to the card's image click handler
+    e.stopPropagation();
     handleCardLikesDislikes(item, isLiked);
   };
-  // Simplified class logic
-  const itemLikeButtonClassName = `card__like-button ${
-    isLiked ? "card__like-button_liked" : ""
-  }`;
 
   const handleCardClick = () => {
     handlePreviewModal(item);
   };
 
-// Synchronize internal state with the item.likes prop
-  useEffect(() => {
-    const isCurrentlyLiked = item.likes.some((id) => id === currentUser?._id);
-    setIsLiked(isCurrentlyLiked);
-  }, [item.likes, currentUser?._id]);
+  // Dynamic class name based on the derived isLiked value
+  const itemLikeButtonClassName = `card__like-button ${
+    isLiked ? "card__like-button_liked" : ""
+  }`;
 
   return (
-    <li className="card" >
+    <li className="card">
       <div className="card__header">
         <p className="card__name">{item.name}</p>
-          {isLoggedIn ? (
+        {isLoggedIn ? (
           <button
             type="button"
             className={itemLikeButtonClassName}
@@ -39,15 +35,15 @@ function ItemCard({ item, handlePreviewModal, handleCardLikesDislikes }) {
             aria-label={isLiked ? "Unlike" : "Like"}
           ></button>
         ) : null}
-         </div>
-        <img
-          src={item.image}
-          alt={`A photo of ${item.name}`}
+      </div>
+      <img
+        src={item.image}
+        alt={`A photo of ${item.name}`}
         className="card__img"
         onClick={handleCardClick}
-        />
-     
+      />
     </li>
   );
 }
+
 export default React.memo(ItemCard);
