@@ -1,5 +1,5 @@
 import { jest, test, expect } from '@jest/globals';
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
@@ -62,4 +62,29 @@ test("renders the app and shows content after loading", async () => {
   await waitFor(() => {
     expect(screen.getByText(/\+ Add clothing/i)).toBeInTheDocument();
   }, { timeout: 3000 });
+});
+
+test("logout clears user state and redirects to home", async () => {
+  // 1. Load the App
+  const { default: App } = await import("./App");
+  
+  // 2. Render App with a route that shows the Logout button (like /profile)
+  render(
+    <MemoryRouter initialEntries={["/profile"]}>
+      <App />
+    </MemoryRouter>
+  );
+
+  // 3. Find and click the Log Out button
+  // Note: We use await waitFor because the App might be loading user data first
+  const logoutBtn = await screen.findByRole("button", { name: /log out/i });
+  fireEvent.click(logoutBtn);
+
+  // 4. VERIFY: The user should now be redirected or see "Log In" instead of "Log Out"
+  await waitFor(() => {
+    // Check that the "Log Out" button is gone
+    expect(screen.queryByRole("button", { name: /log out/i })).not.toBeInTheDocument();
+    // Check that "Log In" is now visible (assuming it's in your header for guests)
+    expect(screen.getByRole("button", { name: /log in/i })).toBeInTheDocument();
+  });
 });
