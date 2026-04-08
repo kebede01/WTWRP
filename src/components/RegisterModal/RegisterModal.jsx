@@ -1,3 +1,4 @@
+import { useState} from "react";
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useForm } from "../../../src/hooks/useForm";
@@ -8,7 +9,7 @@ export default function RegisterModal({
   buttonText,
   title,
   handleCloseModal,
-  name
+  name,
 }) {
   // 1. Initialize the hook with your starting values
   const { values, handleChange, handleReset } = useForm({
@@ -18,7 +19,10 @@ export default function RegisterModal({
     password: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleClose = () => {
+    setErrorMessage(""); // Clear error here
     handleReset();
     handleCloseModal();
   };
@@ -26,14 +30,35 @@ export default function RegisterModal({
   const handleSubmitModal = (e) => {
     e.preventDefault();
     // CRITICAL: Notice the "return" here in fetch() at app.js inorder to use .then() here
-    onSubmitRegister(values).then(() => {
-      handleReset();
-      handleCloseModal();
-    });
+    return onSubmitRegister(values)
+      .then(() => {
+        handleReset();
+        handleCloseModal();
+      })
+      .catch((err) => {
+        console.log("Full error data:", err);
+
+        const passwordRequirement =
+          "Password must be at least 8 characters long, include one uppercase letter, and one special character.";
+
+        // Check if the error message from the server is about the password
+        const isPasswordError =
+          err.message?.toLowerCase().includes("password") ||
+          err.error?.toLowerCase().includes("password");
+
+        if (isPasswordError) {
+          setErrorMessage(passwordRequirement);
+        } else {
+          setErrorMessage(
+            err.message || "Registration failed. Please try again.",
+          );
+        }
+      });
   };
 
   const isFilled =
     values.email && values.password && values.name && values.avatar;
+
   return (
     <ModalWithForm
       name={name}
@@ -81,6 +106,7 @@ export default function RegisterModal({
           maxLength="30"
           className="modal__input"
           name="name"
+          required
           value={values.name}
           onChange={handleChange}
           placeholder="Name"
@@ -99,6 +125,9 @@ export default function RegisterModal({
           placeholder="https://example.com"
         />
       </label>
+      {errorMessage && (
+        <span className="modal__err">{errorMessage}</span>
+      )}
     </ModalWithForm>
   );
 }

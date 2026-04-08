@@ -18,6 +18,14 @@ export const createUser = (req, res) => {
       message: error.message,
     });
   }
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
+  if (!passwordRegex.test(password)) {
+    return res
+      .status(400)
+      .json({ message: "Password does not meet security requirements." });
+  }
   bcrypt
     .hash(password, 10)
     .then((hash) => {
@@ -46,7 +54,15 @@ export const createUser = (req, res) => {
         if (err.code === 11000) {
           error = new ConflictError("A user with that email already exists.");
         } else if (err.name === "ValidationError") {
-          error = new BadRequestError("Invalid user data provided.");
+          // Check if the password specifically caused the validation error
+          if (err.errors.password) {
+            error = new BadRequestError(
+              "Password does not meet security requirements.",
+            );
+          } else {
+            // Fallback for other validation errors (like invalid email or name)
+            error = new BadRequestError("Invalid user data provided.");
+          }
         } else {
           error = new ServerError(
             err.message || "An unexpected error occurred.",

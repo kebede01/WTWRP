@@ -170,10 +170,8 @@ function App() {
         .then(() => {
           return handleSubmitLogIn({ email, password });
         })
-        .then(() => {})
-        .catch((err) => {
-          console.error(err);
-        });
+        .then(() => { });
+      // RegisterModal: Catches the error and updates the errorMessage state.If we catch error here, error message won't get caught.
     },
     [handleSubmitLogIn],
   );
@@ -306,7 +304,7 @@ function App() {
                       weatherData={weatherData}
                       handlePreviewModal={handlePreviewModal}
                       handleCardLikesDislikes={handleCardLikesDislikes}
-                       handleActiveModal={handleActiveModal}
+                      handleActiveModal={handleActiveModal}
                     />
                   }
                 />
