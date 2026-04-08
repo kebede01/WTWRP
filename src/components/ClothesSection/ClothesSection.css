@@ -33,6 +33,10 @@
   letter-spacing: 0%;
   cursor: pointer;
 }
+
+.clothes-heading__btn:hover{
+opacity: 0.5;
+}
 .clothes__items {
   display: flex;
   flex-wrap: wrap;

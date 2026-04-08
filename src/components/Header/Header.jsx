@@ -45,7 +45,7 @@ function Header({
 
         {isLoggedIn ? (
           <NavLink to="/profile" className="header__navlink">
-            <p className="header__user-name">
+            <p className="header__user-name header__user-name_type-home">
               {currentUser?.name || "Terres Tegegne"}
             </p>
             {/* {you can pass any class name to customize as you want} */}

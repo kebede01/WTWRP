@@ -26,6 +26,7 @@ export default defineConfig([
       globals: {
         ...globals.browser, // Replaces env: { browser: true }
         ...globals.node,    // Replaces globals: { process: "readonly" }
+        ...globals.jest,
       },
       parserOptions: {
         ecmaFeatures: { jsx: true },

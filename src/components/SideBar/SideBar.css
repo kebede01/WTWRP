@@ -49,6 +49,11 @@
   text-align: left;
   cursor: pointer;
 }
+
+.side-bar__button:hover {
+opacity: 0.5;
+  
+}
 .side-bar__button-change {
   margin-top: 16px;
   margin-bottom: 16px;

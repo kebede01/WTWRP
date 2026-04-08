@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ],
+  "plugins": [
+    ["babel-plugin-transform-import-meta", { "target": "ES6" }],
+    ["transform-define", {
+      "import.meta.env.VITE_BASE_URL": "http://localhost:3001",
+      "import.meta.url": "https://localhost" 
+    }]
+  ]
+}

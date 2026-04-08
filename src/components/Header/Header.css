@@ -34,7 +34,9 @@
   margin-right: var(--logo-margin);
   display: block;
 }
-
+.header__logo:hover{
+  opacity: 0.5;
+}
 /* Element: Date and Location text */
 .header__info {
   margin: var(--margin-none);
@@ -50,9 +52,14 @@
   font-size: var(--font-size-medium);
   letter-spacing: 0%;
 }
-
+.header__button:hover{
+  opacity: 0.5;
+}
 .header__user-name {
   margin: var(--user-margin);
+}
+.header__user-name_type-home:hover{
+  opacity: 0.5;
 }
 .header__avatar {
   width: var(--avatar-size);
