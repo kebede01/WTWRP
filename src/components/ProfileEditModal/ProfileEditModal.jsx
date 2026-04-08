@@ -1,6 +1,8 @@
+import { useContext, useEffect} from "react";
 import "./ProfileEditModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useForm } from "../../../src/hooks/useForm";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 export default function ProfileEditModal({
   handleCloseModal,
   title,
@@ -10,9 +12,11 @@ export default function ProfileEditModal({
   onProfileUpdate,
   name
 }) {
-  const { values, handleChange, handleReset } = useForm({
-    name: "",
-    avatar: "",
+  const { currentUser } = useContext(CurrentUserContext);
+
+const { values, handleChange, handleReset, setValues } = useForm({
+    name:  "",
+    avatar:  "",
   });
 
   const handleClose = () => {
@@ -33,6 +37,18 @@ onProfileUpdate(values)
     });
 };
   const isFilled = values.name && values.avatar;
+
+
+
+ 
+    useEffect(() => {
+    if (isOpen ) {
+      setValues({
+        name: currentUser.name,
+        avatar: currentUser.avatar,
+      });
+    }
+  }, [isOpen, currentUser, setValues]);
 
   return (
     <ModalWithForm

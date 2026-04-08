@@ -306,6 +306,7 @@ function App() {
                       weatherData={weatherData}
                       handlePreviewModal={handlePreviewModal}
                       handleCardLikesDislikes={handleCardLikesDislikes}
+                       handleActiveModal={handleActiveModal}
                     />
                   }
                 />

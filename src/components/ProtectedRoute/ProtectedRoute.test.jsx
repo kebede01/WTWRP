@@ -1,4 +1,4 @@
-import { jest, test, expect } from '@jest/globals';
+import { test, expect } from '@jest/globals';
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
