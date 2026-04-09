@@ -11,7 +11,8 @@ import { createUser, login } from "./controllers/users.js";
 import errorHandler from "./middleware/error-handler.js";
 import { logout } from "./controllers/users.js";
 import { limiter, authLimiter } from "./utils/rateLimit.js";
-import {validateUserSignUp, validateUserSignIn} from "./middleware/validation.js";
+import { validateUserSignUp, validateUserSignIn } from "./middleware/validation.js";
+import { requestLogger, errorLogger } from "./middleware/logger.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
@@ -37,12 +38,13 @@ app.use(cookieParser());
     process.exit(1);
   }
 })();
-
+app.use(requestLogger);
 app.post("/signup", authLimiter, validateUserSignUp, createUser);
 app.post("/login", authLimiter, validateUserSignIn, login);
 app.post("/logout", logout);
-app.use("/", indexRouter); // Use the index router for all routes starting with "/"
-// celebrate error handler
+app.use("/", indexRouter); 
+
+app.use(errorLogger); // enabling the error logger
 app.use(errors());
 
 app.use(errorHandler); 
