@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import indexRouter from "./routes/index.js";
 import { createUser, login } from "./controllers/users.js";
-import auth from "./middleware/auth.js";
+import errorHandler from "./middleware/error-handler.js";
 import { logout } from "./controllers/users.js";
 import { limiter, authLimiter } from "./utils/rateLimit.js";
 const __filename = fileURLToPath(import.meta.url);
@@ -40,7 +40,7 @@ app.post("/signup", authLimiter, createUser);
 app.post("/login", authLimiter, login);
 app.post("/logout", logout);
 app.use("/", indexRouter); // Use the index router for all routes starting with "/"
-
+app.use(errorHandler); 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening to
   console.log(`App listening at port ${PORT}`);

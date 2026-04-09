@@ -2,29 +2,26 @@ import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {
-  ApiError,
   BadRequestError,
   UnauthorizedError,
   NotFoundError,
   ConflictError,
-  ServerError,
 } from "../utils/errors.js";
 const { NODE_ENV, JWT_SECRET } = process.env;
-export const createUser = (req, res) => {
+export const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
   if (!email || !password) {
-    const error = new BadRequestError("Email and password are required.");
-    return res.status(error.statusCode).send({
-      message: error.message,
-    });
+    return next(new BadRequestError("Email and password are required."));
   }
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
   if (!passwordRegex.test(password)) {
-    return res
-      .status(400)
-      .json({ message: "Password does not meet security requirements." });
+    return next(
+      new BadRequestError(
+        "Password must be at least 12 characters, include uppercase, lowercase, a number, and a special character.",
+      ),
+    );
   }
   bcrypt
     .hash(password, 10)
@@ -45,42 +42,25 @@ export const createUser = (req, res) => {
         data: userObject,
       });
     })
-
     .catch((err) => {
-      console.error(err);
-      let error = err;
-      if (!(err instanceof ApiError)) {
-        // 3. Handle MongoDB Duplicate Key Error (Code 11000)
-        if (err.code === 11000) {
-          error = new ConflictError("A user with that email already exists.");
-        } else if (err.name === "ValidationError") {
-          // Check if the password specifically caused the validation error
-          if (err.errors.password) {
-            error = new BadRequestError(
-              "Password does not meet security requirements.",
-            );
-          } else {
-            // Fallback for other validation errors (like invalid email or name)
-            error = new BadRequestError("Invalid user data provided.");
-          }
-        } else {
-          error = new ServerError(
-            err.message || "An unexpected error occurred.",
-          );
-        }
+      // 3. Handle MongoDB Duplicate Key Error (Code 11000)
+      if (err.code === 11000) {
+        return next(
+          new ConflictError("A user with that email already exists."),
+        );
       }
-      return res.status(error.statusCode).send({
-        message: error.message,
-      });
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError("Invalid user data provided."));
+      }
+      return next(err);
     });
 };
 
-export const login = (req, res) => {
+export const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    const error = new BadRequestError("Email and password are required.");
-    return res.status(error.statusCode).send({ message: error.message });
+    return next(new BadRequestError("Email and password are required."));
   }
 
   User.findUserByCredentials(email, password)
@@ -101,21 +81,13 @@ export const login = (req, res) => {
       return res.status(200).send({ message: "Login successful" });
     })
     .catch((err) => {
-      console.error(err);
-      let error = err;
-      if (!(err instanceof ApiError)) {
-        if (err.name === "DocumentNotFoundError") {
-          error = new UnauthorizedError("Incorrect email or password");
-        } else if (err.name === "CastError" || err.name === "ValidationError") {
-          error = new BadRequestError("Invalid login data provided.");
-        } else {
-          error = new ServerError(
-            err.message || "An unexpected error occurred.",
-          );
-        }
+      if (err.name === "AuthError") {
+        return next(new UnauthorizedError("Incorrect email or password"));
       }
-
-      return res.status(error.statusCode).send({ message: error.message });
+      if (err.name === "CastError" || err.name === "ValidationError") {
+        return next(new BadRequestError("Invalid login data provided."));
+      }
+      return next(err);
     });
 };
 
@@ -128,36 +100,24 @@ export const logout = (req, res) => {
   res.status(200).send({ message: "Logout successful" });
 };
 
-export const getCurrentUser = (req, res) => {
+export const getCurrentUser = (req, res, next) => {
   const { _id } = req.user; // we get the userId from the auth middleware
   User.findById(_id)
-    .orFail(new NotFoundError("User not found."))
+    .orFail(() => new NotFoundError("User not found."))
     .then((user) => {
       res.status(200).send({
         data: user,
       });
     })
     .catch((err) => {
-      console.error(err);
-      let error = err;
-      // This catches the NotFoundError you passed into .orFail()
-      if (!(err instanceof ApiError)) {
-        if (err.name === "CastError") {
-          error = new BadRequestError("Invalid user ID format.");
-        } else {
-          error = new ServerError(
-            err.message || "An unexpected error occurred.",
-          );
-        }
+      if (err.name === "CastError") {
+        return next(new BadRequestError("Invalid user ID format."));
       }
-
-      return res.status(error.statusCode).send({
-        message: error.message,
-      });
+      return next(err);
     });
 };
 
-export const updateProfile = (req, res) => {
+export const updateProfile = (req, res, next) => {
   const { _id } = req.user; // we get the userId from the auth middleware
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
@@ -165,29 +125,19 @@ export const updateProfile = (req, res) => {
     { name, avatar },
     { returnDocument: "after", runValidators: true },
   )
-    .orFail(new NotFoundError("User not found."))
+    .orFail(() => new NotFoundError("User not found."))
     .then((updatedUser) => {
       res.status(200).send({
         data: updatedUser,
       });
     })
     .catch((err) => {
-      console.error(err);
-      let error = err;
-      if (!(err instanceof ApiError)) {
-        if (err.name === "CastError") {
-          error = new BadRequestError("Invalid user ID format.");
-        } else if (err.name === "ValidationError") {
-          error = new BadRequestError("Invalid data provided for update.");
-        } else {
-          error = new ServerError(
-            err.message || "An unexpected error occurred.",
-          );
-        }
+      if (err.name === "CastError") {
+        return next(new BadRequestError("Invalid user ID format."));
       }
-
-      return res.status(error.statusCode).send({
-        message: error.message,
-      });
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError("Invalid data provided for update."));
+      }
+      return next(err);
     });
 };
