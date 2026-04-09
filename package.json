@@ -9,10 +9,11 @@
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "react-scripts start",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
     "celebrate": "15.0.3",
+    "dotenv": "17.4.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "7.13.2",

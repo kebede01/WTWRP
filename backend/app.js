@@ -48,7 +48,9 @@ app.use(errorLogger); // enabling the error logger
 app.use(errors());
 
 app.use(errorHandler); 
-app.listen(PORT, () => {
-  // if everything works fine, the console will show which port the application is listening to
-  console.log(`App listening at port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(3001, () => {
+    console.log("App listening at port 3001");
+  });
+}
+export default app;
