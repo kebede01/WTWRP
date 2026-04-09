@@ -23,10 +23,10 @@ const clothingItemSchema = new mongoose.Schema({
       message: "You must enter a valid URL",
     },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
+ createdAt: {
+  type: Date,
+  default: Date.now, // No parentheses! Mongoose will call it each time a new item is made.
+},
   likes: {
     type: [
       {

@@ -12,9 +12,9 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: true,
+    required: false,
     validate: {
-      validator: (avatar) => isURL(avatar),
+      validator: (avatar) => !avatar || isURL(avatar), // Allows empty/null or a valid URL
       message: "You must enter a valid URL",
     },
   },
@@ -45,13 +45,13 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
     .then((user) => {
       if (!user) {
         const error = new Error("Incorrect email or password");
-        error.name = "AuthError"; 
+        error.name = "AuthError";
         return Promise.reject(error);
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           const error = new Error("Incorrect email or password");
-          error.name = "AuthError"; 
+          error.name = "AuthError";
           return Promise.reject(error);
         }
         return user; // now user is available

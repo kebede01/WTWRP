@@ -1,10 +1,11 @@
-import { jest, test, expect } from '@jest/globals';
+import { jest, describe, test, expect } from "@jest/globals";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import AddItemModal from "./AddItemModal";
+import "@testing-library/jest-dom";
 
 describe("AddItemModal", () => {
   test("submits the form with correct data when fields are filled", async () => {
-    // 1. Create a mock function that returns a successful promise
+    // 1. Setup mock functions
     const mockOnSubmit = jest.fn(() => Promise.resolve({ data: {} }));
     const mockHandleClose = jest.fn();
 
@@ -13,29 +14,32 @@ describe("AddItemModal", () => {
         isOpen={true}
         title="Add Garment"
         buttonText="Add garment"
+        // FIX: Prop name must be onSubmitAddItem to match your component
         onSubmitAddItem={mockOnSubmit}
         handleCloseModal={mockHandleClose}
         name="add-item"
-      />
+      />,
     );
 
-    // 2. Fill in the Name input
+    // 2. Target the inputs
     const nameInput = screen.getByPlaceholderText(/Name/i);
-    fireEvent.change(nameInput, { target: { value: "Summer Shirt", name: "name" } });
-
-    // 3. Fill in the Image URL input
     const imageInput = screen.getByPlaceholderText(/Image URL/i);
-    fireEvent.change(imageInput, { target: { value: "https://example.com/image.png", name: "image" } });
-
-    // 4. Select the Weather type from the dropdown
     const selectMenu = screen.getByLabelText(/Select the weather type/i);
+
+    // 3. Simulate user typing
+    fireEvent.change(nameInput, {
+      target: { value: "Summer Shirt", name: "name" },
+    });
+    fireEvent.change(imageInput, {
+      target: { value: "https://example.com/image.png", name: "image" },
+    });
     fireEvent.change(selectMenu, { target: { value: "hot", name: "weather" } });
 
-    // 5. Submit the form
+    // 4. Submit the form
     const submitButton = screen.getByRole("button", { name: /Add garment/i });
     fireEvent.click(submitButton);
 
-    // 6. Assertions
+    // 5. Verification
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
         name: "Summer Shirt",
@@ -44,7 +48,7 @@ describe("AddItemModal", () => {
       });
     });
 
-    // Verify it tries to close the modal after success
+    // Verify cleanup
     expect(mockHandleClose).toHaveBeenCalled();
   });
 });

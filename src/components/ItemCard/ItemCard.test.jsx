@@ -1,15 +1,18 @@
-import { jest, test, expect } from '@jest/globals';
+import { jest, test, expect } from "@jest/globals";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ItemCard from "./ItemCard";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import "@testing-library/jest-dom";
 
-// Ensure the ID here matches what we use in the render function
+// Using valid 24-character hex IDs to align with our backend Joi/Mongoose gates
+const MOCK_USER_ID = "60d5ecb54e92f2001c82ecb3";
+const MOCK_OTHER_ID = "60d5ecb54e92f2001c82ecb4";
+
 const mockItem = {
-  _id: "1",
+  _id: "60d5ecb54e92f2001c82ecb5",
   name: "Summer Dress",
   image: "test-url",
-  likes: ["123"] // Using "123" to match our test user
+  likes: [MOCK_USER_ID], // This user has already liked the item
 };
 
 const renderCard = (isLoggedIn, currentUserId) => {
@@ -17,55 +20,63 @@ const renderCard = (isLoggedIn, currentUserId) => {
   const mockHandleLike = jest.fn();
 
   render(
-    <CurrentUserContext.Provider value={{ isLoggedIn, currentUser: { _id: currentUserId } }}>
-      <ItemCard 
-        item={mockItem} 
-        handlePreviewModal={mockHandlePreview} 
-        handleCardLikesDislikes={mockHandleLike} 
+    <CurrentUserContext.Provider
+      value={{ isLoggedIn, currentUser: { _id: currentUserId } }}
+    >
+      <ItemCard
+        item={mockItem}
+        handlePreviewModal={mockHandlePreview}
+        handleCardLikesDislikes={mockHandleLike}
       />
-    </CurrentUserContext.Provider>
+    </CurrentUserContext.Provider>,
   );
 
   return { mockHandlePreview, mockHandleLike };
 };
 
 test("renders the like button only when logged in", () => {
-  // Test Case 1: Not logged in (Plan: No button)
+  // Test Case 1: Not logged in
   const { rerender } = render(
     <CurrentUserContext.Provider value={{ isLoggedIn: false }}>
       <ItemCard item={mockItem} />
-    </CurrentUserContext.Provider>
+    </CurrentUserContext.Provider>,
   );
-  expect(screen.queryByRole('button', { name: /like/i })).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole("button", { name: /like/i }),
+  ).not.toBeInTheDocument();
 
-  // Test Case 2: Logged in (Plan: Button exists)
+  // Test Case 2: Logged in
   rerender(
-    <CurrentUserContext.Provider value={{ isLoggedIn: true, currentUser: { _id: '123' } }}>
+    <CurrentUserContext.Provider
+      value={{ isLoggedIn: true, currentUser: { _id: MOCK_USER_ID } }}
+    >
       <ItemCard item={mockItem} />
-    </CurrentUserContext.Provider>
+    </CurrentUserContext.Provider>,
   );
-  // Since mockItem.likes has "123", this should now correctly be "Unlike"
-  expect(screen.getByRole('button', { name: /unlike/i })).toBeInTheDocument();
+  // Since mockItem.likes contains MOCK_USER_ID, the button should show "Unlike"
+  expect(screen.getByRole("button", { name: /unlike/i })).toBeInTheDocument();
 });
 
 test("shows active like state if user already liked the item", () => {
-  renderCard(true, "123");
-  const likeBtn = screen.getByRole('button', { name: /unlike/i });
+  renderCard(true, MOCK_USER_ID);
+  const likeBtn = screen.getByRole("button", { name: /unlike/i });
+  // Ensure your ItemCard component uses this exact class name for the liked state
   expect(likeBtn).toHaveClass("card__like-button_liked");
 });
 
 test("triggers handlePreviewModal when clicking image", () => {
-  const { mockHandlePreview } = renderCard(true, "456");
+  const { mockHandlePreview } = renderCard(true, MOCK_OTHER_ID);
   const image = screen.getByAltText(/A photo of Summer Dress/i);
-  
+
   fireEvent.click(image);
   expect(mockHandlePreview).toHaveBeenCalledWith(mockItem);
 });
 
 test("triggers handleCardLikesDislikes when clicking like button", () => {
-  const { mockHandleLike } = renderCard(true, "456"); // User 456 hasn't liked it yet
-  const likeBtn = screen.getByRole('button', { name: /like/i });
-  
+  const { mockHandleLike } = renderCard(true, MOCK_OTHER_ID); // Different user who hasn't liked it
+  const likeBtn = screen.getByRole("button", { name: /like/i });
+
   fireEvent.click(likeBtn);
-  expect(mockHandleLike).toHaveBeenCalledWith(mockItem, false); // false because isLiked was false
+  // Expecting the handler to be called with the item and the 'isLiked' boolean (false)
+  expect(mockHandleLike).toHaveBeenCalledWith(mockItem, false);
 });

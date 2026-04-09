@@ -5,11 +5,13 @@ import cors from "cors";
 import path from "path"; // <--- Add this line!
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
+import { errors } from "celebrate";
 import indexRouter from "./routes/index.js";
 import { createUser, login } from "./controllers/users.js";
 import errorHandler from "./middleware/error-handler.js";
 import { logout } from "./controllers/users.js";
 import { limiter, authLimiter } from "./utils/rateLimit.js";
+import {validateUserSignUp, validateUserSignIn} from "./middleware/validation.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { PORT = 4000, MONGO_URI } = process.env;
@@ -36,10 +38,13 @@ app.use(cookieParser());
   }
 })();
 
-app.post("/signup", authLimiter, createUser);
-app.post("/login", authLimiter, login);
+app.post("/signup", authLimiter, validateUserSignUp, createUser);
+app.post("/login", authLimiter, validateUserSignIn, login);
 app.post("/logout", logout);
 app.use("/", indexRouter); // Use the index router for all routes starting with "/"
+// celebrate error handler
+app.use(errors());
+
 app.use(errorHandler); 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening to
