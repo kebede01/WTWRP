@@ -23,6 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+*.jar
 app.yaml
 env_vars.yaml
 # .gitignore
