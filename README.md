@@ -37,7 +37,8 @@ Frontend	| Backend	| Infrastructure |
 ``` React 18 (Vite)	| Node.js / Express | 	Google Cloud Platform |
 Context API	| MongoDB / Mongoose	| App Engine (Standard) |
 CSS3 / Flexbox | Jest & Supertest | 	Git / GitHub |
-Celebrate / Joi	| Cookie-parser	| Winston Logging | ```
+Celebrate / Joi	| Cookie-parser	| Winston Logging |
+ ```
 		
 
 ---
@@ -82,8 +83,9 @@ Configured to handle:
 3. **Install & Build:**
    ``` npm install
     npm run build```
-4. **Run Locally:**
-    npm start
+4. ``` **Run Locally:**
+    npm start 
+    ```
     
 ## Deployment to Google Cloud
 This application is ready for the Google Cloud App Engine.
