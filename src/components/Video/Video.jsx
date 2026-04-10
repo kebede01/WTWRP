@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
 export default function VideoPlayer() {
-  const videoRef = useRef(null);
-  // 1. Create a state variable to track if the video is playing
-  const [isPlaying, setIsPlaying] = useState(false);
+const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true); // Default to true since you have autoPlay
 
   function handleToggle() {
     if (videoRef.current.paused) {
@@ -21,45 +20,66 @@ export default function VideoPlayer() {
     setIsPlaying(false); // 3. Update the UI button
   }
 
-  return (
+// Fast Forward 10 seconds
+  function handleForward() {
+    videoRef.current.currentTime += 10;
+  }
+
+  // Rewind 10 seconds
+  function handleBackward() {
+    videoRef.current.currentTime -= 10;
+  }
+
+ return (
     <div
       style={{
         padding: "20px",
-        position: "fixed", // Ensures it stays in the background
-        zIndex: -1, // Pushes it behind the modal
-        pointerEvents: "none",
+        position: "relative",
+        zIndex: 100, // High enough to be seen
+        // REMOVED pointerEvents: "none"
       }}
     >
-      {/* This DIV is now the resizable handle */}
       <div
         style={{
           width: "800px",
-          height: "800px",
-          minWidth: "200px",
-          minHeight: "112px",
+          height: "500px", // Matched to video height
           overflow: "hidden",
-          resize: "both", // Enables the draggable corner
-          border: "2px solid #ccc",
-          lineHeight: 0, // Removes extra space at the bottom
+          resize: "both", 
+          border: "5px solid blue", // Changed to blue so you can see the container
           margin: "auto",
+          position: "relative"
         }}
       >
         <video
           ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
           src="/modal-css-part2.mp4"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          style={{ 
+            display: "block",
+            width: "100%",      // Fill the 800px container
+            height: "100%",     // Fill the 800px container
+            objectFit: "cover", // Keeps aspect ratio while filling
+            backgroundColor: "#000"
+          }}
         />
       </div>
 
-      <div style={{ marginTop: "10px" }}>
-        <button
-          onClick={handleToggle}
-          style={{ fontSize: "24px", padding: "10px 20px" }}
-        >
+     <div style={{ marginTop: "10px", textAlign: "center" }}>
+       {/* Backward 10s */}
+  <button onClick={handleBackward} style={{ padding: "10px 15px" }}>
+    ⏪ -10s
+  </button>
+        <button onClick={handleToggle} style={{ fontSize: "24px", padding: "10px 20px" }}>
           {isPlaying ? "⏸️ Pause" : "▶️ Play"}
-        </button>
-
-        <button onClick={handleReset} style={{ padding: "10px 20px" }}>
+       </button>
+       {/* Forward 10s */}
+  <button onClick={handleForward} style={{ padding: "10px 15px" }}>
+    ⏩ +10s
+  </button>
+        <button onClick={handleReset} style={{ padding: "10px 20px", marginLeft: "10px" }}>
           🔄 Reset
         </button>
       </div>

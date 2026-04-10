@@ -1,8 +1,7 @@
 runtime: nodejs22
 instance_class: F1
-
 env: standard
-# This tells Google Cloud to run your start script
+
 entrypoint: npm start
 
 env_variables:
@@ -10,9 +9,10 @@ env_variables:
   PORT: "8080"
   JWT_SECRET: "my-secret-will-be-this"
   VITE_API_KEY: "8eed7640ca0660235a1c83c9aff5ff20"
-
   MONGO_URI: "mongodb+srv://johnzeeze_db_user:TTMcOj3RKkhnlwEX@cluster0.s9a2n1n.mongodb.net/wtwr_db?retryWrites=true&w=majority"
- 
 
- 
- 
+handlers:
+  # Send EVERYTHING to the Node.js entrypoint. 
+  # Express will now handle the JS, CSS, and the 41MB video.
+  - url: /.*
+    script: auto
