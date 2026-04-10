@@ -14,7 +14,7 @@
 This project is engineered as a **Node.js monolith**, serving both a Vite-powered React frontend and a RESTful Express API from a single deployment. It is optimized specifically for **Google App Engine (Standard Environment)**.
 
 ### 🎥 High-Performance Media Streaming
-To bypass the **32MB Google Front End (GFE) response limit**, I implemented a custom binary streaming solution:
+
 * **Byte-Range Support**: The backend supports `206 Partial Content` headers, allowing the browser to request specific chunks of video.
 * **Optimized Buffering**: Users can skip forward or backward by 10s instantly without downloading the full asset.
 * **Asset Compression**: Strategic transcoding of media to maintain quality while ensuring a zero-failure rate during cloud transit.
@@ -69,9 +69,11 @@ Configured to handle:
 
 1. **Clone the Repo**
    ```bash
-   git clone [https://github.com/your-username/wtwr-monolith.git](https://github.com/your-username/wtwr-monolith.git)```
-   cd wtwr-monolith
-   Environment Variables
+   git clone [https://github.com/kebede01/WTWRP.git](https://github.com/kebede01/WTWRP.git)```
+   
+   cd WTWRP
+
+  Environment Variables
 2. **Create a .env file in the root directory:**
     PORT=4000
     MONGO_URI=your_mongodb_uri
@@ -82,6 +84,7 @@ Configured to handle:
     npm run build
 4. **Run Locally:**
     npm start
+    
 ## Deployment to Google Cloud
 This application is ready for the Google Cloud App Engine.
 1. Ensure your app.yaml is configured to point to your entry script.
