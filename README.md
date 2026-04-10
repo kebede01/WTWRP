@@ -34,10 +34,10 @@ This project is engineered as a **Node.js monolith**, serving both a Vite-powere
 ## 🛠 Tech Stack
 
 Frontend	| Backend	| Infrastructure |
-React 18 (Vite)	| Node.js / Express | 	Google Cloud Platform |
+``` React 18 (Vite)	| Node.js / Express | 	Google Cloud Platform |
 Context API	| MongoDB / Mongoose	| App Engine (Standard) |
 CSS3 / Flexbox | Jest & Supertest | 	Git / GitHub |
-Celebrate / Joi	| Cookie-parser	| Winston Logging |
+Celebrate / Joi	| Cookie-parser	| Winston Logging | ```
 		
 
 ---
@@ -73,15 +73,15 @@ Configured to handle:
    
    cd WTWRP
 
-  Environment Variables
+ 
 2. **Create a .env file in the root directory:**
-    PORT=4000
+    ```PORT=4000
     MONGO_URI=your_mongodb_uri
     JWT_SECRET=your_super_secret_key
-    NODE_ENV=production
+    NODE_ENV=production```
 3. **Install & Build:**
-    npm install
-    npm run build
+   ``` npm install
+    npm run build```
 4. **Run Locally:**
     npm start
     
