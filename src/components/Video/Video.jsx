@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 export default function VideoPlayer() {
-const videoRef = useRef(null);
+  const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true); // Default to true since you have autoPlay
 
   function handleToggle() {
@@ -20,7 +20,7 @@ const videoRef = useRef(null);
     setIsPlaying(false); // 3. Update the UI button
   }
 
-// Fast Forward 10 seconds
+  // Fast Forward 10 seconds
   function handleForward() {
     videoRef.current.currentTime += 10;
   }
@@ -30,12 +30,12 @@ const videoRef = useRef(null);
     videoRef.current.currentTime -= 10;
   }
 
- return (
+  return (
     <div
       style={{
         padding: "20px",
         position: "relative",
-        zIndex: 100, // High enough to be seen
+        zIndex: 1, // High enough to be seen
         // REMOVED pointerEvents: "none"
       }}
     >
@@ -44,10 +44,10 @@ const videoRef = useRef(null);
           width: "800px",
           height: "500px", // Matched to video height
           overflow: "hidden",
-          resize: "both", 
+          resize: "both",
           border: "5px solid blue", // Changed to blue so you can see the container
           margin: "auto",
-          position: "relative"
+          position: "relative",
         }}
       >
         <video
@@ -57,29 +57,35 @@ const videoRef = useRef(null);
           loop
           playsInline
           src="/modal-css-part2.mp4"
-          style={{ 
+          style={{
             display: "block",
-            width: "100%",      // Fill the 800px container
-            height: "100%",     // Fill the 800px container
+            width: "100%", // Fill the 800px container
+            height: "100%", // Fill the 800px container
             objectFit: "cover", // Keeps aspect ratio while filling
-            backgroundColor: "#000"
+            backgroundColor: "#000",
           }}
         />
       </div>
 
-     <div style={{ marginTop: "10px", textAlign: "center" }}>
-       {/* Backward 10s */}
-  <button onClick={handleBackward} style={{ padding: "10px 15px" }}>
-    ⏪ -10s
-  </button>
-        <button onClick={handleToggle} style={{ fontSize: "24px", padding: "10px 20px" }}>
+      <div style={{ marginTop: "10px", textAlign: "center" }}>
+        {/* Backward 10s */}
+        <button onClick={handleBackward} style={{ padding: "10px 15px" }}>
+          ⏪ -10s
+        </button>
+        <button
+          onClick={handleToggle}
+          style={{ fontSize: "24px", padding: "10px 20px" }}
+        >
           {isPlaying ? "⏸️ Pause" : "▶️ Play"}
-       </button>
-       {/* Forward 10s */}
-  <button onClick={handleForward} style={{ padding: "10px 15px" }}>
-    ⏩ +10s
-  </button>
-        <button onClick={handleReset} style={{ padding: "10px 20px", marginLeft: "10px" }}>
+        </button>
+        {/* Forward 10s */}
+        <button onClick={handleForward} style={{ padding: "10px 15px" }}>
+          ⏩ +10s
+        </button>
+        <button
+          onClick={handleReset}
+          style={{ padding: "10px 20px", marginLeft: "10px" }}
+        >
           🔄 Reset
         </button>
       </div>

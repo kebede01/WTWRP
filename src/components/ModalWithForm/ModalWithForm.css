@@ -10,6 +10,7 @@
   opacity: var(--opacity-none);
   pointer-events: var(--interaction-hidden);
   transition: var(--modal-transition);
+  z-index: 9999;
 }
 
 .modal_opened {
