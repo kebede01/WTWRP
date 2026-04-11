@@ -43,6 +43,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 
+
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
 // --- 2. API ROUTES (Handle these before static files) ---
 app.post("/api/signup", authLimiter, validateUserSignUp, createUser);
 app.post("/api/login", authLimiter, validateUserSignIn, login);

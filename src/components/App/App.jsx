@@ -18,7 +18,7 @@ import Profile from "../Profile/Profile";
 import DeleteModal from "../Delete/Delete";
 
 import { filterWeatherData, fetchWeatherData } from "../../utils/weatherApi";
-import VideoPlayer from "../Video/Video.jsx";
+// import VideoPlayer from "../Video/Video.jsx";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 import {
@@ -35,6 +35,7 @@ import {
 } from "../../utils/auth.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import { apiItemLike, apiItemUnlike } from "../../utils/apiLikeDislike.js";
+import Footer from "../Footer/Footer.jsx";
 function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [weatherData, setWeatherData] = useState({
@@ -395,7 +396,8 @@ function App() {
               onDeleteClothingItem={handleDeleteClothingItem}
               selectedCard={selectedCard}
             />
-            <VideoPlayer />
+            <Footer/>
+            {/* <VideoPlayer /> */}
           </div>
         </div>
       </CurrentUserContext.Provider>

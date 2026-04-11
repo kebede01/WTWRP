@@ -72,6 +72,7 @@ export default function LoginModal({
             name="password"
             onChange={handleChange}
             placeholder="Password"
+            minLength={12}
             value={values.password}
             required
           />
