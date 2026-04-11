@@ -20,6 +20,7 @@ function Header({
 
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
+
   return (
     <header className="header">
       <div className="header__section header__section_left">
@@ -29,7 +30,7 @@ function Header({
 
         <p className="header__info">
           {formattedDate},{" "}
-          <span className="header__location">{weatherData.city}</span>
+          <span className="header__location">{weatherData.city || "Loading location..."}</span>
         </p>
       </div>
 

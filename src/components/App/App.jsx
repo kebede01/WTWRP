@@ -53,7 +53,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(
     sessionStorage.getItem("isLoggedIn") === "true",
   );
-
+  const [coordinates, setCoordinates] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -171,7 +171,7 @@ function App() {
         .then(() => {
           return handleSubmitLogIn({ email, password });
         })
-        .then(() => { });
+        .then(() => {});
       // RegisterModal: Catches the error and updates the errorMessage state.If we catch error here, error message won't get caught.
     },
     [handleSubmitLogIn],
@@ -210,14 +210,33 @@ function App() {
     setCurrentTemperatureUnit(currentTemperatureUnit === "°F" ? "°C" : "°F");
   };
 
+  // 2. Effect to get the GPS Location (Runs once on mount)
   useEffect(() => {
-    fetchWeatherData()
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (err) => {
+        console.error("GPS Access Denied:", err);
+        // Fallback to Seattle if user blocks location
+        setCoordinates({ lat: 47.6062, lng: -122.3321 });
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!coordinates) return; // Don't fetch if we don't have coordinates yet
+
+    fetchWeatherData(coordinates)
       .then((data) => filterWeatherData(data))
       .then((newData) => {
-        setWeatherData(newData);
+        setWeatherData(newData); // This contains your 'city' property
       })
-      .catch((err) => console.error("Effect Error:", err));
-  }, []);
+      .catch((err) => console.error("Weather Fetch Error:", err));
+  }, [coordinates]);
 
   useEffect(() => {
     //backend filters based on the logged user id obtained from auth.js middleware.
@@ -396,7 +415,7 @@ function App() {
               onDeleteClothingItem={handleDeleteClothingItem}
               selectedCard={selectedCard}
             />
-            <Footer/>
+            <Footer />
             {/* <VideoPlayer /> */}
           </div>
         </div>

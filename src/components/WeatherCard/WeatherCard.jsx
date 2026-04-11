@@ -4,7 +4,9 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 import { weatherOptions, defaultWeatherOptions } from "../../utils/constants";
 function WeatherCard({ weatherData }) {
   
-    const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  
+if (!weatherData || !weatherData.temp) return null;
   // 1. Find the matching option object
   const foundOption = weatherOptions.find((option) => {
     return (
@@ -20,7 +22,7 @@ function WeatherCard({ weatherData }) {
   const weatherOption = foundOption || fallback;
   return (
     <section className="weather-card">
-      <p className="weather-card__text">{`${weatherData.temp[currentTemperatureUnit]} ${currentTemperatureUnit}`}</p>
+      <p className="weather-card__text">{`${weatherData?.temp[currentTemperatureUnit]} ${currentTemperatureUnit}`}</p>
       <img src={weatherOption?.url} alt={`${weatherOption?.condition}-weather-image`} className="weather-card__img" />
     </section>
   );
